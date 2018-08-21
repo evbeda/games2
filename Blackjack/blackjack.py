@@ -21,3 +21,9 @@ def sum_cards(cards):
         else:
             result += cardsDictionary[card]
     return result
+
+def compare_bet(min_bet,bet):
+    if(bet >= min_bet):
+        return True
+    else:
+        return False
