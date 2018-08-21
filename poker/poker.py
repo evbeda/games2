@@ -10,3 +10,14 @@ def encontrarEscaleraReal(cards):
         else:
             return False
     return True
+
+def encontrarPares(cards):
+    values = defaultdict(int)
+    for card in cards:
+        value = card[:1]
+        values[value] = values[value] + 1
+    result = []
+    for key in values:
+        if (values[key] == 2):
+            result.append(key)
+    return result
