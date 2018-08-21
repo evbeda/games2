@@ -1,12 +1,13 @@
 import unittest
-from check_throw import checkThrow
+from .check_throw import checkThrow
+
 
 class test_categories(unittest.TestCase):
 
 	def test_generala(self):
 		numOfThrows = 2
 		mockThrow = [1,1,1,1,1]
-		isGenerala = checkThrow(mockThrow, "generala", numOfThrows)		
+		isGenerala = checkThrow(mockThrow, "generala", numOfThrows)
 		self.assertTrue(isGenerala)
 
 	def test_not_generala(self):

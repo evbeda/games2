@@ -1,4 +1,5 @@
-from __init__ import *
+from . import *
+
 
 def checkThrow(throwArray, pointsToCheck, throwNumber):
 	if pointsToCheck == GENERALA:

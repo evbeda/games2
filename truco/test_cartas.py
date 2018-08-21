@@ -1,8 +1,9 @@
 import unittest
 from unittest.mock import patch
-from carta import Carta
-from mazo import Mazo
-from __init__ import ESPADA, BASTO, ORO, COPA
+from .carta import Carta
+from .mazo import Mazo
+from . import ESPADA, BASTO, ORO, COPA
+
 
 class TestCartas (unittest.TestCase):
     #CREACIONES
@@ -78,17 +79,17 @@ class TestMazo(unittest.TestCase):
         result2 = mazo.obtenerCarta()
         cartaCorrecta = Carta('oro',7)
         self.assertEqual(cartaCorrecta.pinta, result2.pinta)
-        self.assertEqual(cartaCorrecta.numero, result2.numero)  
-    @unittest.mock.patch('random.randint')  
+        self.assertEqual(cartaCorrecta.numero, result2.numero)
+    @unittest.mock.patch('random.randint')
     def test_verificar_cartas_sacadas_2_de_a_4(self, mock_rand_int):
         mock_rand_int.return_value = 4
         mazo = Mazo()
         result2 = mazo.obtenerCarta()
         result2 = mazo.obtenerCarta()
         cartaCorrecta = Carta('basto',3)
-        self.assertEqual(cartaCorrecta.numero, result2.numero)   
+        self.assertEqual(cartaCorrecta.numero, result2.numero)
         self.assertEqual(cartaCorrecta.pinta, result2.pinta)
 
 
-
-    
+if __name__ == '__main__':
+    unittest.main()

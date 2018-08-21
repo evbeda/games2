@@ -1,8 +1,8 @@
 import unittest
-from blackjack import *
-from game import Game
-from player import Player
-from hand import Hand
+from .blackjack import *
+from .game import Game
+from .player import Player
+from .hand import Hand
 
 class TestCards(unittest.TestCase):
 
@@ -38,7 +38,7 @@ class TestBets(unittest.TestCase):
         game = Game(10,player)
         result = compare_bet(game.min_bet,player.money)
         self.assertEqual(result,False)
-        
+
     def test_bet_upper(self):
         player = Player(10)
         game = Game(5,player)
