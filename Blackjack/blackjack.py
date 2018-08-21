@@ -27,3 +27,6 @@ def compare_bet(min_bet,bet):
         return True
     else:
         return False
+
+def add_card(actual_cards):
+    pass
