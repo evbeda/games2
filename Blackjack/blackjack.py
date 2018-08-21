@@ -1,4 +1,4 @@
-from mazo import cardsDictionary
+from .mazo import cardsDictionary
 # import pdb; pdb.set_trace()
 
 def sum_cards(cards):

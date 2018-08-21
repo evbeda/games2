@@ -1,8 +1,10 @@
-from carta import Carta
-from __init__ import ESPADA, BASTO, ORO, COPA
 import random
+from .carta import Carta
+from . import ESPADA, BASTO, ORO, COPA
+
+
 class Mazo():
-	
+
 	def __init__(self):
 		self.mazo = [
 			Carta(ESPADA, 1), Carta(BASTO, 1), Carta(ESPADA, 7),
