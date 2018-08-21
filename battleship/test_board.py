@@ -19,6 +19,23 @@ class test_board(unittest.TestCase):
 		]
 		self.assertEqual(result, board_expected)
 
+	def test_insert(self):
+		board = Board()
+		result = board.set_boat(0, 0, 1)
+		board_expected = [
+			[1,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+		]
+		self.assertEqual(result, board_expected)
+
 
 if __name__ == '__main__':
 	unittest.main()
