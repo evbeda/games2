@@ -19,6 +19,8 @@ class Board(object):
 		return self.board
 
 	def set_boat(self,row,column,value):
-		self.board [row][column] = value
-
-
+		if (column >= 0 and column < 10) and (row >= 0 and row < 10):
+			self.board [row][column] = value
+			return True
+		else:
+			return False
