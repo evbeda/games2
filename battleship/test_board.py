@@ -38,6 +38,28 @@ class test_board(unittest.TestCase):
         result = board.get_board()
         self.assertEqual(result, board_expected)
 
+    def test_insert(self):
+        board = Board()
+        board.set_boat(0, 0, 1)
+        board_expected = [
+            [1,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+        ]
+        result = board.get_board()
+        self.assertEqual(result, board_expected)
+
+    def test_error_position(self):
+        board = Board()
+        result = board.set_boat(10,10,1)
+        self.assertEqual(result, False)
 
 if __name__ == '__main__':
     unittest.main()
