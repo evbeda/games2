@@ -1,6 +1,11 @@
 from .mazo import cardsDictionary
 # import pdb; pdb.set_trace()
 
+def compare_bet(min_bet, bet):
+    if(bet >= min_bet):
+        return True
+    else:
+        return False
 
 def sum_cards(cards):
     result = 0
@@ -9,7 +14,6 @@ def sum_cards(cards):
         if(card == 'A'):
             if(not(index + 1 == len(cards))):
                 cards.append(cards.pop(index))
-
     for card in cards:
         if(card == 'A'):
             # Si el As con valor 11, da un resultado mayor a 21
@@ -22,14 +26,5 @@ def sum_cards(cards):
         else:
             result += cardsDictionary[card]
     return result
-
-
-def compare_bet(min_bet, bet):
-    if(bet >= min_bet):
-        return True
-    else:
-        return False
-
-
 def add_card(actual_cards):
     pass
