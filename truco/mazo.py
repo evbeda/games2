@@ -19,7 +19,7 @@ class Mazo():
 			Carta(ESPADA, 5),Carta(BASTO, 5),Carta(ORO, 5),Carta(COPA, 5),
 			Carta(ESPADA, 4),Carta(BASTO, 4),Carta(ORO, 4),Carta(COPA, 4)]
 	def obtenerCarta(self):
-		indice = random.randint(0,len(self.mazo))
+		indice = random.randint(0,len(self.mazo)-1)
 		aux = self.mazo[indice]
 		del self.mazo[indice]
 		return aux
