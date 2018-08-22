@@ -26,5 +26,4 @@ def sum_cards(cards):
         else:
             result += cardsDictionary[card]
     return result
-def add_card(actual_cards):
-    pass
+
