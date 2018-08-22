@@ -6,7 +6,7 @@ from Blackjack.testBlackjack import (
     TestHands,
 )
 from Generala.test_categories import test_categories
-from truco.test_cartas import TestCartas
+from truco.test_cartas import TestCartas, TestMazo
 
 
 def suite():
@@ -20,6 +20,7 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestHands))
     test_suite.addTest(unittest.makeSuite(test_categories))
     test_suite.addTest(unittest.makeSuite(TestCartas))
+    test_suite.addTest(unittest.makeSuite(TestMazo))
     return test_suite
 
 
