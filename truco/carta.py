@@ -19,24 +19,24 @@ class Carta():
         ((ESPADA, 4,), (BASTO, 4,), (ORO, 4,), (COPA, 4,),),
     )
 
-    def __init__(self, pinta, numero):
-        self.pinta = pinta
-        self.numero = numero
-        self.posicion = self.get_position()
+    def __init__(self, suit, number):
+        self.suit = suit
+        self.number = number
+        self.position = self.get_position()
 
     def get_position(self):
         for i in range(len(self.mazoJerarquico)):
             for x in range(len(self.mazoJerarquico[i])):
                 if (
-                    self.pinta == self.mazoJerarquico[i][x][0] and
-                    self.numero == self.mazoJerarquico[i][x][1]
+                    self.suit == self.mazoJerarquico[i][x][0] and
+                    self.number == self.mazoJerarquico[i][x][1]
                 ):
                     return i
 
     def is_bigger(self, cartaDos):
-        if self.posicion < cartaDos.posicion:
+        if self.position < cartaDos.position:
             return True
-        elif self.posicion == cartaDos.posicion:
+        elif self.position == cartaDos.position:
             return 0
         else:
             return False

@@ -6,7 +6,7 @@ from Blackjack.testBlackjack import (
     TestHands,
 )
 from Generala.test_categories import test_categories
-from truco.test_cartas import TestCartas, TestMazo
+from truco.test_truco import *
 
 
 def suite():
