@@ -29,3 +29,18 @@ def encontrarPares(cards):
         if (values[key] == 2):
             result.append(key)
     return result
+
+
+def encontrarTrio(cards):
+    values = defaultdict(int)
+    for card in cards:
+        value = card[:1]
+        values[value] = values[value] + 1
+    result = []
+    for key in values:
+        if (values[key] == 3):
+            result.append(key)
+    return result
+
+#def encontrarDoblepar(cards):
+ #   values = defaultdict(int)
