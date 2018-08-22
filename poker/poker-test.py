@@ -12,12 +12,12 @@ class PokerTest(unittest.TestCase):
 
     def test_pares(self):
         # setup
-        expected = []
+        expected = ["3"]
         # test
-        result = encontrarPares(["3h", "8d", "3c", "3d", "2s"])
+        result = encontrarPares(["Kh", "8d", "3c", "3d", "2s"])
         # assert   
         self.assertEqual(result, expected) 
-
+master
     # def definirMano(self):
     #     # setup
         
