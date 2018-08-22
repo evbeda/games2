@@ -19,20 +19,10 @@ def checkThrow(throwArray, pointsToCheck, throwNumber):
                     return False
             return True
     elif pointsToCheck == POKER:
-        if throwArray.count(1) == 4:
-            return True
-        elif throwArray.count(2) == 4:
-            return True
-        elif throwArray.count(3) == 4:
-            return True
-        elif throwArray.count(4) == 4:
-            return True
-        elif throwArray.count(5) == 4:
-            return True
-        elif throwArray.count(6) == 4:
-            return True
-        else:
-            return False
+        for index in range(0, len(throwArray)):
+            if throwArray.count(index + 1) == 4:
+                return True
+        return False
     elif pointsToCheck == FULL:
         if throwArray.count(1) == 3:
             if throwArray.count(2) == 2:
