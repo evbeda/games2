@@ -4,6 +4,8 @@ from unittest.mock import patch
 from .carta import Carta
 from .mazo import Mazo
 from . import ESPADA, BASTO, ORO, COPA
+from .player import Player
+from .game import Game
 
 
 class TestCartas (unittest.TestCase):
@@ -76,8 +78,8 @@ class TestMazo(unittest.TestCase):
         mazo.get_card()
         result2 = mazo.get_card()
         cartaCorrecta = Carta('basto', 1)
-        self.assertEqual(cartaCorrecta.pinta, result2.pinta)
-        self.assertEqual(cartaCorrecta.numero, result2.numero)
+        self.assertEqual(cartaCorrecta.suit, result2.suit)
+        self.assertEqual(cartaCorrecta.number, result2.number)
 
     @unittest.mock.patch('random.randint')
     def test_verificar_cartas_sacadas_4(self, mock_rand_int):
@@ -88,8 +90,8 @@ class TestMazo(unittest.TestCase):
         result2 = mazo.get_card()
         result2 = mazo.get_card()
         cartaCorrecta = Carta('oro', 7)
-        self.assertEqual(cartaCorrecta.pinta, result2.pinta)
-        self.assertEqual(cartaCorrecta.numero, result2.numero)
+        self.assertEqual(cartaCorrecta.suit, result2.suit)
+        self.assertEqual(cartaCorrecta.number, result2.number)
 
     @unittest.mock.patch('random.randint')
     def test_verificar_cartas_sacadas_2_de_a_4(self, mock_rand_int):
@@ -98,9 +100,22 @@ class TestMazo(unittest.TestCase):
         result2 = mazo.get_card()
         result2 = mazo.get_card()
         cartaCorrecta = Carta('basto', 3)
-        self.assertEqual(cartaCorrecta.numero, result2.numero)
-        self.assertEqual(cartaCorrecta.pinta, result2.pinta)
+        self.assertEqual(cartaCorrecta.number, result2.number)
+        self.assertEqual(cartaCorrecta.suit, result2.suit)
 
+
+class TestGame(unittest.TestCase):
+    def test_deal_cards(self):
+        # setup
+        player01 = Player('1')
+        player02 = Player('2')
+        deck = Mazo()
+        game = Game([player01, player02],deck )
+        # test
+        game.deal()
+        # assert
+        self.assertEqual(len(player01.cards), 3)
+        self.assertEqual(len(player02.cards), 3)
 
 if __name__ == '__main__':
     unittest.main()
