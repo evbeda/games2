@@ -1,5 +1,5 @@
 import unittest
-from battleship.battleship import Board
+from battleship.battleship import *
 
 
 class test_board(unittest.TestCase):
@@ -87,6 +87,18 @@ class test_board(unittest.TestCase):
     def test_error_position_five_vertical_ship(self):
         board = Board()
         result = board.set_boat(7, 7, 5, "vertical")
+        self.assertFalse(result)
+
+    def test_error_position_already_has_ship_vertical(self):
+        board = Board()
+        board.set_boat(3, 3, 4, "vertical")
+        result = board.set_boat(4, 3, 2, "vertical")
+        self.assertFalse(result)
+
+    def test_error_position_already_has_ship_horizontal(self):
+        board = Board()
+        board.set_boat(2, 2, 4, "horizontal")
+        result = board.set_boat(2, 3, 2, "vertical")
         self.assertFalse(result)
 
 
