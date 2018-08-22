@@ -49,3 +49,22 @@ class Board(object):
                 return True
         else:
             return False
+
+    def check_cross(self, row, column, value):
+        if (row != 9) and (row != 0) and (column != 9) and (column != 0):
+            if (
+                (self.board[row + 1][column] == value) or
+                (self.board[row - 1][column] == value) or
+                (self.board[row][column + 1] == value) or
+                (self.board[row][column - 1] == value)
+            ):
+                return True
+            else:
+                return False
+
+    def shoot(self, row, column):
+        if self.board[row][column] == 0:
+            return "water"
+        elif self.board[row][column] != 0:
+            self.board[row][column] = 9
+            return "hit"
