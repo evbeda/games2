@@ -33,10 +33,10 @@ class Carta():
                 ):
                     return i
 
-    def is_bigger(self, cartaDos):
+    def compare_with(self, cartaDos):
         if self.position < cartaDos.position:
-            return True
+            return 'GREATER'
         elif self.position == cartaDos.position:
-            return 0
+            return 'EQUAL'
         else:
-            return False
+            return 'LOWER'

@@ -31,26 +31,26 @@ class TestCartas (unittest.TestCase):
     def test_comparar_as_espadas_con_as_bastos(self):
         carta1 = Carta(ESPADA, 1)
         carta2 = Carta(BASTO, 1)
-        result = carta1.is_bigger(carta2)
-        self.assertEqual(result, True)
+        result = carta1.compare_with(carta2)
+        self.assertEqual(result, 'GREATER')
 
     def test_comparar_4_de_espadas_con_4_de_bastos(self):
         carta1 = Carta(ESPADA, 4)
         carta2 = Carta(BASTO, 4)
-        result = carta1.is_bigger(carta2)
-        self.assertEqual(result, 0)
+        result = carta1.compare_with(carta2)
+        self.assertEqual(result, 'EQUAL')
 
     def test_comparar_7_de_espadas_con_7_de_bastos(self):
         carta1 = Carta(ESPADA, 7)
         carta2 = Carta(BASTO, 7)
-        result = carta1.is_bigger(carta2)
-        self.assertEqual(result, True)
+        result = carta1.compare_with(carta2)
+        self.assertEqual(result, 'GREATER')
 
     def test_comparar_5_de_espadas_con_2_de_bastos(self):
         carta1 = Carta(ESPADA, 5)
         carta2 = Carta(BASTO, 2)
-        result = carta1.is_bigger(carta2)
-        self.assertEqual(result, False)
+        result = carta1.compare_with(carta2)
+        self.assertEqual(result, 'LOWER')
 
 
 class TestMazo(unittest.TestCase):
