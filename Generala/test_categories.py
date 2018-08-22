@@ -70,30 +70,85 @@ class test_categories(unittest.TestCase):
         isNotEscalera = checkThrow(mockThrow, "escalera", numOfThrows)
         self.assertFalse(isNotEscalera)
 
+    def test_generala_doble_segunda_tercera(self):
+        numOfThrows = 1
+        numOfThrows2 = 2
+        numOfThrows3 = 3
+        mockThrow = [1, 3, 4, 3, 4]
+        mockThrow2 = [2, 2, 2, 2, 2]
+        mockThrow3 = [4, 4, 4, 4, 4]
+        isGeneralaDoble = [
+            checkThrow(mockThrow, "generala", numOfThrows),
+            checkThrow(mockThrow2, "generala", numOfThrows2),
+            checkThrow(mockThrow3, "generala", numOfThrows3),
+        ]
+        self.assertFalse(isGeneralaDoble[0])
+        self.assertTrue(isGeneralaDoble[1])
+        self.assertTrue(isGeneralaDoble[2])
 
-    # def test_generala_doble(self):
-    #   numOfThrows = 1
-    #   numOfThrows2 = 2
-    #   numOfThrows3 = 3
-    #   mockThrow = [1,3,4,3,4]
-    #   mockThrow2 = [2,2,2,2,2]
-    #   mockThrow3 = [4,4,4,4,4]
-    #   isGeneralaDoble = [checkThrow(mockThrow, "generala", numOfThrows), checkThrow(mockThrow2, "generala", numOfThrows2), checkThrow(mockThrow3, "generala", numOfThrows3)]
-    #   self.assertFalse(isGeneralaDoble[0])
-    #   self.assertTrue(isGeneralaDoble[1])
-    #   self.assertTrue(isGeneralaDoble[2])
+    def test_not_generala_doble(self):
+        numOfThrows = 1
+        numOfThrows2 = 2
+        numOfThrows3 = 3
+        mockThrow = [1, 3, 4, 3, 4]
+        mockThrow2 = [4, 4, 4, 4, 4]
+        mockThrow3 = [3, 2, 2, 2, 1]
+        isNotGeneralaDoble = [
+            checkThrow(mockThrow, "generala", numOfThrows),
+            checkThrow(mockThrow2, "generala", numOfThrows2),
+            checkThrow(mockThrow3, "generala", numOfThrows3),
+        ]
+        self.assertFalse(isNotGeneralaDoble[0])
+        self.assertTrue(isNotGeneralaDoble[1])
+        self.assertFalse(isNotGeneralaDoble[2])
 
-    # def test_not_generala_doble(self):
-    #   numOfThrows = 1
-    #   numOfThrows2 = 2
-    #   numOfThrows3 = 3
-    #   mockThrow = [1,3,4,3,4]
-    #   mockThrow3 = [4,4,4,4,4]
-    #   mockThrow4 = [3,2,2,2,1]
-    #   isNotGeneralaDoble = [checkThrow(mockThrow, "generala", numOfThrows), checkThrow(mockThrow4, "generala", numOfThrows2), checkThrow(mockThrow3, "generala", numOfThrows3)]
-    #   self.assertFalse(isNotGeneralaDoble[0])
-    #   self.assertFalse(isNotGeneralaDoble[1])
-    #   self.assertTrue(isNotGeneralaDoble[2])
+    def test_generala_doble_primera_segunda(self):
+        numOfThrows = 1
+        numOfThrows2 = 2
+        numOfThrows3 = 3
+        mockThrow = [1, 1, 1, 1, 1]
+        mockThrow2 = [2, 2, 2, 2, 2]
+        mockThrow3 = [4, 2, 1, 4, 5]
+        isGeneralaDoble = [
+            checkThrow(mockThrow, "generalaServida", numOfThrows),
+            checkThrow(mockThrow2, "generala", numOfThrows2),
+            checkThrow(mockThrow3, "generala", numOfThrows3),
+        ]
+        self.assertTrue(isGeneralaDoble[0])
+        self.assertTrue(isGeneralaDoble[1])
+        self.assertFalse(isGeneralaDoble[2])
+
+    def test_generala_doble_primera_tercera(self):
+        numOfThrows = 1
+        numOfThrows2 = 2
+        numOfThrows3 = 3
+        mockThrow = [1, 1, 1, 1, 1]
+        mockThrow2 = [2, 2, 3, 2, 2]
+        mockThrow3 = [4, 4, 4, 4, 4]
+        isGeneralaDoble = [
+            checkThrow(mockThrow, "generalaServida", numOfThrows),
+            checkThrow(mockThrow2, "generala", numOfThrows2),
+            checkThrow(mockThrow3, "generala", numOfThrows3),
+        ]
+        self.assertTrue(isGeneralaDoble[0])
+        self.assertFalse(isGeneralaDoble[1])
+        self.assertTrue(isGeneralaDoble[2])
+
+    def test_generala_doble_triple(self):
+        numOfThrows = 1
+        numOfThrows2 = 2
+        numOfThrows3 = 3
+        mockThrow = [1, 1, 1, 1, 1]
+        mockThrow2 = [2, 2, 2, 2, 2]
+        mockThrow3 = [4, 4, 4, 4, 4]
+        isGeneralaDoble = [
+            checkThrow(mockThrow, "generalaServida", numOfThrows),
+            checkThrow(mockThrow2, "generala", numOfThrows2),
+            checkThrow(mockThrow3, "generala", numOfThrows3),
+        ]
+        self.assertTrue(isGeneralaDoble[0])
+        self.assertTrue(isGeneralaDoble[1])
+        self.assertTrue(isGeneralaDoble[2])
 
     # def test_number_one(self):
     #   numOfThrows = 1
