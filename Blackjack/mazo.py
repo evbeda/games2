@@ -11,10 +11,10 @@ cardsDictionary = {
     'J': 10,
     'Q': 10,
     'K': 10,
-    'A': [1,11] 
+    'A': [1, 11]
 }
 
-colorDictionary = [ 'hearts', 'spades','clubs','diamonds']
+colorDictionary = ['hearts', 'spades', 'clubs', 'diamonds']
 # Corazones, pica, trebol y diamante
 
 deck = []
