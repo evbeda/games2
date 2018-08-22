@@ -9,3 +9,9 @@ class Game():
             return True
         else:
             return False
+
+    def check_you_can_play(self):
+        if self.player.money >= self.min_bet:
+            return True
+        else:
+            return False
