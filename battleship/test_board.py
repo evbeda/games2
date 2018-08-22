@@ -1,5 +1,5 @@
 import unittest
-from battleship.battleship import *
+from battleship.battleship import Board
 
 
 class test_board(unittest.TestCase):
@@ -100,6 +100,17 @@ class test_board(unittest.TestCase):
         board.set_boat(2, 2, 4, "horizontal")
         result = board.set_boat(2, 3, 2, "vertical")
         self.assertFalse(result)
+
+    def test_shoot_water(self):
+        board = Board()
+        result = board.shoot(3, 3)
+        self.assertEqual(result, "water")
+
+    def test_shoot_hit(self):
+        board = Board()
+        board.set_boat(1, 1, 2, "horizontal")
+        result = board.shoot(1, 1)
+        self.assertEqual(result, "hit")
 
 
 if __name__ == '__main__':
