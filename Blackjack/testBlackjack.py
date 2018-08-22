@@ -82,5 +82,19 @@ class TestHands(unittest.TestCase):
         result = hand.is_it_finished()
         self.assertFalse(result)
 
+    def test_check_you_can_bet_true(self):
+        player = Player(20)
+        game = Game(10, player)
+        result = game.check_you_can_bet()
+        self.assertTrue(result)
+
+    def test_check_you_can_bet_false(self):
+        player = Player(10)
+        game = Game(10, player)
+        result = game.check_you_can_bet()
+        self.assertFalse(result)
+
+
+
 if __name__ == "__main__":
     unittest.main()
