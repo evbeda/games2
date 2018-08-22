@@ -17,3 +17,8 @@ class Board(object):
 
 	def get_board(self):
 		return self.board
+
+	def set_boat(self,row,column,value):
+		self.board [row][column] = value
+
+

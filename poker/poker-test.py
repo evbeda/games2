@@ -9,6 +9,7 @@ class PokerTest(unittest.TestCase):
         result = encontrarEscaleraReal(["Ah", "Kh", "Qh", "Jh", "Th"])
         # assert
         self.assertEqual(result, True)
+
     def test_pares(self):
         # setup
         expected = ["3"]
@@ -16,6 +17,7 @@ class PokerTest(unittest.TestCase):
         result = encontrarPares(["Kh", "8d", "3c", "3d", "2s"])
         # assert   
         self.assertEqual(result, expected) 
+master
     # def definirMano(self):
     #     # setup
         

@@ -13,3 +13,8 @@ cardsDictionary = {
     'K': 10,
     'A': [1,11] 
 }
+
+colorDictionary = [ 'hearts', 'spades','clubs','diamonds']
+# Corazones, pica, trebol y diamante
+
+deck = []

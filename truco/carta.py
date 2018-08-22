@@ -1,4 +1,5 @@
-from __init__ import ESPADA, BASTO, ORO, COPA
+from . import ESPADA, BASTO, ORO, COPA
+
 
 class Carta():
 	mazoJerarquico = (

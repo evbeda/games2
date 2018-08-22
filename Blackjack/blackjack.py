@@ -1,4 +1,4 @@
-from mazo import cardsDictionary
+from .mazo import cardsDictionary
 # import pdb; pdb.set_trace()
 
 def sum_cards(cards):
@@ -27,3 +27,6 @@ def compare_bet(min_bet,bet):
         return True
     else:
         return False
+
+def add_card(actual_cards):
+    pass
