@@ -1,5 +1,5 @@
 import unittest
-from poker import *
+from .poker import *
 
 
 class PokerTest(unittest.TestCase):
@@ -19,13 +19,5 @@ class PokerTest(unittest.TestCase):
         # assert
         self.assertEqual(result, expected)
 
-
-#master
-# def definirMano(self):
-#     # setup
-
-#     # test
-
-#     # assert
 if __name__ == "__main__":
     unittest.main()
