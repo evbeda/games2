@@ -150,77 +150,77 @@ class test_categories(unittest.TestCase):
         self.assertTrue(isGeneralaDoble[1])
         self.assertTrue(isGeneralaDoble[2])
 
-    # def test_number_one(self):
-    #   numOfThrows = 1
-    #   mockThrow = [1,1,1,4,4]
-    #   sumOfOnes = checkThrow(mockThrow, 3, numOfThrows)
-    #   self.assertTrue(sumOfOnes)
+    def test_number_one(self):
+        numOfThrows = 1
+        mockThrow = [1, 1, 1, 4, 4]
+        sumOfOnes = checkThrow(mockThrow, 1, numOfThrows)
+        self.assertEqual(sumOfOnes, 3)
 
-    # def test_not_number_one(self):
-    #   numOfThrows = 1
-    #   mockThrow2 = [1,1,3,4,2]
-    #   sumOfOnes2 = checkThrow(mockThrow2, 3, numOfThrows)
-    #   self.assertFalse(sumOfOnes2)
+    def test_not_number_one(self):
+        numOfThrows = 1
+        mockThrow2 = [5, 6, 3, 4, 2]
+        sumOfOnes2 = checkThrow(mockThrow2, 1, numOfThrows)
+        self.assertEqual(sumOfOnes2, 0)
 
-    # def test_number_two(self):
-    #   numOfThrows = 1
-    #   mockThrow = [2,2,2,4,4]
-    #   sumOfTwos = checkThrow(mockThrow, 6, numOfThrows)
-    #   self.assertTrue(sumOfOnes)
+    def test_number_two(self):
+        numOfThrows = 1
+        mockThrow = [2, 2, 2, 4, 4]
+        sumOfTwos = checkThrow(mockThrow, 2, numOfThrows)
+        self.assertEqual(sumOfTwos, 6)
 
-    # def test_not_number_two(self):
-    #   numOfThrows = 1
-    #   mockThrow2 = [1,1,3,2,2]
-    #   sumOfTwos2 = checkThrow(mockThrow2, 6, numOfThrows)
-    #   self.assertFalse(sumOfTwos2)
+    def test_not_number_two(self):
+        numOfThrows = 1
+        mockThrow2 = [1, 1, 3, 1, 4]
+        sumOfTwos2 = checkThrow(mockThrow2, 2, numOfThrows)
+        self.assertEqual(sumOfTwos2, 0)
 
-    # def test_number_three(self):
-    #   numOfThrows = 1
-    #   mockThrow = [3,3,3,4,4]
-    #   sumOfThrees = checkThrow(mockThrow, 9, numOfThrows)
-    #   self.assertTrue(sumOfThrees)
+    def test_number_three(self):
+        numOfThrows = 1
+        mockThrow = [3, 3, 3, 4, 2]
+        sumOfThrees = checkThrow(mockThrow, 3, numOfThrows)
+        self.assertEqual(sumOfThrees, 9)
 
-    # def test_not_number_three(self):
-    #   numOfThrows = 1
-    #   mockThrow2 = [1,1,3,4,2]
-    #   sumOfThrees2 = checkThrow(mockThrow2, 9, numOfThrows)
-    #   self.assertFalse(sumOfThrees2)
+    def test_not_number_three(self):
+        numOfThrows = 1
+        mockThrow2 = [1, 1, 1, 4, 2]
+        sumOfThrees2 = checkThrow(mockThrow2, 3, numOfThrows)
+        self.assertEqual(sumOfThrees2, 0)
 
-    # def test_number_four(self):
-    #   numOfThrows = 1
-    #   mockThrow = [1,1,1,4,4]
-    #   sumOfFours = checkThrow(mockThrow, 8, numOfThrows)
-    #   self.assertTrue(sumOfFours)
+    def test_number_four(self):
+        numOfThrows = 1
+        mockThrow = [1, 1, 1, 4, 4]
+        sumOfFours = checkThrow(mockThrow, 4, numOfThrows)
+        self.assertEqual(sumOfFours, 8)
 
-    # def test_not_number_four(self):
-    #   numOfThrows = 1
-    #   mockThrow2 = [1,1,3,4,2]
-    #   sumOfFours2 = checkThrow(mockThrow2, 8, numOfThrows)
-    #   self.assertFalse(sumOfFours2)
+    def test_not_number_four(self):
+        numOfThrows = 1
+        mockThrow2 = [1, 1, 3, 1, 2]
+        sumOfFours2 = checkThrow(mockThrow2, 4, numOfThrows)
+        self.assertEqual(sumOfFours2, 0)
 
-    # def test_number_five(self):
-    #   numOfThrows = 1
-    #   mockThrow = [1,5,5,4,4]
-    #   sumOfFives = checkThrow(mockThrow, 10, numOfThrows)
-    #   self.assertTrue(sumOfFives)
+    def test_number_five(self):
+        numOfThrows = 1
+        mockThrow = [1, 5, 5, 4, 4]
+        sumOfFives = checkThrow(mockThrow, 5, numOfThrows)
+        self.assertEqual(sumOfFives, 10)
 
-    # def test_not_number_five(self):
-    #   numOfThrows = 1
-    #   mockThrow2 = [1,1,5,4,2]
-    #   sumOfFives2 = checkThrow(mockThrow2, 10, numOfThrows)
-    #   self.assertFalse(sumOfFives2)
+    def test_not_number_five(self):
+        numOfThrows = 1
+        mockThrow2 = [1, 1, 3, 4, 2]
+        sumOfFives2 = checkThrow(mockThrow2, 5, numOfThrows)
+        self.assertEqual(sumOfFives2, 0)
 
-    # def test_number_six(self):
-    #   numOfThrows = 1
-    #   mockThrow = [1,6,6,4,4]
-    #   sumOfSixes = checkThrow(mockThrow, 12, numOfThrows)
-    #   self.assertTrue(sumOfSixes)
+    def test_number_six(self):
+        numOfThrows = 1
+        mockThrow = [1, 6, 6, 4, 4]
+        sumOfSixes = checkThrow(mockThrow, 6, numOfThrows)
+        self.assertEqual(sumOfSixes, 12)
 
-    # def test_not_number_six(self):
-    #   numOfThrows = 1
-    #   mockThrow2 = [1,1,6,4,2]
-    #   sumOfSixes2 = checkThrow(mockThrow2, 12, numOfThrows)
-    #   self.assertFalse(sumOfSixes2)
+    def test_not_number_six(self):
+        numOfThrows = 1
+        mockThrow2 = [1, 1, 5, 4, 2]
+        sumOfSixes2 = checkThrow(mockThrow2, 6, numOfThrows)
+        self.assertEqual(sumOfSixes2, 0)
 
 
 if __name__ == '__main__':

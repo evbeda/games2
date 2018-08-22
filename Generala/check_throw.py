@@ -121,3 +121,9 @@ def checkThrow(throwArray, pointsToCheck, throwNumber):
             return True
         else:
             return False
+    elif 1 <= pointsToCheck <= 6:
+        sum = 0
+        for index in range(0, len(throwArray)):
+            if throwArray[index] == pointsToCheck:
+                sum += pointsToCheck
+        return sum
