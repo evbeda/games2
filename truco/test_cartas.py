@@ -105,17 +105,34 @@ class TestMazo(unittest.TestCase):
 
 
 class TestGame(unittest.TestCase):
+    player01 = Player('1')
+    player02 = Player('2')
     def test_deal_cards(self):
         # setup
-        player01 = Player('1')
-        player02 = Player('2')
         deck = Mazo()
-        game = Game([player01, player02],deck )
+        game = Game([self.player01, self.player02],deck )
         # test
         game.deal()
         # assert
-        self.assertEqual(len(player01.cards), 3)
-        self.assertEqual(len(player02.cards), 3)
+        self.assertEqual(len(self.player01.hiddenCards), 3)
+        self.assertEqual(len(self.player02.hiddenCards), 3)
+    
+    def test_play_card_three(self):
+        carta_0 = Carta(ESPADA, 3)
+        carta_1 = Carta(BASTO, 7)
+        carta_2 = Carta(ESPADA, 5)
+        self.player01.hiddenCards = [carta_0, carta_1, carta_2]
+        # test
+        self.player01.play_card(1)
+        # assert
+        self.assertEqual(
+            self.player01.hiddenCards, 
+            [carta_0, carta_2],
+        )
+        self.assertEqual(
+            self.player01.playedCards,
+            [carta_1]
+        )
 
 if __name__ == '__main__':
     unittest.main()

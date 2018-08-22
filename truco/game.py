@@ -6,4 +6,4 @@ class Game():
     def deal(self):
         for i in range(3):
             for player in self.players:
-                player.cards.append(self.deck.get_card())
+                player.hiddenCards.append(self.deck.get_card())
