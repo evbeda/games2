@@ -10,6 +10,14 @@ def checkThrow(throwArray, pointsToCheck, throwNumber):
             return True
         elif throwNumber == 1:
             return False
+    if pointsToCheck == GENERALASERVIDA:
+        if throwNumber != 1:
+            return False
+        elif throwNumber == 1:
+            for index in range(0, len(throwArray) - 1):
+                if throwArray[index] != throwArray[index + 1]:
+                    return False
+            return True
     elif pointsToCheck == POKER:
         if throwArray.count(1) == 4:
             return True

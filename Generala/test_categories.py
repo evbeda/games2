@@ -18,9 +18,21 @@ class test_categories(unittest.TestCase):
 
     def test_not_generala_is_servida(self):
         numOfThrows = 1
-        mockThrow = [1, 1, 1, 1, 1]
-        isNotGenerala = checkThrow(mockThrow, "generala", numOfThrows)
+        mockThrow = [2, 1, 1, 1, 1]
+        isNotGenerala = checkThrow(mockThrow, "generalaServida", numOfThrows)
         self.assertFalse(isNotGenerala)
+
+    def test_generala_servida(self):
+        numOfThrows = 1
+        mockThrow = [1, 1, 1, 1, 1]
+        isGeneralaServida = checkThrow(mockThrow, "generalaServida", numOfThrows)
+        self.assertTrue(isGeneralaServida)
+
+    def test_not_generala_servida(self):
+        numOfThrows = 2
+        mockThrow = [1, 1, 1, 1, 1]
+        isNotGeneralaServida = checkThrow(mockThrow, "generalaServida", numOfThrows)
+        self.assertFalse(isNotGeneralaServida)
 
     def test_poker(self):
         numOfThrows = 1
@@ -58,17 +70,6 @@ class test_categories(unittest.TestCase):
         isNotEscalera = checkThrow(mockThrow, "escalera", numOfThrows)
         self.assertFalse(isNotEscalera)
 
-    # def test_generala_servida(self):
-    #   numOfThrows = 1
-    #   mockThrow = [1,1,1,1,1]
-    #   isGeneralaServida = checkThrow(mockThrow, "generalaServida", numOfThrows)
-    #   self.assertTrue(isGeneralaServida)
-
-    # def test_not_generala_servida(self):
-    #   numOfThrows = 2
-    #   mockThrow = [1,1,1,1,1]
-    #   isNotGeneralaServida = checkThrow(mockThrow, "generalaServida", numOfThrows)
-    #   self.assertFalse(isNotGeneralaServida)
 
     # def test_generala_doble(self):
     #   numOfThrows = 1
