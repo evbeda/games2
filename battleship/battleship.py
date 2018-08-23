@@ -88,3 +88,9 @@ class Board(object):
             result = self.check_cross(self.board[row][column])
             self.board[row][column] = 9
             return result
+
+    def turn(self, result):
+        if result == 'hit':
+            return True
+        return False
+
