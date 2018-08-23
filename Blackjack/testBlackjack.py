@@ -46,6 +46,19 @@ class TestBets(unittest.TestCase):
         result = compare_bet(game.min_bet, player.money)
         self.assertEqual(result, True)
 
+    def test_bet_balance(self):
+        player = Player(10)
+        game = Game(5, player)
+        player.balance(game.min_bet)
+        self.assertEqual(player.money, 5)
+
+    def test_bet_win_no_blackjack(self):
+        player = Player(10)
+        game = Game(5, player)
+        player.balance(game.min_bet)
+        player.win(game.pot)
+        self.assertEqual(player.money, 15)
+
 
 class TestHands(unittest.TestCase):
 
@@ -95,20 +108,10 @@ class TestHands(unittest.TestCase):
         self.assertTrue(result)
 
     def test_check_you_can_bet_false(self):
-        player = Player(10)
+        player = Player(1)
         game = Game(10, player)
         result = game.check_you_can_bet()
         self.assertFalse(result)
-
-    def test_check_you_can_play_true(self):
-        player1 = Player(10)
-        game1 = Game(5, player1)
-        self.assertTrue(game1.check_you_can_play())
-
-    def test_check_you_can_play_false(self):
-        player1 = Player(2)
-        game1 = Game(5, player1)
-        self.assertFalse(game1.check_you_can_play())
 
 
 if __name__ == "__main__":
