@@ -98,8 +98,23 @@ class test_board(unittest.TestCase):
     def test_error_position_already_has_ship_horizontal(self):
         board = Board()
         board.set_boat(2, 2, 4, 4, "horizontal")
-        result = board.set_boat(2, 3, 2, 2,"vertical")
+        result = board.set_boat(2, 3, 2, 2, "vertical")
         self.assertFalse(result)
+
+    def test_turn_hit(self):
+        board = Board()
+        board.set_boat(3, 3, 4, 4, "vertical")
+        result = board.shoot(4, 3)
+        continue_turn = board.turn(result)
+        self.assertTrue(continue_turn)
+
+    def test_turn_water(self):
+        board = Board()
+        board.set_boat(3, 3, 4, 4, "vertical")
+        result = board.shoot(1, 2)
+        continue_turn = board.turn(result)
+        self.assertFalse(continue_turn)
+
 
 
 if __name__ == '__main__':
