@@ -3,6 +3,7 @@
 class Board(object):
     def __init__(self):
         self.sunked = []
+        self.boats = [0, 0, 0, 0, 0, 0]
         self.board = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -19,22 +20,50 @@ class Board(object):
     def get_board(self):
         return self.board
 
-    def set_boat(self, row, column, value, boat, orientation):
+    def set_boat(self, row, column, boat, orientation):
         if (
             (column >= 0 and column < 10) and
             (row >= 0 and row < 10) and
             self.check_position(row, column, boat, orientation)
         ):
             if (orientation == "horizontal") and ((boat + column) <= 10):
+                value = self.check_boat(boat)
                 for index in range(0, boat):
                     self.board[row][column + index] = value
                 return True
             elif (orientation == "vertical") and ((boat + row) <= 10):
+                value = self.check_boat(boat)
                 for index in range(0, boat):
                     self.board[row + index][column] = value
                 return True
         else:
             return False
+
+    def check_boat(self, boat):
+        sum_boats = 0
+        if boat == 1:
+            self.boats[0] = 1
+            return 1
+        elif boat == 2:
+            self.boats[1] = 1
+            return 2
+        elif boat == 3:
+            if self.boats[2] == 0:
+                self.boats[2] = 1
+                return 31
+            else:
+                self.boats[3] = 1
+                return 32
+        elif boat == 4:
+            self.boats[4] = 1
+            return 4
+        elif boat == 5:
+            self.boats[5] = 1
+            return 5
+        for i in range(0, len(self.boats) - 1):
+            sum_boats += self.boats[i]
+        if sum_boats == 6:
+            self.boats = [0, 0, 0, 0, 0]
 
     def check_position(self, row, column, boat, orientation):
         if (column >= 0 and column < 10) and (row >= 0 and row < 10):
