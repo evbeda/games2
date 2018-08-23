@@ -6,18 +6,19 @@ class Hand():
     def __init__(self, mazo):
         self.mazo = mazo
         self.playersCards = []
+        self.bank_cards = []
 
     def deal_cards(self):
 
-        self.playersCards.append(self.mazo[0])
-        self.playersCards.append(self.mazo[1])
+        for index in range(2):
+            self.playersCards.append(self.mazo.pop(0))
+            self.bank_cards.append(self.mazo.pop(0))
 
-        # Sacar del mazo las 4 primeras cartas ya repartidas
-        for i in range(2):
-            self.mazo.pop(i - 1)
+    def add_card_to_player(self):
+        self.playersCards.append(self.mazo.pop(0))
 
-    def add_card_to_player(self, card):
-        self.playersCards.append(card)
+    def add_card_to_bank(self):
+        self.bank_cards.append(self.mazo.pop(0))
 
     def is_it_finished(self):
         if (sum_cards(self.playersCards) > 21):
