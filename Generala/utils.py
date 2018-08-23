@@ -10,7 +10,7 @@ def throw_dice(num):
     return results
 
 def check_throw(throw_array, points_to_check, throw_number):
-    if points_to_check == GENERALA:
+    if points_to_check == GENERALA['name']:
         if throw_number != 1:
             for index in range(0, len(throw_array) - 1):
                 if throw_array[index] != throw_array[index + 1]:
@@ -18,7 +18,7 @@ def check_throw(throw_array, points_to_check, throw_number):
             return True
         elif throw_number == 1:
             return False
-    if points_to_check == GENERALASERVIDA:
+    if points_to_check == GENERALASERVIDA['name']:
         if throw_number != 1:
             return False
         elif throw_number == 1:
@@ -26,12 +26,12 @@ def check_throw(throw_array, points_to_check, throw_number):
                 if throw_array[index] != throw_array[index + 1]:
                     return False
             return True
-    elif points_to_check == POKER:
+    elif points_to_check == POKER['name']:
         for index in range(0, len(throw_array)):
             if throw_array.count(index + 1) == 4:
                 return True
         return False
-    elif points_to_check == FULL:
+    elif points_to_check == FULL['name']:
         if throw_array.count(1) == 3:
             if throw_array.count(2) == 2:
                 return True
@@ -113,7 +113,7 @@ def check_throw(throw_array, points_to_check, throw_number):
         else:
             return False
 
-    elif points_to_check == ESCALERA:
+    elif points_to_check == ESCALERA['name']:
         orderedList = sorted(throw_array)
         if orderedList in ([1, 2, 3, 4, 5], [2, 3, 4, 5, 6], [1, 3, 4, 5, 6],):
             return True
