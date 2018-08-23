@@ -14,12 +14,12 @@ class TestCards(unittest.TestCase):
         result = sum_cards(cards)
         self.assertEqual(result, 12)
 
-    def test_cards_sum_as1(self):
+    def test_cards_sum_as11(self):
         cards = ['A', 'J']
         result = sum_cards(cards)
         self.assertEqual(result, 21)
 
-    def test_cards_sum_as11(self):
+    def test_cards_sum_as1(self):
         cards = ['A', 'J', 'J']
         result = sum_cards(cards)
         self.assertEqual(result, 21)
@@ -52,35 +52,41 @@ class TestHands(unittest.TestCase):
     # Initial Hand
 
     def test_initial_hand(self):
-        hand = Hand(['2', '3'])
+        hand = Hand(['2', '3', '4', '5', '6', '3', '6', '3', '8', '3'])
         hand.deal_cards()
-        self.assertEqual(hand.playersCards, ['2', '3'])
+        self.assertEqual(hand.playersCards, ['2', '4'])
 
-    def test_add_card_5_to_player_one(self):
-        hand = Hand(['2', '3'])
-        hand.deal_cards()
-        hand.add_card_to_player('5')
-        self.assertEqual(hand.playersCards, ['2', '3', '5'])
+    def test_add_card_6_to_player_one(self):
+        hand1 = Hand(['2', '3', '4', '5', '6', '3', '6', '3', '8', '3'])
+        hand1.deal_cards()
+        hand1.add_card_to_player()
+        self.assertEqual(hand1.playersCards, ['2', '4', '6'])
 
     def test_add_card_A_to_player_one(self):
-        hand = Hand(['2', '3'])
+        hand = Hand(['2', '3', '4', '5', 'A', '3', '6', '3', '8', '3'])
         hand.deal_cards()
-        hand.add_card_to_player('A')
-        self.assertEqual(hand.playersCards, ['2', '3', 'A'])
+        hand.add_card_to_player()
+        self.assertEqual(hand.playersCards, ['2', '4', 'A'])
 
     def test_finish_hand_true(self):
-        hand = Hand(['J', 'J'])
+        hand = Hand(['J', '3', 'J', '5', '6', '3', '6', '3', '8', '3'])
         hand.deal_cards()
-        hand.add_card_to_player('5')
+        hand.add_card_to_player()
         result = hand.is_it_finished()
         self.assertTrue(result)
 
     def test_finish_hand_false(self):
-        hand = Hand(['J', '2'])
+        hand = Hand(['2', '3', 'J', '5', '6', '3', '6', '3', '8', '3'])
         hand.deal_cards()
-        hand.add_card_to_player('5')
+        hand.add_card_to_player()
         result = hand.is_it_finished()
         self.assertFalse(result)
+
+    def test_add_card_to_bank(self):
+        hand = Hand(['2', '3', '4', '5', 'A', '3', '6', '3', '8', '3'])
+        hand.deal_cards()
+        hand.add_card_to_bank()
+        self.assertEqual(hand.bank_cards, ['3', '5', 'A'])
 
     def test_check_you_can_bet_true(self):
         player = Player(20)
@@ -103,6 +109,7 @@ class TestHands(unittest.TestCase):
         player1 = Player(2)
         game1 = Game(5, player1)
         self.assertFalse(game1.check_you_can_play())
+
 
 if __name__ == "__main__":
     unittest.main()
