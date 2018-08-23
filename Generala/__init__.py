@@ -1,8 +1,10 @@
-GENERALA = "generala"
-POKER = "poker"
-FULL = "full"
-ESCALERA = "escalera"
-GENERALASERVIDA = "generalaServida"
+GENERALA = {'name': "generala", 'score': 50}
+POKER = {'name': "poker", 'score': 45}
+FULL = {'name': "full", 'score': 30}
+ESCALERA = {'name': "escalera", 'score': 20}
+GENERALASERVIDA = {'name': 'generalaServida'}
+FULL_SERVIDO = {'name': 'fullServido', 'score': 35}
+ESCALERA_SERVIDO = {'name': 'escaleraServida', 'score': 25}
 UNO = 1
 DOS = 2
 TRES = 3

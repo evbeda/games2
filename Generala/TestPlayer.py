@@ -23,4 +23,10 @@ class TestPlayer(unittest.TestCase):
         result = player01.combinations.count(GENERALA)
         # assert
         self.assertEqual(result, 1)
+    
+    # def test_calculate_score(self):
+    #     # setup
+
+    #     # test
+    #     # assert
         
