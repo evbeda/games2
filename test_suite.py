@@ -6,7 +6,7 @@ from Blackjack.testBlackjack import (
     TestBets,
     TestHands,
 )
-from Generala.test_categories import test_categories
+from Generala.main_test import *
 from truco.test_truco import *
 from poker.test_poker import *
 
