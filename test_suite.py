@@ -1,5 +1,6 @@
 import unittest
 from battleship.test_board import test_board
+from battleship.test_battleship import test_battleship
 from Blackjack.testBlackjack import (
     TestCards,
     TestBets,
@@ -16,6 +17,7 @@ def suite():
     """
     test_suite = unittest.TestSuite()
     test_suite.addTest(unittest.makeSuite(test_board))
+    test_suite.addTest(unittest.makeSuite(test_battleship))
     test_suite.addTest(unittest.makeSuite(TestCards))
     test_suite.addTest(unittest.makeSuite(TestBets))
     test_suite.addTest(unittest.makeSuite(TestHands))
