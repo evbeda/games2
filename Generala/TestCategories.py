@@ -2,7 +2,7 @@ import unittest
 from .utils import check_throw
 
 
-class test_categories(unittest.TestCase):
+class TestCategories(unittest.TestCase):
 
     def test_generala(self):
         numOfThrows = 2
