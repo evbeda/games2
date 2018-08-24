@@ -203,5 +203,24 @@ class TestGame(unittest.TestCase):
         self.assertEqual(result, "PLAYER2")
 
 
+class test_cantos(unittest.TestCase):
+    player01 = Player('1')
+    player02 = Player('2')
+
+    def test_envido_player_01(self):
+        deck = Mazo()
+        game = Game([self.player01, self.player02], deck)
+        game.deal()
+        resultado = game.cantos_envido(0, "Envido")
+        self.assertEqual(resultado, game.get_cantos_envido())
+
+    def test_envido_player_02(self):
+        deck = Mazo()
+        game = Game([self.player01, self.player02], deck)
+        game.deal()
+        resultado = game.cantos_envido(1, "Envido")
+        self.assertEqual(resultado, game.get_cantos_envido())
+
+
 if __name__ == '__main__':
     unittest.main()
