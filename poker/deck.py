@@ -5,8 +5,7 @@ import random
 
 class Deck(object):
     def __init__(self):
-        self.cards = self.create()
-        self.shuffle_cards()
+        self.rebuild()
 
     def create(self):
         colors = ['h', 'd', 's', 'c']
@@ -21,3 +20,7 @@ class Deck(object):
             result.append(self.cards[0])
             self.cards.pop()
         return result
+
+    def rebuild(self):
+        self.cards = self.create()
+        self.shuffle_cards()
