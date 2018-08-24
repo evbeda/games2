@@ -1,7 +1,7 @@
 import random
 
 
-class Deck( ):
+class Deck():
     def __init__(self, values, suits):
         self.values = values
         self.suits = suits 
@@ -12,3 +12,9 @@ class Deck( ):
 
     def shuffle(self):
         random.shuffle(self.cards)    
+    
+    def deal(self, amount):
+        result = []
+        for i in range(amount):
+            result.append(self.cards.pop())        
+        return result

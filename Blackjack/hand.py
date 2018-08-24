@@ -6,9 +6,12 @@ class Hand():
         self.cards = []
         self.value = 0
 
-    def deal_card(self, card):
-        self.cards.append(card)
-        self.value += cardsDictionary[card[0]]
+    def deal_card(self, cards):
+        total_value = self.value
+        for card in cards:
+            self.cards.append(card)
+            total_value += cardsDictionary[card[0]]
+        self.value = total_value
 
     def sum_cards(self):
         sum = self.value
