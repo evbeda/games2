@@ -1,5 +1,7 @@
 import unittest
 from .poker import *
+from .card import Card
+from .deck import Deck
 
 
 class PokerTest(unittest.TestCase):
@@ -102,6 +104,40 @@ class PokerTest(unittest.TestCase):
         expected = [1, 3, 4, 5, 8]
         result = ordenar_cartas_numeros(['8d', 'Ad', '3h', '4h', '5h'])
         self.assertEqual(result, expected)
+
+    def test_crear_carta(self):
+        expected_value = '7'
+        expected_color = 'd'
+        result = Card('7', 'd')
+        self.assertEqual(result.value, expected_value)
+        self.assertEqual(result.color, expected_color)
+
+    def test_crear_mazo(self):
+        expected_value = 52
+        deck = Deck()
+        result = len(deck.cards)
+        self.assertEqual(result, expected_value)
+
+    def test_pintas_mazo(self):
+        resultD = 0
+        resultS = 0
+        resultH = 0
+        resultC = 0
+        expected_value = 13
+        deck = Deck()
+        for c in range(0, len(deck.cards)):
+            if deck.cards[c].color == 'd':
+                resultD += 1
+            if deck.cards[c].color == 's':
+                resultS += 1
+            if deck.cards[c].color == 'h':
+                resultH += 1
+            if deck.cards[c].color == 'c':
+                resultC += 1
+        self.assertEqual(resultD, expected_value)
+        self.assertEqual(resultS, expected_value)
+        self.assertEqual(resultH, expected_value)
+        self.assertEqual(resultC, expected_value)
 
 
 if __name__ == "__main__":
