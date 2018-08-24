@@ -2,6 +2,8 @@ import unittest
 from .poker import *
 from .card import Card
 from .deck import Deck
+from .player import Player
+from .game import Game
 
 
 class PokerTest(unittest.TestCase):
@@ -154,6 +156,33 @@ class PokerTest(unittest.TestCase):
         deck.deal(expected_value)
         deck.rebuild()
         self.assertEqual(len(deck.cards), expected_deck_size)
+
+    def test_crear_jugador(self):
+        jugador_money = 10
+        jugador = Player(jugador_money)
+        cards_dealed = 2
+        deck = Deck()
+        jugador.cards = deck.deal(cards_dealed)
+        self.assertEqual(len(jugador.cards), cards_dealed)
+        self.assertEqual(jugador.money, jugador_money)
+
+    def test_crear_jugador_sin_dinero(self):
+        with self.assertRaises(Exception):
+            Player(0)
+        self.assertTrue('Player money must be greater than 0')
+
+    def test_tomar_apuestas(self):
+        player1_money = 1000
+        player2_money = 2000
+        player1 = Player(player1_money)
+        player2 = Player(player2_money)
+        deck = Deck()
+        game = Game(player1, player2, deck)
+        game.start()
+        result_false = game.take_bets(5500, 500)
+        result_true = game.take_bets(500, 500)
+        self.assertFalse(result_false)
+        self.assertTrue(result_true)
 
 
 if __name__ == "__main__":
