@@ -4,7 +4,8 @@ from battleship.test_battleship import test_battleship
 from Blackjack.testBlackjack import (
     TestBets,
     TestHands,
-    TestDeck
+    TestDeck,
+    TestGame as TestBlackjackGame
 )
 from truco.test_truco import *
 from poker.test_poker import *
