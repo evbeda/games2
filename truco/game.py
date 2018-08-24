@@ -3,9 +3,15 @@ class Game():
         self.players = players
         self.deck = deck
         self.cantos_envidos = []
+        self.turno_juego = None
         self.turno_envido = None
+        self.turno_truco = None
+        self.turno_retruco = None
+        self.turno_vale_cuatro = None
+        self.is_playing = True
 
     def deal(self):
+        self.reset_state()
         self.change_hand()
         self.players[0].reset_hand()
         self.players[1].reset_hand()
@@ -18,9 +24,11 @@ class Game():
         if ((len(self.players[0].playedCards) == 0) and (len(self.players[0].hiddenCards) == 0)) and ((len(self.players[1].playedCards) == 0) and (len(self.players[1].hiddenCards) == 0)):
             self.players[0].is_hand = True
             self.players[1].is_hand = False
+            self.turno_juego = 0
         else:
             self.players[0].is_hand = self.players[1].is_hand
             self.players[1].is_hand = not self.players[0].is_hand
+            self.turno_juego = 1
 
     def who_is_next(self):
         card_p1 = self.players[0].playedCards[-1]
@@ -36,6 +44,13 @@ class Game():
                 return 'PLAYER1'
             else:
                 return 'PLAYER2'
+
+    # def play(self):
+    #     self.deal()
+    #     if turno_juego == 0:
+    #         print('What do you want to do?')
+    #         #falta determinar todas las posiblilidades que tiene (Jugar una carta o cantar)
+    #         self.players[self.turno_juego].play_card(position)
 
     def cantos_envido(self, pos, canto):
         if canto == "Envido":
@@ -55,3 +70,14 @@ class Game():
             return self.cantos_envidos[-1]
         except IndexError:
             return None
+
+    def get_state(self):
+        status = [self.turno_juego, self.turno_envido, self.turno_truco, self.turno_retruco, self.turno_vale_cuatro]
+        return status
+
+    def reset_state(self):
+        self.turno_juego = None
+        self.turno_envido = None
+        self.turno_truco = None
+        self.turno_retruco = None
+        self.turno_vale_cuatro = None

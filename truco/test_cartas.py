@@ -103,6 +103,14 @@ class TestMazo(unittest.TestCase):
         self.assertEqual(cartaCorrecta.number, result2.number)
         self.assertEqual(cartaCorrecta.suit, result2.suit)
 
+    def test_states(self):
+        player01 = Player('1')
+        player02 = Player('2')
+        deck = Mazo()
+        game = Game([player01, player02], deck)
+        game.deal()
+        self.assertEqual(game.get_state(), [0, None, None, None, None])
+
 
 class TestGame(unittest.TestCase):
     player01 = Player('1')
@@ -134,7 +142,6 @@ class TestGame(unittest.TestCase):
         self.player01.play_card(0)
         self.player02.play_card(0)
         game.deal()
-
         self.assertFalse(self.player01.is_hand)
         self.assertTrue(self.player02.is_hand)
 
@@ -212,14 +219,15 @@ class test_cantos(unittest.TestCase):
         game = Game([self.player01, self.player02], deck)
         game.deal()
         resultado = game.cantos_envido(0, "Envido")
-        self.assertEqual(resultado, game.get_cantos_envido())
+        self.assertEqual(resultado, ["1", "Envido"])
 
     def test_envido_player_02(self):
         deck = Mazo()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         resultado = game.cantos_envido(1, "Envido")
-        self.assertEqual(resultado, game.get_cantos_envido())
+        self.assertEqual(resultado, None)
+
 
 
 if __name__ == '__main__':

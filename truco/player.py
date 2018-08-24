@@ -16,3 +16,6 @@ class Player():
 
     def get_name(self):
         return self.name
+
+    def is_hand(self):
+        return self.is_hand
