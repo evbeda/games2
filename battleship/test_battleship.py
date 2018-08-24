@@ -1,8 +1,8 @@
 import unittest
 
-from battleship.board import Board, board_states
-from battleship.game import Game, game_states
-from .player import Player
+from battleship.board import Board
+from battleship.game import Game
+from .player import PlayerCPU, PlayerHuman
 
 
 class test_battleship(unittest.TestCase):
@@ -69,7 +69,7 @@ class test_battleship(unittest.TestCase):
         self.assertEqual(result[len(result) - 1], "sunked")
 
     def test_player_boards(self):
-        player = Player()
+        player = PlayerHuman()
         result = player.get_boards()
         self.assertEqual(len(result), 2)
 
@@ -78,23 +78,60 @@ class test_battleship(unittest.TestCase):
         result = game.get_players()
         self.assertEqual(len(result), 2)
 
-    def test_own_board_is_ready(self):
-        p1 = Player()
+    def test_own_board_is_ready_cpu(self):
+        p1 = PlayerCPU()
         p1.fill_own_board()
         result = p1.board_own.state
-        self.assertEqual(result, board_states[1])
+        self.assertEqual(result, 'ready_to_war')
+
+    # def test_own_board_is_ready_human(self):
+    #     p1 = PlayerHuman()
+    #     p1.fill_own_board()
+    #     result = p1.board_own.state
+    #     self.assertEqual(result, board_states[1])
 
     def test_game_state_init(self):
         game = Game()
         result = game.state
-        self.assertEqual(result, game_states[0])
+        self.assertEqual(result, 'init')
 
-    def test_game_state_war(self):
+    # def test_game_state_war(self):
+    #     game = Game()
+    #     game.player_cpu.fill_own_board()
+    #     game.player_human.fill_own_board()
+    #     result = game.is_ready_to_war()
+    #     self.assertTrue(result)
+
+    def test_turn_initial(self):
         game = Game()
-        game.player1.fill_own_board()
-        game.player2.fill_own_board()
-        result = game.is_ready_to_war()
+        result = game.turn
+        self.assertEqual(result, 'human')
+
+    def test_turn_change(self):
+        game = Game()
+        game.change_turn()
+        result = game.turn
+        self.assertEqual(result, 'cpu')
+
+    def test_turn_init_player(self):
+        game = Game()
+        result = game.check_state_message()
+        self.assertEqual(result, 'pone el barco (x, y, boat, hor/ver)')
+
+    def test_turn_war_player(self):
+        game = Game()
+        result = game.play('1, 2, 1, vertical')
         self.assertTrue(result)
+
+    def test_turn_war_player_wrong_param(self):
+        game = Game()
+        result = game.play('A, B, 1, vertical')
+        self.assertEqual(result, 'error')
+
+    def test_turn_war_player_wrong_number(self):
+        game = Game()
+        result = game.play('10, 1, 1, vertical')
+        self.assertFalse(result)
 
 
 if __name__ == "__main__":

@@ -106,14 +106,14 @@ class test_board(unittest.TestCase):
         board = Board()
         board.set_boat(3, 3, 4, "vertical")
         result = board.shoot(4, 3)
-        continue_turn = board.turn(result)
+        continue_turn = board.turn_decision_hit(result)
         self.assertTrue(continue_turn)
 
     def test_turn_water(self):
         board = Board()
         board.set_boat(3, 3, 4, "vertical")
         result = board.shoot(1, 2)
-        continue_turn = board.turn(result)
+        continue_turn = board.turn_decision_hit(result)
         self.assertFalse(continue_turn)
 
 
