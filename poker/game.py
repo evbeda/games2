@@ -47,3 +47,6 @@ class Game(object):
             return False
             # deberia ir el metodo que llame a take bets desde la consola
         return True
+
+    def better_hand(self):
+        self.player1.cards

@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from .poker import *
 from .card import Card
 from .deck import Deck
@@ -183,6 +184,23 @@ class PokerTest(unittest.TestCase):
         result_true = game.take_bets(500, 500)
         self.assertFalse(result_false)
         self.assertTrue(result_true)
+
+    def test_verificar_mano(self):
+        player1_money = 1000
+        player2_money = 2000
+        player1 = Player(player1_money)
+        player2 = Player(player2_money)
+
+        def side_effect(cards):
+            return cards
+        with unittest.mock.patch('poker.deck.shuffle', side_effect):
+            deck = Deck()
+        player1.cards.append(deck.cards[48])
+        player1.cards.append(deck.cards[49])
+        player1.cards.append(deck.cards[50])
+        player1.cards.append(deck.cards[28])
+        player1.cards.append(deck.cards[38])
+        player2.cards = deck.deal(5)
 
 
 if __name__ == "__main__":
