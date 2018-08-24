@@ -9,6 +9,7 @@ def throw_dice(num):
         results.append(random.randint(1, 6))
     return results
 
+
 def check_throw(throw_array, points_to_check, throw_number):
     if points_to_check == GENERALA['name']:
         if throw_number != 1:

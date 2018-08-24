@@ -1,5 +1,4 @@
 import unittest
-
 from . import *
 from .player import Player
 
@@ -13,7 +12,7 @@ class TestPlayer(unittest.TestCase):
         result = GENERALA in player01.combinations
         # assert
         self.assertEqual(result, True)
-        
+
     def test_dont_allow_repetition(self):
         # setup
         player01 = Player('01')
@@ -23,10 +22,9 @@ class TestPlayer(unittest.TestCase):
         result = player01.combinations.count(GENERALA)
         # assert
         self.assertEqual(result, 1)
-    
+
     # def test_calculate_score(self):
     #     # setup
 
     #     # test
     #     # assert
-        

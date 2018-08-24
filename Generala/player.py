@@ -1,3 +1,4 @@
+
 class Player(object):
     def __init__(self, name):
         self.name = name
@@ -7,5 +8,6 @@ class Player(object):
     def choose_combination(self, combination):
         if combination not in self.combinations:
             self.combinations.append(combination)
-
-    
+            return True
+        else:
+            return False
