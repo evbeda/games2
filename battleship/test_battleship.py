@@ -1,7 +1,7 @@
 import unittest
 
 from battleship.board import Board, board_states
-from battleship.game import Game
+from battleship.game import Game, game_states
 from .player import Player
 
 
@@ -83,6 +83,18 @@ class test_battleship(unittest.TestCase):
         p1.fill_own_board()
         result = p1.board_own.state
         self.assertEqual(result, board_states[1])
+
+    def test_game_state_init(self):
+        game = Game()
+        result = game.state
+        self.assertEqual(result, game_states[0])
+
+    def test_game_state_war(self):
+        game = Game()
+        game.player1.fill_own_board()
+        game.player2.fill_own_board()
+        result = game.is_ready_to_war()
+        self.assertTrue(result)
 
 
 if __name__ == "__main__":
