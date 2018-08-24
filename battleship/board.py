@@ -121,7 +121,7 @@ class Board(object):
             self.board[row][column] = 9
             return result
 
-    def turn(self, result):
+    def turn_decision_hit(self, result):
         if result == 'hit':
             return True
         return False
