@@ -1,5 +1,6 @@
 import unittest
-from battleship.battleship import Board
+
+from battleship.board import Board
 
 
 class test_board(unittest.TestCase):

@@ -1,5 +1,8 @@
 import unittest
-from battleship.battleship import Board
+
+from battleship.board import Board, board_states
+from battleship.game import Game
+from .player import Player
 
 
 class test_battleship(unittest.TestCase):
@@ -64,6 +67,22 @@ class test_battleship(unittest.TestCase):
         for i in range(5, 10):
             result.append(board.shoot(i, 5))
         self.assertEqual(result[len(result) - 1], "sunked")
+
+    def test_player_boards(self):
+        player = Player()
+        result = player.get_boards()
+        self.assertEqual(len(result), 2)
+
+    def test_game_players(self):
+        game = Game()
+        result = game.get_players()
+        self.assertEqual(len(result), 2)
+
+    def test_own_board_is_ready(self):
+        p1 = Player()
+        p1.fill_own_board()
+        result = p1.board_own.state
+        self.assertEqual(result, board_states[1])
 
 
 if __name__ == "__main__":

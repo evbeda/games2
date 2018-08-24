@@ -1,6 +1,8 @@
+board_states = ['empty', 'ready_to_war', 'in_war']
 
 
 class Board(object):
+
     def __init__(self):
         self.sunked = []
         self.boats = [0, 0, 0, 0, 0, 0]
@@ -16,15 +18,16 @@ class Board(object):
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ]
+        self.state = board_states[0]
 
     def get_board(self):
         return self.board
 
     def set_boat(self, row, column, boat, orientation):
         if (
-            (column >= 0 and column < 10) and
-            (row >= 0 and row < 10) and
-            self.check_position(row, column, boat, orientation)
+                (column >= 0 and column < 10) and
+                (row >= 0 and row < 10) and
+                self.check_position(row, column, boat, orientation)
         ):
             if (orientation == "horizontal") and ((boat + column) <= 10):
                 value = self.check_boat(boat)
@@ -123,3 +126,9 @@ class Board(object):
             return True
         return False
 
+    def is_ready_to_war(self):
+        if self.boats == [1, 1, 1, 1, 1, 1, ]:
+            self.state = board_states[1]
+            return True
+        else:
+            return False
