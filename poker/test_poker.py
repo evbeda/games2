@@ -147,6 +147,14 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(len(result), expected_value)
         self.assertEqual(len(deck.cards), expected_deck_size)
 
+    def test_reconstruir_mazo(self):
+        expected_value = 6
+        expected_deck_size = 52
+        deck = Deck()
+        deck.deal(expected_value)
+        deck.rebuild()
+        self.assertEqual(len(deck.cards), expected_deck_size)
+
 
 if __name__ == "__main__":
     unittest.main()
