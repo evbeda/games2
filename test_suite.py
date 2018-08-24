@@ -10,6 +10,7 @@ from Generala.main_test import *
 from truco.test_truco import *
 from poker.test_poker import *
 from guess_number_game import test_guess_number_game
+import test_game
 
 
 def suite():
@@ -27,6 +28,7 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestMazo))
     test_suite.addTest(unittest.makeSuite(PokerTest))
     test_suite.addTest(unittest.makeSuite(test_guess_number_game))
+    test_suite.addTest(test_game)
     return test_suite
 
 

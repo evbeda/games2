@@ -3,6 +3,9 @@ from random import randint
 
 class GuessNumberGame(object):
 
+    name = 'Guess Number Game'
+    input_args = 1
+
     def __init__(self):
         self._guess_number = randint(0, 100)
         self.played_numbers = []
