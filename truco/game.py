@@ -2,6 +2,8 @@ class Game():
     def __init__(self, players, deck):
         self.players = players
         self.deck = deck
+        self.cantos_envidos = []
+        self.turno_envido = None
 
     def deal(self):
         self.change_hand()
@@ -34,3 +36,22 @@ class Game():
                 return 'PLAYER1'
             else:
                 return 'PLAYER2'
+
+    def cantos_envido(self, pos, canto):
+        if canto == "Envido":
+            if len(self.players[0].hiddenCards) == 3 and pos == 0:
+                aux = [self.players[pos].get_name(), canto]
+                self.cantos_envidos.append(aux)
+                self.turno_envido = 1
+                return aux
+            elif len(self.players[1].hiddenCards) == 3 and len(self.players[0].playedCards) == 1 and pos == 1:
+                aux = [self.players[pos].get_name(), canto]
+                self.cantos_envidos.append(aux)
+                self.turno_envido = 0
+                return aux
+
+    def get_cantos_envido(self):
+        try:
+            return self.cantos_envidos[-1]
+        except IndexError:
+            return None

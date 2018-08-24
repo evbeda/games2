@@ -13,3 +13,6 @@ class Player():
     def reset_hand(self):
         del self.hiddenCards[:]
         del self.playedCards[:]
+
+    def get_name(self):
+        return self.name
