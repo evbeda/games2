@@ -7,14 +7,12 @@ cardsDictionary = {
     '7': 7,
     '8': 8,
     '9': 9,
-    '10': 10,
+    'T': 10,
     'J': 10,
     'Q': 10,
     'K': 10,
-    'A': [1, 11]
+    'A': 11
 }
 
-colorDictionary = ['hearts', 'spades', 'clubs', 'diamonds']
+colorDictionary = ['h', 's', 'c', 'd']
 # Corazones, pica, trebol y diamante
-
-deck = []

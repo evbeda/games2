@@ -1,27 +1,19 @@
 from .mazo import cardsDictionary
-from .blackjack import sum_cards
 
 
 class Hand():
-    def __init__(self, mazo):
-        self.mazo = mazo
-        self.playersCards = []
-        self.bank_cards = []
+    def __init__(self):
+        self.cards = []
+        self.value = 0
 
-    def deal_cards(self):
+    def deal_card(self, card):
+        self.cards.append(card)
+        self.value += cardsDictionary[card[0]]
 
-        for index in range(2):
-            self.playersCards.append(self.mazo.pop(0))
-            self.bank_cards.append(self.mazo.pop(0))
-
-    def add_card_to_player(self):
-        self.playersCards.append(self.mazo.pop(0))
-
-    def add_card_to_bank(self):
-        self.bank_cards.append(self.mazo.pop(0))
-
-    def is_it_finished(self):
-        if (sum_cards(self.playersCards) > 21):
-            return True
-        else:
-            return False
+    def sum_cards(self):
+        sum = self.value
+        if [['Ah', 'Ad', 'Ac', 'Ad'] in self.cards]:
+            if self.value > 21:
+                # Decrease value by 10 because A is going to be 1
+                sum -= 10
+        return sum
