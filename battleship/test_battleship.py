@@ -1,7 +1,7 @@
 import unittest
 
 from battleship.board import Board
-from battleship.game import Game
+from battleship.game import GameBattleship
 from .player import PlayerCPU, PlayerHuman
 
 
@@ -74,7 +74,7 @@ class test_battleship(unittest.TestCase):
         self.assertEqual(len(result), 2)
 
     def test_game_players(self):
-        game = Game()
+        game = GameBattleship()
         result = game.get_players()
         self.assertEqual(len(result), 2)
 
@@ -91,47 +91,60 @@ class test_battleship(unittest.TestCase):
     #     self.assertEqual(result, board_states[1])
 
     def test_game_state_init(self):
-        game = Game()
+        game = GameBattleship()
         result = game.state
         self.assertEqual(result, 'init')
 
-    # def test_game_state_war(self):
-    #     game = Game()
-    #     game.player_cpu.fill_own_board()
-    #     game.player_human.fill_own_board()
-    #     result = game.is_ready_to_war()
-    #     self.assertTrue(result)
+    def test_game_state_war(self):
+        game = GameBattleship()
+        input_user = [
+            '1, 1, 1, vertical',
+            '1, 2, 2, vertical',
+            '1, 3, 3, vertical',
+            '1, 4, 3, vertical',
+            '1, 5, 4, vertical',
+            '1, 6, 5, vertical',
+        ]
+        # Ir corriendo cada uno de los inputs del user
+        for single_input in input_user:
+            result = game.state
+            self.assertEqual(result, 'init')
+            game.play(single_input)
 
-    def test_turn_initial(self):
-        game = Game()
-        result = game.turn
-        self.assertEqual(result, 'human')
-
-    def test_turn_change(self):
-        game = Game()
-        game.change_turn()
-        result = game.turn
-        self.assertEqual(result, 'cpu')
+        result = game.state
+        self.assertEqual(result, 'war')
 
     def test_turn_init_player(self):
-        game = Game()
+        game = GameBattleship()
         result = game.check_state_message()
-        self.assertEqual(result, 'pone el barco (x, y, boat, hor/ver)')
+        self.assertEqual(result,
+                         'pone el barco (x, y, boat, horizontal/vertical)')
+
+    def test_turn_init_player_wrong_param_amount_of(self):
+        game = GameBattleship()
+        result = game.play('1, 1, 1, vertical, extrabadparam')
+        self.assertEqual(result, 'error, mas parametros de los requeridos (4)')
 
     def test_turn_war_player(self):
-        game = Game()
+        game = GameBattleship()
         result = game.play('1, 2, 1, vertical')
         self.assertTrue(result)
 
-    def test_turn_war_player_wrong_param(self):
-        game = Game()
+    def test_turn_war_player_wrong_param_letter(self):
+        game = GameBattleship()
         result = game.play('A, B, 1, vertical')
         self.assertEqual(result, 'error')
 
     def test_turn_war_player_wrong_number(self):
-        game = Game()
+        game = GameBattleship()
         result = game.play('10, 1, 1, vertical')
         self.assertFalse(result)
+
+    def test_turn_war_player_wrong_param_amount_of(self):
+        game = GameBattleship()
+        game.state = 'war'
+        result = game.play('1, 1, extrabadparam')
+        self.assertEqual(result, 'error, mas parametros de los requeridos (2)')
 
 
 if __name__ == "__main__":
