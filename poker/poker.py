@@ -45,32 +45,6 @@ def encontrarEscaleraReal(cards):
         return False
 
 
-def encontrarPares(cards):
-    values = defaultdict(int)
-    print (values)
-    for card in cards:
-        value = card[0]
-        values[value] = values[value] + 1
-    result = []
-    for key in values:
-        if (values[key] == 2):
-            result.append(key)
-    print (values)
-    return result
-
-
-def encontrarTrio(cards):
-    values = defaultdict(int)
-    for card in cards:
-        value = card[0]
-        values[value] = values[value] + 1
-    result = []
-    for key in values:
-        if (values[key] == 3):
-            result.append(key)
-    return result
-
-
 def encontrar_iguales(cards):
     cardsDictionary = defaultdict(int)
     for card in cards:
