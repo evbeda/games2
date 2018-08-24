@@ -139,6 +139,14 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(resultH, expected_value)
         self.assertEqual(resultC, expected_value)
 
+    def test_repartir_cartas(self):
+        expected_value = 3
+        expected_deck_size = 52 - expected_value
+        deck = Deck()
+        result = deck.deal(expected_value)
+        self.assertEqual(len(result), expected_value)
+        self.assertEqual(len(deck.cards), expected_deck_size)
+
 
 if __name__ == "__main__":
     unittest.main()
