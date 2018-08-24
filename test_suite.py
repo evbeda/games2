@@ -2,9 +2,9 @@ import unittest
 from battleship.test_board import test_board
 from battleship.test_battleship import test_battleship
 from Blackjack.testBlackjack import (
-    TestCards,
     TestBets,
     TestHands,
+    TestDeck
 )
 from Generala.main_test import *
 from truco.test_truco import *
