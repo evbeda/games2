@@ -8,23 +8,17 @@ class TestPlayer(unittest.TestCase):
         # setup
         player01 = Player('01')
         # test
-        player01.choose_combination(GENERALA)
-        result = GENERALA in player01.combinations
+        player01.choose_combination('GENERALA', 50)
+        result = player01.combinations['GENERALA']
         # assert
-        self.assertEqual(result, True)
+        self.assertEqual(result, 50)
 
     def test_dont_allow_repetition(self):
         # setup
         player01 = Player('01')
         # test
-        player01.choose_combination(GENERALA)
-        player01.choose_combination(GENERALA)
-        result = player01.combinations.count(GENERALA)
+        player01.choose_combination('GENERALA', 50)
+        result = player01.choose_combination('GENERALA', 50)
         # assert
-        self.assertEqual(result, 1)
+        self.assertFalse(result)
 
-    # def test_calculate_score(self):
-    #     # setup
-
-    #     # test
-    #     # assert
