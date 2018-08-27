@@ -80,6 +80,7 @@ class TestHands(unittest.TestCase):
         result = hand.value
         self.assertEqual(result, 16)
     # Sum Cards tests
+
     def test_cards_sum_normal(self):
         hand = Hand()
         hand.deal_card(['2h', 'Jh'])
@@ -89,7 +90,7 @@ class TestHands(unittest.TestCase):
     def test_as_count_one(self):
         hand = Hand()
         hand.deal_card(['8h', 'Ah', '3d'])
-        result = hand.sum_cards()
+        result = hand.value
         self.assertEqual(result, 12)
 
 
@@ -217,6 +218,54 @@ class TestGame(unittest.TestCase):
         game.dealer_hand.value = 17
         result = game.who_wins()
         self.assertEqual('TIE!', result)
+
+    def test_should_continue_playing(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['Kh', '8d']
+        game.player.hand.value = 18
+        game.dealer_hand.cards = ['Kd', '4h']
+        game.dealer_hand.value = 14
+        result = game.who_wins()
+        self.assertEqual('CONTINUE', result)
+
+    def test_play_no_money(self):
+        game = Game()
+        game.start_game()
+        game.player.money = 0
+        result = game.play('=')
+        self.assertEqual('You dont have money.', result)
+
+    def test_play_wrong_command(self):
+        game = Game()
+        game.start_game()
+        game.player.money = 5
+        result = game.play('AAA')
+        self.assertEqual('Wrong command, please use + or = .', result)
+
+    def test_play_stand(self):
+        game = Game()
+        game.deck.cards = ['7d','6h','Jd','Qd','Kh']
+        game.start_game()
+        game.player.money = 5
+        result = game.play('=')
+        self.assertEqual('Player Wins!', result)
+
+    def test_play_one_more(self):
+        game = Game()
+        game.deck.cards = ['7d','6h','Jd','Qd','Kh']
+        game.start_game()
+        game.player.money = 5
+        result = game.play('+')
+        self.assertEqual('Dealer Wins!', result)
+
+    def test_play_one_more_wins(self):
+        game = Game()
+        game.deck.cards = ['As','6h','Jd','Qd','Kh']
+        game.start_game()
+        game.player.money = 5
+        result = game.play('+')
+        self.assertEqual('Player Wins!', result)
 
 
 if __name__ == "__main__":
