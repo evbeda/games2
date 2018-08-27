@@ -180,10 +180,23 @@ class PokerTest(unittest.TestCase):
         deck = Deck()
         game = Game(player1, player2, deck)
         game.start()
-        result_false = game.take_bets(5500, 500)
+        result_false_player1 = game.take_bets(5500, 500)
+        result_false_player2 = game.take_bets(500, 5500)
         result_true = game.take_bets(500, 500)
-        self.assertFalse(result_false)
+        self.assertFalse(result_false_player1)
+        self.assertFalse(result_false_player2)
         self.assertTrue(result_true)
+
+    def test_pot_correct(self):
+        player1_money = 1000
+        player2_money = 2000
+        player1 = Player(player1_money)
+        player2 = Player(player2_money)
+        deck = Deck()
+        game = Game(player1, player2, deck)
+        game.start()
+        game.take_bets(500, 500)
+        self.assertEqual(game.pot, 1000)
 
     def test_verificar_mano(self):
         player1_money = 1000
@@ -201,6 +214,46 @@ class PokerTest(unittest.TestCase):
         player1.cards.append(deck.cards[28])
         player1.cards.append(deck.cards[38])
         player2.cards = deck.deal(5)
+
+    def test_21combinations(self):
+        player1_money = 1000
+        player2_money = 2000
+        player1 = Player(player1_money)
+        player2 = Player(player2_money)
+        deck = Deck()
+        game = Game(player1, player2, deck)
+        result = game.combine_card(['Ah', '2h', '5h', '6h', '7h', '8h', '9h'])
+        self.assertEqual(len(result), 21)
+
+    def test_first_combination(self):
+        player1_money = 1000
+        player2_money = 2000
+        player1 = Player(player1_money)
+        player2 = Player(player2_money)
+        deck = Deck()
+        game = Game(player1, player2, deck)
+        result = game.combine_card(['Ah', '2h', '5h', '6h', '7h', '8h', '9h'])
+        self.assertEqual(result[0], ['Ah', '2h', '5h', '6h', '7h'])
+        self.assertEqual(result[1], ['Ah', '2h', '5h', '6h', '8h'])
+        self.assertEqual(result[2], ['Ah', '2h', '5h', '6h', '9h'])
+        self.assertEqual(result[3], ['Ah', '2h', '5h', '7h', '8h'])
+        self.assertEqual(result[4], ['Ah', '2h', '5h', '7h', '9h'])
+        self.assertEqual(result[5], ['Ah', '2h', '5h', '8h', '9h'])
+        self.assertEqual(result[6], ['Ah', '2h', '6h', '7h', '8h'])
+        self.assertEqual(result[7], ['Ah', '2h', '6h', '7h', '9h'])
+        self.assertEqual(result[8], ['Ah', '2h', '6h', '8h', '9h'])
+        self.assertEqual(result[9], ['Ah', '2h', '7h', '8h', '9h'])
+        self.assertEqual(result[10], ['Ah', '5h', '6h', '7h', '8h'])
+        self.assertEqual(result[11], ['Ah', '5h', '6h', '7h', '9h'])
+        self.assertEqual(result[12], ['Ah', '5h', '6h', '8h', '9h'])
+        self.assertEqual(result[13], ['Ah', '5h', '7h', '8h', '9h'])
+        self.assertEqual(result[14], ['Ah', '6h', '7h', '8h', '9h'])
+        self.assertEqual(result[15], ['2h', '5h', '6h', '7h', '8h'])
+        self.assertEqual(result[16], ['2h', '5h', '6h', '7h', '9h'])
+        self.assertEqual(result[17], ['2h', '5h', '6h', '8h', '9h'])
+        self.assertEqual(result[18], ['2h', '5h', '7h', '8h', '9h'])
+        self.assertEqual(result[19], ['2h', '6h', '7h', '8h', '9h'])
+        self.assertEqual(result[20], ['5h', '6h', '7h', '8h', '9h'])
 
 
 if __name__ == "__main__":

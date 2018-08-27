@@ -8,7 +8,8 @@ class Deck(object):
 
     def create(self):
         colors = ['h', 'd', 's', 'c']
-        return [Card(value, color) for value in range(1, 14) for color in colors]
+        values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
+        return [Card(value, color) for value in values for color in colors]
 
     def shuffle_cards(self):
         shuffle(self.cards)
