@@ -11,7 +11,11 @@ messages_player_human = {
 
 
 class GameBattleship():
+
+    name = 'Battle Ship Game'
+
     def __init__(self):
+        self.turn = possible_turn[0]
         self.player_cpu = PlayerCPU()
         self.player_human = PlayerHuman()
         self.state = game_states[0]
@@ -37,6 +41,13 @@ class GameBattleship():
             return messages_player_human['cpu_win']
         else:
             return messages_player_human['player_win']
+
+    def next_turn(self):
+        return 'Hacer metodo'
+
+    @property
+    def board(self):
+        return 'board'
 
     def play(self, text_input):
         if self.state == game_states[0]:
@@ -64,7 +75,36 @@ class GameBattleship():
         if self.state == game_states[1]:
             params = text_input.split(', ')
             if len(params) == 2:
-                pass
-                # TODO agregar logica de shoot del usuario
+                if self.turn == possible_turn[0]:
+                    result = self.player_cpu.board_own.shoot(
+                        int(params[0]),
+                        int(params[1])
+                    )
+                    self.turn = possible_turn[1]
+                    if result == 'water':
+                        self.player_human.board_opponent.mark_shoot(
+                            int(params[0]),
+                            int(params[1]),
+                            False
+                        )
+                        result = 'You only hit water! Try it again'
+                    elif result == 'sunked':
+                        self.player_human.board_opponent.mark_shoot(
+                            int(params[0]),
+                            int(params[1]),
+                            True
+                        )
+                        result = 'Congratulations! You sunk a boat'
+                    elif result == 'hit':
+                        self.player_human.board_opponent.mark_shoot(
+                            int(params[0]),
+                            int(params[1]),
+                            True
+                        )
+                        result = 'You hit a boat'
+                    return result
+                elif self.turn == possible_turn[1]:
+                    pass
+
             else:
                 return "error, mas parametros de los requeridos (2)"
