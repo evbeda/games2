@@ -7,6 +7,34 @@ from .player import PlayerCPU, PlayerHuman
 
 class test_battleship(unittest.TestCase):
 
+    def setUp(self):
+        self.game = GameBattleship()
+        input_user = [
+            '1, 1, 1, vertical',
+            '1, 2, 2, vertical',
+            '1, 3, 3, vertical',
+            '1, 4, 3, vertical',
+            '1, 5, 4, vertical',
+            '1, 6, 5, vertical',
+        ]
+        board = Board()
+        board_table = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 2, 31, 32, 4, 5, 0, 0, 0],
+            [0, 0, 2, 31, 32, 4, 5, 0, 0, 0],
+            [0, 0, 0, 31, 32, 4, 5, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 4, 5, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 5, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        board.board = board_table
+        for single_input in input_user:
+            self.game.play(single_input)
+        self.game.player_cpu.board_own = board
+
     def test_shoot_water(self):
         board = Board()
         result = board.shoot(3, 3)
@@ -145,6 +173,21 @@ class test_battleship(unittest.TestCase):
         game.state = 'war'
         result = game.play('1, 1, extrabadparam')
         self.assertEqual(result, 'error, mas parametros de los requeridos (2)')
+
+    def test_game_war_player_can_sunk_boat_player_cpu(self):
+        expected = 'Congratulations! You sunk a boat'
+        result = self.game.play('1, 1')
+        self.assertEqual(expected, result)
+
+    def test_game_war_player_can_water_boat_player_cpu(self):
+        expected = 'You only hit water! Try it again'
+        result = self.game.play('0, 0')
+        self.assertEqual(expected, result)
+
+    def test_game_war_player_can_hit_boat_player_cpu(self):
+        expected = 'You hit a boat'
+        result = self.game.play('2, 2')
+        self.assertEqual(expected, result)
 
 
 if __name__ == "__main__":

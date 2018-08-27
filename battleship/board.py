@@ -132,3 +132,11 @@ class Board(object):
             return True
         else:
             return False
+
+    def mark_shoot(self, row, column, is_hit):
+        if self.board[row][column] == 0:
+            if is_hit:
+                character = 'x'
+            else:
+                character = '-'
+            self.board[row][column] = character
