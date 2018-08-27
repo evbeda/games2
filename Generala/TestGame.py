@@ -5,7 +5,7 @@ from .game import Game
 
 class TestGame(unittest.TestCase):
     def test_game_finished_true(self):
-        game = Game("Lautaro", "Chino")
+        game = Game("Santi", "Beto")
         game.player1.combinations = {
             'UNO': 1,
             'DOS': 2,
@@ -35,7 +35,7 @@ class TestGame(unittest.TestCase):
         self.assertTrue(game.finished())
 
     def test_game_finished_false(self):
-        game = Game("Lautaro", "Chino")
+        game = Game("Santi", "Beto")
         game.player1.combinations = {
             'UNO': '',
             'DOS': '',
@@ -70,7 +70,7 @@ class TestGame(unittest.TestCase):
         mock_input.return_value = 1
         mock_rand_int.return_value = 1
         result = [1, 1, 1, 1, 1]
-        game = Game("Chino", "Lautaro")
+        game = Game("Santi", "Beto")
         game.tirar()
         self.assertEqual(game.dados, result)
 
@@ -81,19 +81,19 @@ class TestGame(unittest.TestCase):
                 game.next_turn(),
                 'Santi Tu tirada: [1, 1, 1, 1, 1] INGRESE CONSERVAR X, Y O ANOTAR CATEGORIA'
             )
-        game.play('CONSERVAR 1')
+        game.play('CONSERVAR', '1')
         with unittest.mock.patch('random.randint', return_value=2):
             self.assertEqual(
                 game.next_turn(),
                 'Santi Tu tirada: [1, 2, 2, 2, 2] INGRESE CONSERVAR X, Y O ANOTAR CATEGORIA'
             )
-        game.play('CONSERVAR 1')
+        game.play('CONSERVAR', '1')
         with unittest.mock.patch('random.randint', return_value=3):
             self.assertEqual(
                 game.next_turn(),
                 'Santi Tu tirada: [1, 3, 3, 3, 3] INGRESE CONSERVAR X, Y O ANOTAR CATEGORIA'
             )
-        result = game.play('ANOTAR TRES')
+        result = game.play('ANOTAR', 'TRES')
         self.assertEqual(
             result,
             'ANOTADO EN: TRES PUNTAJE: 12'

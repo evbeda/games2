@@ -5,11 +5,15 @@ import random
 
 class Game():
 
-    def __init__(self, name, name2):
+    name = 'Generala'
+    input_args = 2
+
+    def __init__(self, name='Santi', name2='Beto'):
         self.player1 = Player(name)
         self.player2 = Player(name2)
         self.turno = self.player1
         self.dados = []
+        self.is_playing = True
 
     def finished(self):
         for key, value in self.player1.combinations.items():
@@ -28,27 +32,27 @@ class Game():
         else:
             return 'Eliga la categoria que desea llenar (NOMBRETIRADA)'
 
-    def play(self, text_input):
-        if 'CONSERVAR' in text_input:
-            text_input = text_input.replace('CONSERVAR ', '')
-            dados_a_conservar = text_input.split(', ')
+    def play(self, text_input, value):
+        if 'CONSERVAR' == text_input:
+            dados_a_conservar = value.split(',')
             self.dados = []
             for dado in dados_a_conservar:
                 self.dados.append(int(dado))
-        elif 'ANOTAR' in text_input:
+        elif 'ANOTAR' == text_input:
             self.turno.tirada = 4
-            categoria = text_input.replace('ANOTAR ', '')
+            categoria = value
             points = check_throw(self.dados, categoria, self.turno.tirada)
             is_possible = self.turno.choose_combination(categoria, points)
             if is_possible:
                 self.cambiar_turno()
+                self.is_playing = not self.finished()
                 return 'ANOTADO EN: ' + categoria + ' PUNTAJE: ' + str(points)
             else:
                 return 'Categoria ya asignada'
 
-    # @property
-    # def board(self, dados):
-    #     return str(self.played_numbers)
+    @property
+    def board(self):
+        return 'TODO'
 
     def cambiar_turno(self):
         self.turno.tirada = 1
