@@ -1,5 +1,6 @@
 from .player import Player
 from .deck import Deck
+from .combine_card import card_combine
 
 
 class Game(object):
@@ -35,7 +36,7 @@ class Game(object):
 
     def take_bets(self, player1_bet, player2_bet):
         if self.player1.money >= player1_bet:
-            self.pot = player1_bet
+            self.pot += player1_bet
         else:
             #print("Not enough money")
             return False
@@ -47,6 +48,15 @@ class Game(object):
             return False
             # deberia ir el metodo que llame a take bets desde la consola
         return True
+
+    def combine_card(self, complete_card):
+        all_combination = []
+        for index_combination in card_combine:
+            card_combination = []
+            for index in index_combination:
+                card_combination.append(complete_card[index])
+            all_combination.append(card_combination)
+        return all_combination
 
     def better_hand(self):
         self.player1.cards
