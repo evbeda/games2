@@ -1,7 +1,7 @@
 from .player import Player
 from .deck import Deck
 from .combine_card import card_combine
-
+from .poker import encontrarEscaleraReal
 
 class Game(object):
     def __init__(self, player1, player2, deck):
@@ -58,5 +58,8 @@ class Game(object):
             all_combination.append(card_combination)
         return all_combination
 
-    def better_hand(self):
-        self.player1.cards
+    def better_hand(self, combination):
+        for combine in combination:
+            if encontrarEscaleraReal(combine):
+                return "Escalera Real"
+        return "No es Escalera Real"

@@ -255,6 +255,27 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(result[19], ['2h', '6h', '7h', '8h', '9h'])
         self.assertEqual(result[20], ['5h', '6h', '7h', '8h', '9h'])
 
+    def test_best_hand_escalera_real(self):
+        player1_money = 1000
+        player2_money = 2000
+        player1 = Player(player1_money)
+        player2 = Player(player2_money)
+        deck = Deck()
+        game = Game(player1, player2, deck)
+        combination = game.combine_card(['Ah', 'Th', '5h', 'Jh', '7h', 'Qh', 'Kh'])
+        result = game.better_hand(combination)
+        self.assertEqual(result, "Escalera Real")
+
+    def test_best_hand_no_escalera_real(self):
+        player1_money = 1000
+        player2_money = 2000
+        player1 = Player(player1_money)
+        player2 = Player(player2_money)
+        deck = Deck()
+        game = Game(player1, player2, deck)
+        combination = game.combine_card(['Ad', 'Th', '5h', 'Jh', '7h', 'Qh', 'Kh'])
+        result = game.better_hand(combination)
+        self.assertEqual(result, "No es Escalera Real")
 
 if __name__ == "__main__":
     unittest.main()
