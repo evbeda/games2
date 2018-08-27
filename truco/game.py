@@ -65,6 +65,32 @@ class Game():
                 self.turno_envido = 0
                 return aux
 
+    def cantos_real_envido(self, pos, canto):
+        if canto == "Real Envido":
+            if len(self.players[0].hiddenCards) == 3 and pos == 0:
+                aux = [self.players[pos].get_name(), canto]
+                self.cantos_envidos.append(aux)
+                self.turno_envido = 1
+                return aux
+            elif len(self.players[1].hiddenCards) == 3 and len(self.players[0].playedCards) == 1 and pos == 1:
+                aux = [self.players[pos].get_name(), canto]
+                self.cantos_envidos.append(aux)
+                self.turno_envido = 0
+                return aux
+
+    def cantos_falta_envido(self, pos, canto):
+        if canto == "Falta Envido":
+            if len(self.players[0].hiddenCards) == 3 and pos == 0:
+                aux = [self.players[pos].get_name(), canto]
+                self.cantos_envidos.append(aux)
+                self.turno_envido = 1
+                return aux
+            elif len(self.players[1].hiddenCards) == 3 and len(self.players[0].playedCards) == 1 and pos == 1:
+                aux = [self.players[pos].get_name(), canto]
+                self.cantos_envidos.append(aux)
+                self.turno_envido = 0
+                return aux
+
     def get_cantos_envido(self):
         try:
             return self.cantos_envidos[-1]

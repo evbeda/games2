@@ -221,13 +221,64 @@ class test_cantos(unittest.TestCase):
         resultado = game.cantos_envido(0, "Envido")
         self.assertEqual(resultado, ["1", "Envido"])
 
-    def test_envido_player_02(self):
+    def test_not_envido_player_02(self):
         deck = Mazo()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         resultado = game.cantos_envido(1, "Envido")
         self.assertEqual(resultado, None)
 
+    def test_envido_player_02(self):
+        deck = Mazo()
+        game = Game([self.player01, self.player02], deck)
+        game.deal()
+        self.player01.playedCards.append(self.player01.hiddenCards[1])
+        resultado = game.cantos_envido(1, "Envido")
+        self.assertEqual(resultado, ["2", "Envido"])
+
+    def test_real_envido_player_01(self):
+        deck = Mazo()
+        game = Game([self.player01, self.player02], deck)
+        game.deal()
+        resultado = game.cantos_real_envido(0, "Real Envido")
+        self.assertEqual(resultado, ["1", "Real Envido"])
+
+    def test_not_real_envido_player_02(self):
+        deck = Mazo()
+        game = Game([self.player01, self.player02], deck)
+        game.deal()
+        resultado = game.cantos_real_envido(1, "Real Envido")
+        self.assertEqual(resultado, None)
+
+    def test_real_envido_player_02(self):
+        deck = Mazo()
+        game = Game([self.player01, self.player02], deck)
+        game.deal()
+        self.player01.playedCards.append(self.player01.hiddenCards[1])
+        resultado = game.cantos_real_envido(1, "Real Envido")
+        self.assertEqual(resultado, ["2", "Real Envido"])
+
+    def test_falta_envido_player_01(self):
+        deck = Mazo()
+        game = Game([self.player01, self.player02], deck)
+        game.deal()
+        resultado = game.cantos_falta_envido(0, "Falta Envido")
+        self.assertEqual(resultado, ["1", "Falta Envido"])
+
+    def test_not_falta_envido_player_02(self):
+        deck = Mazo()
+        game = Game([self.player01, self.player02], deck)
+        game.deal()
+        resultado = game.cantos_falta_envido(1, "Falta Envido")
+        self.assertEqual(resultado, None)
+
+    def test_falta_envido_player_02(self):
+        deck = Mazo()
+        game = Game([self.player01, self.player02], deck)
+        game.deal()
+        self.player01.playedCards.append(self.player01.hiddenCards[1])
+        resultado = game.cantos_falta_envido(1, "Falta Envido")
+        self.assertEqual(resultado, ["2", "Falta Envido"])
 
 
 if __name__ == '__main__':
