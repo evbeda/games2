@@ -1,5 +1,5 @@
 import unittest
-
+from unittest.mock import patch
 from .blackjack import *
 from .mazo import cardsDictionary, colorDictionary
 from .game import Game
@@ -131,13 +131,93 @@ class TestGame(unittest.TestCase):
         game.start_game()
         result = len(game.player.hand.cards)
         self.assertEqual(result, 2)
-    
+
     def test_dealer_has_two_initial_cards(self):
         game = Game()
         game.start_game()
         result = len(game.dealer_hand.cards)
         self.assertEqual(result, 2)
-        
+
+    def test_dealer_has_BJ_first(self):
+        game = Game()
+        game.start_game()
+        game.dealer_hand.cards = ['Ah', 'Jd']
+        game.dealer_hand.value = 21
+        game.player.hand.cards = ['Ad', '8d']
+        game.player.hand.value = 18
+        result = game.who_wins()
+        self.assertEqual('Dealer Wins!', result)
+
+    def test_both_have_BJ_first(self):
+        game = Game()
+        game.start_game()
+        game.dealer_hand.cards = ['Ah', 'Jd']
+        game.dealer_hand.value = 21
+        game.player.hand.cards = ['Ad', 'Jh']
+        game.player.hand.value = 21
+        result = game.who_wins()
+        self.assertEqual('TIE!', result)
+
+    def test_player_has_BJ_first(self):
+        game = Game()
+        game.start_game()
+        game.dealer_hand.cards = ['Ah', '8d']
+        game.dealer_hand.value = 18
+        game.player.hand.cards = ['Ad', 'Jh']
+        game.player.hand.value = 21
+        result = game.who_wins()
+        self.assertEqual('Player Wins!', result)
+
+    def test_player_has_more_than_21(self):
+        game = Game()
+        game.start_game()
+        game.dealer_hand.cards = ['Kd', '7d', '3d']
+        game.dealer_hand.value = 20
+        game.player.hand.cards = ['Kd', 'Jh', '7d']
+        game.player.hand.value = 27
+        result = game.who_wins()
+        self.assertEqual('Dealer Wins!', result)
+
+    def test_dealer_has_more_than_21(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['Kd', '7d', '3d']
+        game.player.hand.value = 20
+        game.dealer_hand.cards = ['Kd', 'Jh', '7d']
+        game.dealer_hand.value = 27
+        result = game.who_wins()
+        self.assertEqual('Player Wins!', result)
+
+    def test_dealer_has_better_hand(self):
+        game = Game()
+        game.start_game()
+        game.dealer_hand.cards = ['Kd', '7d', '3d']
+        game.dealer_hand.value = 20
+        game.player.hand.cards = ['Kd', '8d']
+        game.player.hand.value = 18
+        result = game.who_wins()
+        self.assertEqual('Dealer Wins!', result)
+
+    def test_player_has_better_hand(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['Kd', '7d', '3d']
+        game.player.hand.value = 20
+        game.dealer_hand.cards = ['Kd', '8d']
+        game.dealer_hand.value = 18
+        result = game.who_wins()
+        self.assertEqual('Player Wins!', result)
+
+    def test_player_dealer_same_cards(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['Kh', '7d']
+        game.player.hand.value = 17
+        game.dealer_hand.cards = ['Kd', '7h']
+        game.dealer_hand.value = 17
+        result = game.who_wins()
+        self.assertEqual('TIE!', result)
+
 
 if __name__ == "__main__":
     unittest.main()
