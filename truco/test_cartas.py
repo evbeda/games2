@@ -280,6 +280,86 @@ class test_cantos(unittest.TestCase):
         resultado = game.cantos_falta_envido(1, "Falta Envido")
         self.assertEqual(resultado, ["2", "Falta Envido"])
 
+    def test_calcular_envido_pintas_iguales(self):
+        deck = Mazo()
+        player1 = Player('1')
+        player2 = Player('2')
+        player1.hiddenCards = [Carta(ESPADA, 1),Carta(ESPADA, 10), Carta(ESPADA, 4)]
+        player2.hiddenCards = [Carta(BASTO, 1), Carta(BASTO, 5), Carta(BASTO, 2)]
+        game = Game([player1, player2], deck)
+        resultado = game.comparar_puntos()
+        self.assertEqual(resultado,[25, 27])
+
+    def test_calcular_envido_pintas_iguales_2(self):
+        deck = Mazo()
+        player1 = Player('1')
+        player2 = Player('2')
+        player1.hiddenCards = [Carta(ESPADA, 10),Carta(ESPADA, 11), Carta(ESPADA, 12)]
+        player2.hiddenCards = [Carta(BASTO, 10), Carta(BASTO, 12), Carta(BASTO, 5)]
+        game = Game([player1, player2], deck)
+        resultado = game.comparar_puntos()
+        self.assertEqual(resultado,[20, 25])
+
+    def test_calcular_envido_pintas_iguales_3(self):
+        deck = Mazo()
+        player1 = Player('1')
+        player2 = Player('2')
+        player1.hiddenCards = [Carta(ESPADA, 1),Carta(ESPADA, 2), Carta(ESPADA, 3)]
+        player2.hiddenCards = [Carta(BASTO, 1), Carta(BASTO, 10), Carta(BASTO, 5)]
+        game = Game([player1, player2], deck)
+        resultado = game.comparar_puntos()
+        self.assertEqual(resultado,[25, 26])
+
+    def test_calcular_envido_pintas_iguales_4(self):
+        deck = Mazo()
+        player1 = Player('1')
+        player2 = Player('2')
+        player1.hiddenCards = [Carta(ESPADA, 10),Carta(ESPADA, 12), Carta(ESPADA, 3)]
+        player2.hiddenCards = [Carta(BASTO, 11), Carta(BASTO, 10), Carta(BASTO, 12)]
+        game = Game([player1, player2], deck)
+        resultado = game.comparar_puntos()
+        self.assertEqual(resultado,[23, 20])
+
+    def test_calcular_envido_2_iguales(self):
+        deck = Mazo()
+        player1 = Player('1')
+        player2 = Player('2')
+        player1.hiddenCards = [Carta(ESPADA, 2),Carta(ORO, 12), Carta(ESPADA, 3)]
+        player2.hiddenCards = [Carta(BASTO, 11), Carta(ESPADA, 10), Carta(BASTO, 12)]
+        game = Game([player1, player2], deck)
+        resultado = game.comparar_puntos()
+        self.assertEqual(resultado,[25, 20])
+
+    def test_calcular_envido_2_iguales_2(self):
+        deck = Mazo()
+        player1 = Player('1')
+        player2 = Player('2')
+        player1.hiddenCards = [Carta(ESPADA, 10),Carta(BASTO, 12), Carta(ESPADA, 11)]
+        player2.hiddenCards = [Carta(BASTO, 5), Carta(ESPADA, 10), Carta(BASTO, 12)]
+        game = Game([player1, player2], deck)
+        resultado = game.comparar_puntos()
+        self.assertEqual(resultado,[20, 25])
+
+    def test_calcular_envido_2_iguales_3(self):
+        deck = Mazo()
+        player1 = Player('1')
+        player2 = Player('2')
+        player1.hiddenCards = [Carta(COPA, 10),Carta(ESPADA, 12), Carta(ESPADA, 3)]
+        player2.hiddenCards = [Carta(BASTO, 1), Carta(COPA, 3), Carta(BASTO, 5)]
+        game = Game([player1, player2], deck)
+        resultado = game.comparar_puntos()
+        self.assertEqual(resultado,[23, 26])
+
+    def test_calcular_envido_2_iguales_4(self):
+        deck = Mazo()
+        player1 = Player('1')
+        player2 = Player('2')
+        player1.hiddenCards = [Carta(ESPADA, 10),Carta(ESPADA, 1), Carta(BASTO, 1)]
+        player2.hiddenCards = [Carta(BASTO, 6), Carta(COPA, 10), Carta(BASTO, 7)]
+        game = Game([player1, player2], deck)
+        resultado = game.comparar_puntos()
+        self.assertEqual(resultado,[21, 33])
+
 
 if __name__ == '__main__':
     unittest.main()
