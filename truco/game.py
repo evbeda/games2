@@ -1,3 +1,7 @@
+from .jugadas import combinaciones_envido
+from .carta import Carta
+
+
 class Game():
     def __init__(self, players, deck):
         self.players = players
@@ -90,6 +94,134 @@ class Game():
                 self.cantos_envidos.append(aux)
                 self.turno_envido = 0
                 return aux
+
+    def aceptar_canto(self):
+        if len(self.cantos_envidos) == 1:
+            canto = self.cantos_envidos[0][1]
+            print(canto)
+        for c in range(len(combinaciones_envido)):
+            if combinaciones_envido[c][0] == canto and len(combinaciones_envido[c]) == 3:
+                print(combinaciones_envido[c][0])
+                self.comparar_puntos()
+
+    def comparar_puntos(self):
+        cards_player_01 = []
+        cards_player_02 = self.players[1].hiddenCards
+        puntaje_player_01 = 0
+        puntaje_player_02 = 0
+        if len(self.players[0].playedCards) != 0:
+            cards_player_01.append(self.players[0].playedCards[0])
+            cards_player_01.append(self.players[0].hiddenCards[0])
+            cards_player_01.append(self.players[0].hiddenCards[1])
+        else:
+            cards_player_01 = self.players[0].hiddenCards
+        cartas = []
+        c = 0
+        if cards_player_01[c].suit == cards_player_01[c+1].suit and cards_player_01[c+1].suit == cards_player_01[c+2].suit:
+            for card in cards_player_01:
+                cartas.append(card.number)
+            cartas.sort(reverse=True)
+            if cartas[c] >= 10:
+                if cartas[c + 1] >= 10:
+                    if cartas[c + 2] >= 10:
+                            puntaje_player_01 = 20
+                    else:
+                        puntaje_player_01 = 20 + cartas[c + 2]
+                else:
+                    puntaje_player_01 = cartas[c + 1] + cartas[c + 2] + 20
+            else:
+                puntaje_player_01 = cartas[c] + cartas[c + 1] + 20
+        elif cards_player_01[c].suit == cards_player_01[c+1].suit:
+            cartas.append(cards_player_01[c].number)
+            cartas.append(cards_player_01[c + 1].number)
+            cartas.sort(reverse=True)
+            if cartas[c]>= 10:
+                if cartas[c + 1] >= 10:
+                    puntaje_player_01 = 20
+                else:
+                    puntaje_player_01 = cartas[c + 1] + 20
+            else:
+                puntaje_player_01 = cartas[c] + cartas[c + 1] + 20
+        elif cards_player_01[c].suit == cards_player_01[c+2].suit:
+            cartas.append(cards_player_01[c].number)
+            cartas.append(cards_player_01[c + 2].number)
+            cartas.sort(reverse=True)
+            if cartas[c]>= 10:
+                if cartas[c + 1] >= 10:
+                    puntaje_player_01 = 20
+                else:
+                    puntaje_player_01 = cartas[c + 1] + 20
+            else:
+                puntaje_player_01 = cartas[c] + cartas[c + 1] + 20
+
+        elif cards_player_01[c+1].suit == cards_player_01[c+2].suit:
+            cartas.append(cards_player_01[c + 1].number)
+            cartas.append(cards_player_01[c + 2].number)
+            cartas.sort(reverse=True)
+            if cartas[c]>= 10:
+                if cartas[c + 1] >= 10:
+                    puntaje_player_01 = 20
+                else:
+                    puntaje_player_01 = cartas[c + 1] + 20
+            else:
+                puntaje_player_01 = cartas[c] + cartas[c + 1] + 20
+
+        cartas = []
+        if cards_player_02[c].suit == cards_player_02[c+1].suit and cards_player_02[c+1].suit == cards_player_02[c+2].suit:
+            for card in cards_player_02:
+                cartas.append(card.number)
+            cartas.sort(reverse=True)
+            if cartas[c] >= 10:
+                if cartas[c + 1] >= 10:
+                    if cartas[c + 2] >= 10:
+                            puntaje_player_02 = 20
+                    else:
+                        puntaje_player_02 = 20 + cartas[c+2]
+                else:
+                    puntaje_player_02 = cartas[c + 1] + cartas[c + 2] + 20
+            else:
+                puntaje_player_02 = cartas[c] + cartas[c + 1] + 20
+        elif cards_player_02[c].suit == cards_player_02[c+1].suit:
+            cartas.append(cards_player_02[c].number)
+            cartas.append(cards_player_02[c + 1].number)
+            cartas.sort(reverse=True)
+            if cartas[c]>= 10:
+                if cartas[c + 1] >= 10:
+                    puntaje_player_02 = 20
+                else:
+                    puntaje_player_02 = cartas[c + 1] + 20
+            else:
+                puntaje_player_02 = cartas[c] + cartas[c + 1] + 20
+
+        elif cards_player_02[c].suit == cards_player_02[c+2].suit:
+            cartas.append(cards_player_02[c].number)
+            cartas.append(cards_player_02[c + 2].number)
+            cartas.sort(reverse=True)
+            if cartas[c]>= 10:
+                if cartas[c + 1] >= 10:
+                    puntaje_player_02 = 20
+                else:
+                    puntaje_player_02 = cartas[c + 1] + 20
+            else:
+                puntaje_player_02 = cartas[c] + cartas[c + 1] + 20
+
+        elif cards_player_02[c+1].suit == cards_player_02[c+2].suit:
+            cartas.append(cards_player_02[c + 1].number)
+            cartas.append(cards_player_02[c + 2].number)
+            cartas.sort(reverse=True)
+            if cartas[c]>= 10:
+                if cartas[c + 1] >= 10:
+                    puntaje_player_02 = 20
+                else:
+                    puntaje_player_02 = cartas[c + 1] + 20
+            else:
+                puntaje_player_02 = cartas[c] + cartas[c + 1] + 20
+        return [puntaje_player_01, puntaje_player_02]
+
+        # print(cartas)
+        # elif 2 son iguales
+        # elif 3 distintas
+        # c = 0
 
     def get_cantos_envido(self):
         try:
