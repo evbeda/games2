@@ -72,8 +72,9 @@ class GameBattleship():
             else:
                 return "error, mas parametros de los requeridos (4)"
 
-        if self.state == game_states[1]:
+        elif self.state == game_states[1]:
             params = text_input.split(', ')
+            # TODO Should check number of params only for human turn
             if len(params) == 2:
                 if self.turn == possible_turn[0]:
                     result = self.player_cpu.board_own.shoot(
@@ -102,9 +103,20 @@ class GameBattleship():
                             True
                         )
                         result = 'You hit a boat'
+                    if not self.player_cpu.board_own.there_are_boats():
+                        self.state = game_states[3]
                     return result
                 elif self.turn == possible_turn[1]:
-                    pass
-
+                    coordenate = self.player_cpu.pick_coordenate()
+                    self.player_human.board_own.shoot(
+                        '{0}, {1}'.format(coordenate[0], coordenate[1])
+                    )
+                    if not self.player_human.board_own.there_are_boats():
+                        self.state = game_states[2]
+                    return 'You lose.'
             else:
                 return "error, mas parametros de los requeridos (2)"
+        elif self.state == game_states[2]:
+            return 'La CPU gano!'
+        elif self.state == game_states[3]:
+            return 'Felicitaciones! Ganaste!'
