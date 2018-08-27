@@ -1,8 +1,10 @@
 import unittest
+from unittest.mock import patch
 
 from battleship.board import Board
 from battleship.game import GameBattleship
 from .player import PlayerCPU, PlayerHuman
+from .game import game_states, possible_turn
 
 
 class test_battleship(unittest.TestCase):
@@ -189,6 +191,116 @@ class test_battleship(unittest.TestCase):
         result = self.game.play('2, 2')
         self.assertEqual(expected, result)
 
+    def test_game_dont_change_state(self):
+        board_cpu = Board()
+        board = [
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        board_cpu.board = board
+        self.game.player_cpu.board_own = board_cpu
+        expected = self.game.state
+        self.game.play('1, 2')
+        self.assertEqual(expected, self.game.state)
+
+    def test_game_dont_change_state_hit(self):
+        board_cpu = Board()
+        board = [
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        board_cpu.board = board
+        self.game.player_cpu.board_own = board_cpu
+        expected = self.game.state
+        self.game.play('0, 0')
+        self.assertEqual(expected, self.game.state)
+
+    def test_game_change_state_hit(self):
+        board_cpu = Board()
+        board = [
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        board_cpu.board = board
+        self.game.player_cpu.board_own = board_cpu
+        expected = self.game.state
+        self.game.play('0, 0')
+        self.assertNotEqual(expected, self.game.state)
+
+    # @unittest.mock.patch('random.randint')
+    # def test_game_change_state_cpu_hit(self, mock_randint):
+    #         board_player = Board()
+    #         board = [
+    #             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #         ]
+    #         board_player.board = board
+    #         self.game.player_human.board_own = board_player
+    #         self.game.turn = possible_turn[1]
+    #         mock_randint = 0
+    #         self.game.play('')
+    #         self.assertEqual(self.game.state, game_states[2])
+
+    @unittest.mock.patch('random.randint')
+    def test_game_check_cpu_hit(self, mock_randint):
+            board_player = Board()
+            board = [
+                [1, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            ]
+            board_player.board = board
+            self.game.player_human.board_own = board_player
+            self.game.turn = 'cpu'
+            mock_randint = 0
+            self.game.play('')
+            result = self.game.player_human.board_own.board[0][0]
+            self.assertNotEqual(9, result)
+
+    def test_player_cpu_pick_coordenate(self):
+        cpu_player = PlayerCPU()
+        coordenate = cpu_player.pick_coordenate()
+        self.assertTrue(0 <= coordenate[0] < 10)
+        self.assertTrue(0 <= coordenate[1] < 10)
 
 if __name__ == "__main__":
     unittest.main()

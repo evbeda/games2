@@ -150,6 +150,12 @@ class test_board(unittest.TestCase):
         continue_turn = board.turn_decision_hit(result)
         self.assertFalse(continue_turn)
 
+    def test_there_are_boats(self):
+        board = Board()
+        board.set_boat(1, 1, 1, "vertical")
+        self.assertTrue(board.there_are_boats())
+        board.shoot(1,1)
+        self.assertFalse(board.there_are_boats())
 
 if __name__ == '__main__':
     unittest.main()

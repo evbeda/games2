@@ -7,6 +7,10 @@ class PlayerCPU(object):
     def __init__(self):
         self.board_own = Board()
         self.board_opponent = Board()
+        self.possible_coordenates = []
+        for i in range(9):
+            for j in range(9):
+                self.possible_coordenates.append([i, j])
 
     def get_boards(self):
         return [self.board_own, self.board_opponent]
@@ -29,6 +33,9 @@ class PlayerCPU(object):
 
         else:
             return False
+
+    def pick_coordenate(self):
+        return self.possible_coordenates.pop(randint(0, 99))
 
 
 class PlayerHuman(object):

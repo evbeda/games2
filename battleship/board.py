@@ -140,3 +140,10 @@ class Board(object):
             else:
                 character = '-'
             self.board[row][column] = character
+
+    def there_are_boats(self):
+        for i in range(len(self.board)):
+            for x in range(len(self.board[0])):
+                if self.board[i][x] != 0 and self.board[i][x] != 9:
+                    return True
+        return False
