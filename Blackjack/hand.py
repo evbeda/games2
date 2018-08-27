@@ -12,11 +12,12 @@ class Hand():
             self.cards.append(card)
             total_value += cardsDictionary[card[0]]
         self.value = total_value
+        self.sum_cards()
 
     def sum_cards(self):
-        sum = self.value
-        if [['Ah', 'Ad', 'Ac', 'Ad'] in self.cards]:
-            if self.value > 21:
-                # Decrease value by 10 because A is going to be 1
-                sum -= 10
-        return sum
+        for as_card in ['Ah', 'Ad', 'Ac', 'As']:
+            if as_card in self.cards:
+                if self.value > 21:
+                    # Decrease value by 10 because A is going to be 1
+                    self.value -= 10
+        return self.value
