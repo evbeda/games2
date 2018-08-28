@@ -35,7 +35,7 @@ class PlayerCPU(object):
             return False
 
     def pick_coordenate(self):
-        return self.possible_coordenates.pop(randint(0, 99))
+        return self.possible_coordenates.pop(randint(0, len(self.possible_coordenates)))
 
 
 class PlayerHuman(object):
