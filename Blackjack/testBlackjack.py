@@ -245,19 +245,24 @@ class TestGame(unittest.TestCase):
 
     def test_play_stand(self):
         game = Game()
-        game.deck.cards = ['7d','6h','Jd','Qd','Kh']
         game.start_game()
         game.player.money = 5
-        result = game.play('=')
-        self.assertEqual('Player Wins!', result)
+        game.player.hand.cards = ['Kh', 'Qd']
+        game.player.hand.value = 20
+        game.dealer_hand.cards = ['Kd', '8h']
+        game.dealer_hand.value = 18
+        self.assertEqual('Player Wins!', game.play('='))
 
     def test_play_one_more(self):
         game = Game()
-        game.deck.cards = ['7d','6h','Jd','Qd','Kh']
         game.start_game()
         game.player.money = 5
-        result = game.play('+')
-        self.assertEqual('Dealer Wins!', result)
+        game.player.hand.cards = ['Kh', '9d']
+        game.player.hand.value = 19
+        game.dealer_hand.cards = ['Kd', 'Th']
+        game.dealer_hand.value = 20
+        with unittest.mock.patch('Blackjack.deck.Deck.deal', return_value = ['3d']):
+            self.assertEqual(game.play('+'), 'Dealer Wins!')
 
     def test_play_one_more_wins(self):
         game = Game()
@@ -265,7 +270,6 @@ class TestGame(unittest.TestCase):
         game.start_game()
         game.player.money = 5
         result = game.play('+')
-
         self.assertEqual('Player Wins!', result)
 
     def test_player_dealer_21(self):
@@ -281,16 +285,12 @@ class TestGame(unittest.TestCase):
     def test_next_turn(self):
         game = Game()
         game.start_game()
-        self.assertEqual(game.next_turn(), 'Do you want to stop (=) or have another card (+)?')
+        self.assertEqual(game.next_turn(), 'Do you want to stop (=) or have another card (+)?, q to quit')
 
     def test_next_turn_game_finished(self):
         game = Game()
         game.start_game()
-        game.player.hand.cards = ['Kh', '7d']
-        game.player.hand.value = 17
-        game.dealer_hand.cards = ['Kd', 'Ah']
-        game.dealer_hand.value = 21
-        game.who_wins()
+        game.is_playing = False
         self.assertEqual(game.next_turn(), 'Game Over')
 
     def test_next_turn_game_continue(self):
@@ -302,6 +302,12 @@ class TestGame(unittest.TestCase):
         game.dealer_hand.value = 15
         with unittest.mock.patch('Blackjack.hand.Hand.deal_card', return_value = '2d'):
             self.assertEqual(game.play('+'), 'CONTINUE')
+
+    def test_force_quit(self):
+        game = Game()
+        self.assertEqual(game.next_turn(), 'Do you want to stop (=) or have another card (+)?, q to quit')
+        self.assertEqual(game.play('q'), 'You left the game')
+        self.assertFalse(game.is_playing)
 
 
 if __name__ == "__main__":

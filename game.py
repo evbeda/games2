@@ -1,5 +1,6 @@
 from guess_number_game.guess_number_game import GuessNumberGame
 from Generala.game import Game as GeneralaGame
+from Blackjack.game import Game as BlackjackGame
 
 
 class Game(object):
@@ -9,6 +10,7 @@ class Game(object):
         self.games = [
             GuessNumberGame,
             GeneralaGame,
+            BlackjackGame,
         ]
 
     def output(self, text):
@@ -86,6 +88,7 @@ class Game(object):
                     self.output(self.active_game.play(*game_input))
                 # except Exception as e:
                 #     self.output('Sorry... {}'.format(e))
+                self.output(self.active_game.board)
 
 
 if __name__ == '__main__':
