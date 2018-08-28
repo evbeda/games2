@@ -40,3 +40,11 @@ class Carta():
             return 'EQUAL'
         else:
             return 'LOWER'
+
+    def __str__(self):
+        return "{} {}".format(self.number, self.suit)
+
+    def __eq__(self, other):
+        if isinstance(other, Carta):
+            return (self.number == other.number and self.suit == self.suit)
+        return False

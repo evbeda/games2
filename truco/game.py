@@ -3,6 +3,9 @@ from .carta import Carta
 
 
 class Game():
+
+    name = 'Truco Game'
+
     def __init__(self, players, deck):
         self.players = players
         self.deck = deck
@@ -117,36 +120,36 @@ class Game():
             cards_player_01 = self.players[0].hiddenCards
         cartas = []
         c = 0
-        if cards_player_01[c].suit == cards_player_01[c+1].suit and cards_player_01[c+1].suit == cards_player_01[c+2].suit:
+        if cards_player_01[c].suit == cards_player_01[c + 1].suit and cards_player_01[c + 1].suit == cards_player_01[c + 2].suit:
             for card in cards_player_01:
                 cartas.append(card.number)
             cartas.sort(reverse=True)
             if cartas[c] >= 10:
                 if cartas[c + 1] >= 10:
                     if cartas[c + 2] >= 10:
-                            puntaje_player_01 = 20
+                        puntaje_player_01 = 20
                     else:
                         puntaje_player_01 = 20 + cartas[c + 2]
                 else:
                     puntaje_player_01 = cartas[c + 1] + cartas[c + 2] + 20
             else:
                 puntaje_player_01 = cartas[c] + cartas[c + 1] + 20
-        elif cards_player_01[c].suit == cards_player_01[c+1].suit:
+        elif cards_player_01[c].suit == cards_player_01[c + 1].suit:
             cartas.append(cards_player_01[c].number)
             cartas.append(cards_player_01[c + 1].number)
             cartas.sort(reverse=True)
-            if cartas[c]>= 10:
+            if cartas[c] >= 10:
                 if cartas[c + 1] >= 10:
                     puntaje_player_01 = 20
                 else:
                     puntaje_player_01 = cartas[c + 1] + 20
             else:
                 puntaje_player_01 = cartas[c] + cartas[c + 1] + 20
-        elif cards_player_01[c].suit == cards_player_01[c+2].suit:
+        elif cards_player_01[c].suit == cards_player_01[c + 2].suit:
             cartas.append(cards_player_01[c].number)
             cartas.append(cards_player_01[c + 2].number)
             cartas.sort(reverse=True)
-            if cartas[c]>= 10:
+            if cartas[c] >= 10:
                 if cartas[c + 1] >= 10:
                     puntaje_player_01 = 20
                 else:
@@ -154,11 +157,11 @@ class Game():
             else:
                 puntaje_player_01 = cartas[c] + cartas[c + 1] + 20
 
-        elif cards_player_01[c+1].suit == cards_player_01[c+2].suit:
+        elif cards_player_01[c + 1].suit == cards_player_01[c + 2].suit:
             cartas.append(cards_player_01[c + 1].number)
             cartas.append(cards_player_01[c + 2].number)
             cartas.sort(reverse=True)
-            if cartas[c]>= 10:
+            if cartas[c] >= 10:
                 if cartas[c + 1] >= 10:
                     puntaje_player_01 = 20
                 else:
@@ -167,25 +170,25 @@ class Game():
                 puntaje_player_01 = cartas[c] + cartas[c + 1] + 20
 
         cartas = []
-        if cards_player_02[c].suit == cards_player_02[c+1].suit and cards_player_02[c+1].suit == cards_player_02[c+2].suit:
+        if cards_player_02[c].suit == cards_player_02[c + 1].suit and cards_player_02[c + 1].suit == cards_player_02[c + 2].suit:
             for card in cards_player_02:
                 cartas.append(card.number)
             cartas.sort(reverse=True)
             if cartas[c] >= 10:
                 if cartas[c + 1] >= 10:
                     if cartas[c + 2] >= 10:
-                            puntaje_player_02 = 20
+                        puntaje_player_02 = 20
                     else:
-                        puntaje_player_02 = 20 + cartas[c+2]
+                        puntaje_player_02 = 20 + cartas[c + 2]
                 else:
                     puntaje_player_02 = cartas[c + 1] + cartas[c + 2] + 20
             else:
                 puntaje_player_02 = cartas[c] + cartas[c + 1] + 20
-        elif cards_player_02[c].suit == cards_player_02[c+1].suit:
+        elif cards_player_02[c].suit == cards_player_02[c + 1].suit:
             cartas.append(cards_player_02[c].number)
             cartas.append(cards_player_02[c + 1].number)
             cartas.sort(reverse=True)
-            if cartas[c]>= 10:
+            if cartas[c] >= 10:
                 if cartas[c + 1] >= 10:
                     puntaje_player_02 = 20
                 else:
@@ -193,11 +196,11 @@ class Game():
             else:
                 puntaje_player_02 = cartas[c] + cartas[c + 1] + 20
 
-        elif cards_player_02[c].suit == cards_player_02[c+2].suit:
+        elif cards_player_02[c].suit == cards_player_02[c + 2].suit:
             cartas.append(cards_player_02[c].number)
             cartas.append(cards_player_02[c + 2].number)
             cartas.sort(reverse=True)
-            if cartas[c]>= 10:
+            if cartas[c] >= 10:
                 if cartas[c + 1] >= 10:
                     puntaje_player_02 = 20
                 else:
@@ -205,11 +208,11 @@ class Game():
             else:
                 puntaje_player_02 = cartas[c] + cartas[c + 1] + 20
 
-        elif cards_player_02[c+1].suit == cards_player_02[c+2].suit:
+        elif cards_player_02[c + 1].suit == cards_player_02[c + 2].suit:
             cartas.append(cards_player_02[c + 1].number)
             cartas.append(cards_player_02[c + 2].number)
             cartas.sort(reverse=True)
-            if cartas[c]>= 10:
+            if cartas[c] >= 10:
                 if cartas[c + 1] >= 10:
                     puntaje_player_02 = 20
                 else:
@@ -230,8 +233,25 @@ class Game():
             return None
 
     def get_state(self):
-        status = [self.turno_juego, self.turno_envido, self.turno_truco, self.turno_retruco, self.turno_vale_cuatro]
+        status = [self.turno_juego,
+                  self.turno_envido,
+                  self.turno_truco,
+                  self.turno_retruco,
+                  self.turno_vale_cuatro
+                  ]
         return status
+
+    def next_turn(self):
+        pass
+
+    def play(self, string):
+        pass
+
+    def board(self):
+        return self.players[self.turno_juego].show_hand_to_board()
+
+
+
 
     def reset_state(self):
         self.turno_juego = None
