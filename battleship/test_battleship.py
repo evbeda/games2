@@ -296,12 +296,12 @@ class test_battleship(unittest.TestCase):
             result = self.game.player_human.board_own.board[0][0]
             self.assertNotEqual(9, result)
 
-    @unittest.skip("error on get index on array...")
     def test_player_cpu_pick_coordenate(self):
         cpu_player = PlayerCPU()
         coordenate = cpu_player.pick_coordenate()
         self.assertTrue(0 <= coordenate[0] < 10)
         self.assertTrue(0 <= coordenate[1] < 10)
+
 
 if __name__ == "__main__":
     unittest.main()
