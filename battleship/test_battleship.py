@@ -302,6 +302,24 @@ class test_battleship(unittest.TestCase):
         self.assertTrue(0 <= coordenate[0] < 10)
         self.assertTrue(0 <= coordenate[1] < 10)
 
+    def test_doblehit(self):
+        board_cpu = Board()
+        board = [
+            [31, 9, 31, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        board_cpu.board = board
+        result = board_cpu.shoot(0, 1)
+        self.assertEqual(result, 'already shoot')
+
 
 if __name__ == "__main__":
     unittest.main()

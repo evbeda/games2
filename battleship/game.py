@@ -89,6 +89,8 @@ class GameBattleship():
                             False
                         )
                         result = 'You only hit water! Try it again'
+                    elif result == 'Already shoot':
+                        result = 'You already shoo in this place. Try again'
                     elif result == 'sunked':
                         self.player_human.board_opponent.mark_shoot(
                             int(params[0]),
