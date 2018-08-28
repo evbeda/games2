@@ -2,7 +2,7 @@ from . import ESPADA, BASTO, ORO, COPA
 
 
 class Carta():
-    mazoJerarquico = (
+    mazo_jerarquico = (
         ((ESPADA, 1,),),
         ((BASTO, 1,),),
         ((ESPADA, 7,),),
@@ -25,18 +25,18 @@ class Carta():
         self.position = self.get_position()
 
     def get_position(self):
-        for i in range(len(self.mazoJerarquico)):
-            for x in range(len(self.mazoJerarquico[i])):
+        for i in range(len(self.mazo_jerarquico)):
+            for x in range(len(self.mazo_jerarquico[i])):
                 if (
-                    self.suit == self.mazoJerarquico[i][x][0] and
-                    self.number == self.mazoJerarquico[i][x][1]
+                        self.suit == self.mazo_jerarquico[i][x][0] and
+                        self.number == self.mazo_jerarquico[i][x][1]
                 ):
                     return i
 
-    def compare_with(self, cartaDos):
-        if self.position < cartaDos.position:
+    def compare_with(self, carta_dos):
+        if self.position < carta_dos.position:
             return 'GREATER'
-        elif self.position == cartaDos.position:
+        elif self.position == carta_dos.position:
             return 'EQUAL'
         else:
             return 'LOWER'
@@ -46,5 +46,5 @@ class Carta():
 
     def __eq__(self, other):
         if isinstance(other, Carta):
-            return (self.number == other.number and self.suit == self.suit)
+            return self.number == other.number and self.suit == other.suit
         return False
