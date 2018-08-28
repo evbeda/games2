@@ -116,7 +116,9 @@ class Board(object):
     def shoot(self, row, column):
         if self.board[row][column] == 0:
             return "water"
-        elif self.board[row][column] != 0:
+        elif self.board[row][column] == 9:
+            return "already shoot"
+        elif self.board[row][column] != 0 and self.board[row][column] != 9:
             result = self.check_cross(self.board[row][column])
             self.board[row][column] = 9
             return result
