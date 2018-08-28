@@ -19,3 +19,18 @@ class Player():
 
     def is_hand(self):
         return self.is_hand
+
+    def show_hand_to_board(self):
+        hidden = ''
+        played = ''
+        for i in self.hiddenCards:
+            hidden += i.__str__()
+            hidden += ', '
+        for i in self.playedCards:
+            played += i.__str__()
+            played += ', '
+        return "Cartas en mano: {} \n {}{}".format(
+            hidden,
+            "Cartas jugadas: ",
+            played
+        )

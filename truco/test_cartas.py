@@ -9,6 +9,46 @@ from .game import Game
 
 
 class TestCartas (unittest.TestCase):
+
+
+    def test_play_card(self):
+        player = Player('Leo')
+        player.hiddenCards = [Carta(ESPADA, 10),
+                              Carta(ESPADA, 11),
+                              Carta(ESPADA, 12)
+                              ]
+        player.play_card(0)
+        expected = Carta(ESPADA, 10)
+        self.assertEqual(expected, player.playedCards[0])
+
+    def test_play_card_not_empty(self):
+        player = Player('Leo')
+        player.hiddenCards = [Carta(ESPADA, 10),
+                              Carta(ESPADA, 11),
+                              Carta(ESPADA, 12)
+                              ]
+        player.play_card(0)
+        self.assertEqual(len(player.playedCards), 1)
+
+    def test_show_hand_to_board(self):
+        player = Player('Leo')
+        player.hiddenCards = [Carta(ESPADA, 10),
+                              Carta(ESPADA, 11),
+                              Carta(ESPADA, 12)
+                              ]
+        expected = "Cartas en mano: 10 espada, 11 espada, 12 espada,  \n Cartas jugadas: "
+        self.assertEqual(expected, player.show_hand_to_board())
+
+    def test_show_hand_to_board_one_played(self):
+        player = Player('Leo')
+        player.hiddenCards = [Carta(ESPADA, 10),
+                              Carta(ESPADA, 11),
+                              Carta(ESPADA, 12)
+                              ]
+        player.play_card(1)
+        expected = "Cartas en mano: 10 espada, 12 espada,  \n Cartas jugadas: 11 espada, "
+        self.assertEqual(expected, player.show_hand_to_board())
+
     # CREACIONES
     def test_si_se_crea_carta(self):
         carta1 = Carta(ESPADA, 1)
@@ -51,6 +91,10 @@ class TestCartas (unittest.TestCase):
         carta2 = Carta(BASTO, 2)
         result = carta1.compare_with(carta2)
         self.assertEqual(result, 'LOWER')
+
+    def test_to_string(self):
+        carta1 = Carta(ESPADA, 5)
+        self.assertEqual(carta1.__str__(), "5 espada")
 
 
 class TestMazo(unittest.TestCase):
@@ -284,81 +328,110 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 1),Carta(ESPADA, 10), Carta(ESPADA, 4)]
-        player2.hiddenCards = [Carta(BASTO, 1), Carta(BASTO, 5), Carta(BASTO, 2)]
+        player1.hiddenCards = [Carta(ESPADA, 1), Carta(
+            ESPADA, 10), Carta(ESPADA, 4)]
+        player2.hiddenCards = [
+            Carta(BASTO, 1), Carta(BASTO, 5), Carta(BASTO, 2)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
-        self.assertEqual(resultado,[25, 27])
+        self.assertEqual(resultado, [25, 27])
 
     def test_calcular_envido_pintas_iguales_2(self):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 10),Carta(ESPADA, 11), Carta(ESPADA, 12)]
-        player2.hiddenCards = [Carta(BASTO, 10), Carta(BASTO, 12), Carta(BASTO, 5)]
+        player1.hiddenCards = [Carta(ESPADA, 10), Carta(
+            ESPADA, 11), Carta(ESPADA, 12)]
+        player2.hiddenCards = [
+            Carta(BASTO, 10), Carta(BASTO, 12), Carta(BASTO, 5)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
-        self.assertEqual(resultado,[20, 25])
+        self.assertEqual(resultado, [20, 25])
 
     def test_calcular_envido_pintas_iguales_3(self):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 1),Carta(ESPADA, 2), Carta(ESPADA, 3)]
-        player2.hiddenCards = [Carta(BASTO, 1), Carta(BASTO, 10), Carta(BASTO, 5)]
+        player1.hiddenCards = [
+            Carta(ESPADA, 1), Carta(ESPADA, 2), Carta(ESPADA, 3)]
+        player2.hiddenCards = [
+            Carta(BASTO, 1), Carta(BASTO, 10), Carta(BASTO, 5)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
-        self.assertEqual(resultado,[25, 26])
+        self.assertEqual(resultado, [25, 26])
 
     def test_calcular_envido_pintas_iguales_4(self):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 10),Carta(ESPADA, 12), Carta(ESPADA, 3)]
-        player2.hiddenCards = [Carta(BASTO, 11), Carta(BASTO, 10), Carta(BASTO, 12)]
+        player1.hiddenCards = [Carta(ESPADA, 10), Carta(
+            ESPADA, 12), Carta(ESPADA, 3)]
+        player2.hiddenCards = [
+            Carta(BASTO, 11), Carta(BASTO, 10), Carta(BASTO, 12)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
-        self.assertEqual(resultado,[23, 20])
+        self.assertEqual(resultado, [23, 20])
 
     def test_calcular_envido_2_iguales(self):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 2),Carta(ORO, 12), Carta(ESPADA, 3)]
-        player2.hiddenCards = [Carta(BASTO, 11), Carta(ESPADA, 10), Carta(BASTO, 12)]
+        player1.hiddenCards = [
+            Carta(ESPADA, 2), Carta(ORO, 12), Carta(ESPADA, 3)]
+        player2.hiddenCards = [Carta(BASTO, 11), Carta(
+            ESPADA, 10), Carta(BASTO, 12)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
-        self.assertEqual(resultado,[25, 20])
+        self.assertEqual(resultado, [25, 20])
 
     def test_calcular_envido_2_iguales_2(self):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 10),Carta(BASTO, 12), Carta(ESPADA, 11)]
-        player2.hiddenCards = [Carta(BASTO, 5), Carta(ESPADA, 10), Carta(BASTO, 12)]
+        player1.hiddenCards = [Carta(ESPADA, 10), Carta(
+            BASTO, 12), Carta(ESPADA, 11)]
+        player2.hiddenCards = [Carta(BASTO, 5), Carta(
+            ESPADA, 10), Carta(BASTO, 12)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
-        self.assertEqual(resultado,[20, 25])
+        self.assertEqual(resultado, [20, 25])
 
     def test_calcular_envido_2_iguales_3(self):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(COPA, 10),Carta(ESPADA, 12), Carta(ESPADA, 3)]
-        player2.hiddenCards = [Carta(BASTO, 1), Carta(COPA, 3), Carta(BASTO, 5)]
+        player1.hiddenCards = [Carta(COPA, 10), Carta(
+            ESPADA, 12), Carta(ESPADA, 3)]
+        player2.hiddenCards = [
+            Carta(BASTO, 1), Carta(COPA, 3), Carta(BASTO, 5)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
-        self.assertEqual(resultado,[23, 26])
+        self.assertEqual(resultado, [23, 26])
 
     def test_calcular_envido_2_iguales_4(self):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 10),Carta(ESPADA, 1), Carta(BASTO, 1)]
-        player2.hiddenCards = [Carta(BASTO, 6), Carta(COPA, 10), Carta(BASTO, 7)]
+        player1.hiddenCards = [
+            Carta(ESPADA, 10), Carta(ESPADA, 1), Carta(BASTO, 1)]
+        player2.hiddenCards = [
+            Carta(BASTO, 6), Carta(COPA, 10), Carta(BASTO, 7)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
-        self.assertEqual(resultado,[21, 33])
+        self.assertEqual(resultado, [21, 33])
+
+    def test_return_board(self):
+        deck = Mazo()
+        player1 = Player('1')
+        player2 = Player('2')
+        player1.hiddenCards = [
+            Carta(ESPADA, 10), Carta(ESPADA, 1), Carta(BASTO, 1)]
+        player2.hiddenCards = [
+            Carta(BASTO, 6), Carta(COPA, 10), Carta(BASTO, 7)]
+        game = Game([player1, player2], deck)
+        game.change_hand()
+        result = game.board()
+        self.assertEqual(result, 'Cartas en mano: 6 basto, 10 copa, 7 basto,  \n Cartas jugadas: ')
 
 
 if __name__ == '__main__':
