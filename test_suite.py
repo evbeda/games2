@@ -19,6 +19,7 @@ from Generala.TestCategories import TestCategories
 from Generala.TestThrowDice import TestThrowDice
 from Generala.TestPlayer import TestPlayer
 from Generala.TestGame import TestGame
+from Generala.test_throw_class import TestThrow
 from guess_number_game import test_guess_number_game
 
 
@@ -42,6 +43,7 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestThrowDice))
     test_suite.addTest(unittest.makeSuite(TestPlayer))
     test_suite.addTest(unittest.makeSuite(TestGame))
+    test_suite.addTest(unittest.makeSuite(TestThrow))
     test_suite.addTest(unittest.makeSuite(test_guess_number_game))
     test_suite.addTest(test_game)
     test_suite.addTest(TG)

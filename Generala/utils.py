@@ -241,5 +241,3 @@ def check_throw(throw_array, points_to_check, throw_number):
             if throw_array[index] == SEIS['score']:
                 sum += SEIS['score']
         return sum
-
-
