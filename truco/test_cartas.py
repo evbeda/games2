@@ -238,6 +238,48 @@ class TestGame(unittest.TestCase):
         result = game.who_is_next()
         self.assertEqual(result, "PLAYER1")
 
+    def test_who_is_next_greater_p2(self):
+        deck = Mazo()
+        game = Game([self.player01, self.player02], deck)
+        game.deal()
+        self.player02.hidden_cards = []
+        carta_0 = Carta(ESPADA, 3)
+        carta_1 = Carta(BASTO, 7)
+        carta_2 = Carta(ESPADA, 5)
+        self.player02.hidden_cards = [carta_0, carta_1, carta_2]
+        self.player02.play_card(1)
+        carta_3 = Carta(ORO, 2)
+        carta_4 = Carta(BASTO, 4)
+        carta_5 = Carta(COPA, 5)
+        self.player01.hidden_cards = []
+        self.player01.hidden_cards = [carta_3, carta_4, carta_5]
+        self.player01.play_card(1)
+        result = game.who_is_next()
+        self.assertEqual(result, "PLAYER2")
+
+    def test_who_is_next_same_card_p1(self):
+        deck = Mazo()
+        self.player01 = Player('1')
+        self.player02 = Player('2')
+        game = Game([self.player01, self.player02], deck)
+        self.player01.reset_hand()
+        self.player02.reset_hand()
+        carta_0 = Carta(ESPADA, 3)
+        carta_1 = Carta(BASTO, 7)
+        carta_2 = Carta(ESPADA, 5)
+        self.player01.hidden_cards = [carta_0, carta_1, carta_2]
+        self.player01.play_card(0)
+        self.player02.is_hand = True
+        self.player01.is_hand = False
+        carta_3 = Carta(ORO, 3)
+        carta_4 = Carta(BASTO, 4)
+        carta_5 = Carta(COPA, 5)
+        self.player02.hidden_cards = [carta_3, carta_4, carta_5]
+        self.player02.play_card(0)
+
+        result = game.who_is_next()
+        self.assertEqual(result, "PLAYER2")
+
     def test_who_is_next_same_card_p2(self):
         deck = Mazo()
         self.player01 = Player('1')
@@ -254,6 +296,9 @@ class TestGame(unittest.TestCase):
         carta_2 = Carta(ESPADA, 5)
         self.player01.hidden_cards = [carta_0, carta_1, carta_2]
         self.player01.play_card(0)
+
+        self.player02.is_hand = True
+        self.player01.is_hand = False
 
         carta_3 = Carta(ORO, 3)
         carta_4 = Carta(BASTO, 4)
