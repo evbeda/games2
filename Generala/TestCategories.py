@@ -1,7 +1,7 @@
 import unittest
 from . import *
 from .utils import check_throw
-
+import collections
 
 class TestCategories(unittest.TestCase):
 
@@ -83,7 +83,104 @@ class TestCategories(unittest.TestCase):
         mockThrow = [1, 2, 4, 5, 6]
         isNotEscalera = check_throw(mockThrow, ESCALERA['name'], numOfThrows)
         self.assertEqual(isNotEscalera, 0)
+    
+    def test_full_servido1(self):
+        numOfThrows = 1
+        mockThrow = [1, 1, 1, 2, 2]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
 
+    def test_full_servido2(self):
+        numOfThrows = 1
+        mockThrow = [1, 1, 1, 3, 3]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
+
+    def test_full_servido3(self):
+        numOfThrows = 1
+        mockThrow = [1, 1, 1, 4, 4]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])    
+
+
+    def test_full_servido6(self):
+        numOfThrows = 1
+        mockThrow = [1, 1, 1, 5, 5]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
+
+    def test_full_servido7(self):
+        numOfThrows = 1
+        mockThrow = [1, 1, 1, 6, 6]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
+
+    def test_full_servido8(self):
+        numOfThrows = 1
+        mockThrow = [2, 2, 1, 1, 1]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
+
+    def test_full_servido9(self):
+        numOfThrows = 1
+        mockThrow = [2, 2, 3, 3, 3]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
+
+    def test_full_servido10(self):
+        numOfThrows = 1
+        mockThrow = [2, 2, 4, 4, 4]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
+
+    def test_full_servido11(self):
+        numOfThrows = 1
+        mockThrow = [2, 2, 5, 5, 5]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
+
+    def test_full_servido12(self):
+        numOfThrows = 1
+        mockThrow = [2, 2, 6, 6, 6]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
+
+    def test_full_servido13(self):
+        numOfThrows = 1
+        mockThrow = [3, 3, 1, 1, 1]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
+
+    def test_full_servido14(self):
+        numOfThrows = 1
+        mockThrow = [3, 3, 2, 2, 2]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
+
+
+
+
+    def test_fullservido_completo(self):
+        numOfThrows = 1
+        mockThrow = []
+        for i in range(1, 6):
+            mockThrow = [i, i]
+            for d in range(1, 6):
+                mockThrow2 = [d, d, d]
+                mockThrow = mockThrow.append(mockThrow)
+                if i != d:
+                    isFullServido = check_throw(mockThrow, FULLSERVIDO['name'], numOfThrows)
+                    self.assertEqual(isFullServido, FULLSERVIDO['score'])
+                else:
+                    return
+
+
+
+    def test_full_servido1(self):
+        numOfThrows = 1
+        mockThrow = [1, 1, 1, 2, 2]
+        isFullServido = check_throw(mockThrow, FULL['name'], numOfThrows)
+        self.assertEqual(isFullServido, FULLSERVIDO['score'])
 
     def test_escalera_servida(self):
         numOfThrows = 1
