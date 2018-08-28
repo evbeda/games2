@@ -1,6 +1,16 @@
 import unittest
 from unittest.mock import patch
-from .poker import *
+from .poker import (
+    combine_card,
+    better_hand,
+    encontrar_escalera_color,
+    encontrar_escalera_real,
+    encontrar_iguales,
+    encontrar_color,
+    encontrar_cartas_pintas,
+    encontrar_escalera,
+    ordenar_cartas_numeros,
+)
 from .card import Card
 from .deck import Deck
 from .player import Player
@@ -10,7 +20,7 @@ from .game import Game
 class PokerTest(unittest.TestCase):
     def test_escaleraReal(self):
         # test
-        result = encontrarEscaleraReal(['Ah', 'Kh', 'Qh', 'Jh', 'Th'])
+        result = encontrar_escalera_real(['Ah', 'Kh', 'Qh', 'Jh', 'Th'])
         # assert
         self.assertTrue(result)
 
@@ -216,23 +226,11 @@ class PokerTest(unittest.TestCase):
         player2.cards = deck.deal(5)
 
     def test_21combinations(self):
-        player1_money = 1000
-        player2_money = 2000
-        player1 = Player(player1_money)
-        player2 = Player(player2_money)
-        deck = Deck()
-        game = Game(player1, player2, deck)
-        result = game.combine_card(['Ah', '2h', '5h', '6h', '7h', '8h', '9h'])
+        result = combine_card(['Ah', '2h', '5h', '6h', '7h', '8h', '9h'])
         self.assertEqual(len(result), 21)
 
     def test_first_combination(self):
-        player1_money = 1000
-        player2_money = 2000
-        player1 = Player(player1_money)
-        player2 = Player(player2_money)
-        deck = Deck()
-        game = Game(player1, player2, deck)
-        result = game.combine_card(['Ah', '2h', '5h', '6h', '7h', '8h', '9h'])
+        result = combine_card(['Ah', '2h', '5h', '6h', '7h', '8h', '9h'])
         self.assertEqual(result[0], ['Ah', '2h', '5h', '6h', '7h'])
         self.assertEqual(result[1], ['Ah', '2h', '5h', '6h', '8h'])
         self.assertEqual(result[2], ['Ah', '2h', '5h', '6h', '9h'])
@@ -256,26 +254,35 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(result[20], ['5h', '6h', '7h', '8h', '9h'])
 
     def test_best_hand_escalera_real(self):
-        player1_money = 1000
-        player2_money = 2000
-        player1 = Player(player1_money)
-        player2 = Player(player2_money)
-        deck = Deck()
-        game = Game(player1, player2, deck)
-        combination = game.combine_card(['Ah', 'Th', '5h', 'Jh', '7h', 'Qh', 'Kh'])
-        result = game.better_hand(combination)
+        combination = combine_card(['Ah', 'Th', '5h', 'Jh', '7h', 'Qh', 'Kh'])
+        result = better_hand(combination)
         self.assertEqual(result, "Escalera Real")
 
     def test_best_hand_no_escalera_real(self):
-        player1_money = 1000
-        player2_money = 2000
-        player1 = Player(player1_money)
-        player2 = Player(player2_money)
-        deck = Deck()
-        game = Game(player1, player2, deck)
-        combination = game.combine_card(['Ad', 'Th', '5h', 'Jh', '7h', 'Qh', 'Kh'])
-        result = game.better_hand(combination)
+        combination = combine_card(['Ad', 'Th', '5h', 'Jh', '7h', 'Qh', 'Kh'])
+        result = better_hand(combination)
         self.assertEqual(result, "No es Escalera Real")
+
+    def test_poker_hand(self):
+        combination = combine_card(['Ad', 'Ac', 'Th', 'Ts', 'Ah', '3d', 'As'])
+        result = better_hand(combination)
+        self.assertEqual(result, "Poker")
+
+    # TODO replace value '1' for A
+    def test_one_trio_hand(self):
+        combination = combine_card(['Ad', 'Ac', 'Th', 'Ts', '7h', '3d', 'As'])
+        result = better_hand(combination)
+        self.assertEqual(result, "Trio de A")
+
+    def test_one_trio_of_no_faced_cards(self):
+        combination = combine_card(['Ad', '3c', 'Th', '3s', '7h', '3d', 'As'])
+        result = better_hand(combination)
+        self.assertEqual(result, "Trio de 3")
+
+    def test_two_trio_hand(self):
+        combination = combine_card(['Td', '3c', 'Th', '3s', '7h', '3d', 'Ts'])
+        result = better_hand(combination)
+        self.assertEqual(result, "Trio de T")
 
 if __name__ == "__main__":
     unittest.main()
