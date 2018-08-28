@@ -13,38 +13,38 @@ class TestCartas (unittest.TestCase):
 
     def test_play_card(self):
         player = Player('Leo')
-        player.hiddenCards = [Carta(ESPADA, 10),
-                              Carta(ESPADA, 11),
-                              Carta(ESPADA, 12)
-                              ]
+        player.hidden_cards = [Carta(ESPADA, 10),
+                               Carta(ESPADA, 11),
+                               Carta(ESPADA, 12)
+                               ]
         player.play_card(0)
         expected = Carta(ESPADA, 10)
-        self.assertEqual(expected, player.playedCards[0])
+        self.assertEqual(expected, player.played_cards[0])
 
     def test_play_card_not_empty(self):
         player = Player('Leo')
-        player.hiddenCards = [Carta(ESPADA, 10),
-                              Carta(ESPADA, 11),
-                              Carta(ESPADA, 12)
-                              ]
+        player.hidden_cards = [Carta(ESPADA, 10),
+                               Carta(ESPADA, 11),
+                               Carta(ESPADA, 12)
+                               ]
         player.play_card(0)
-        self.assertEqual(len(player.playedCards), 1)
+        self.assertEqual(len(player.played_cards), 1)
 
     def test_show_hand_to_board(self):
         player = Player('Leo')
-        player.hiddenCards = [Carta(ESPADA, 10),
-                              Carta(ESPADA, 11),
-                              Carta(ESPADA, 12)
-                              ]
+        player.hidden_cards = [Carta(ESPADA, 10),
+                               Carta(ESPADA, 11),
+                               Carta(ESPADA, 12)
+                               ]
         expected = "Cartas en mano: 10 espada, 11 espada, 12 espada,  \n Cartas jugadas: "
         self.assertEqual(expected, player.show_hand_to_board())
 
     def test_show_hand_to_board_one_played(self):
         player = Player('Leo')
-        player.hiddenCards = [Carta(ESPADA, 10),
-                              Carta(ESPADA, 11),
-                              Carta(ESPADA, 12)
-                              ]
+        player.hidden_cards = [Carta(ESPADA, 10),
+                               Carta(ESPADA, 11),
+                               Carta(ESPADA, 12)
+                               ]
         player.play_card(1)
         expected = "Cartas en mano: 10 espada, 12 espada,  \n Cartas jugadas: 11 espada, "
         self.assertEqual(expected, player.show_hand_to_board())
@@ -167,8 +167,8 @@ class TestGame(unittest.TestCase):
         # test
         game.deal()
         # assert
-        self.assertEqual(len(self.player01.hiddenCards), 3)
-        self.assertEqual(len(self.player02.hiddenCards), 3)
+        self.assertEqual(len(self.player01.hidden_cards), 3)
+        self.assertEqual(len(self.player02.hidden_cards), 3)
 
     def test_reset_hand(self):
         deck = Mazo()
@@ -176,8 +176,8 @@ class TestGame(unittest.TestCase):
         game.deal()
         self.player01.play_card(1)
         self.player01.reset_hand()
-        self.assertEqual(len(self.player01.hiddenCards), 0)
-        self.assertEqual(len(self.player01.playedCards), 0)
+        self.assertEqual(len(self.player01.hidden_cards), 0)
+        self.assertEqual(len(self.player01.played_cards), 0)
 
     def test_change_hand(self):
         deck = Mazo()
@@ -190,21 +190,21 @@ class TestGame(unittest.TestCase):
         self.assertTrue(self.player02.is_hand)
 
     def test_play_first_card_p1(self):
-        del self.player01.hiddenCards[:]
-        del self.player01.playedCards[:]
+        del self.player01.hidden_cards[:]
+        del self.player01.played_cards[:]
         carta_0 = Carta(ESPADA, 3)
         carta_1 = Carta(BASTO, 7)
         carta_2 = Carta(ESPADA, 5)
-        self.player01.hiddenCards = [carta_0, carta_1, carta_2]
+        self.player01.hidden_cards = [carta_0, carta_1, carta_2]
         # test
         self.player01.play_card(1)
         # assert
         self.assertEqual(
-            self.player01.hiddenCards,
+            self.player01.hidden_cards,
             [carta_0, carta_2],
         )
         self.assertEqual(
-            self.player01.playedCards,
+            self.player01.played_cards,
             [carta_1]
         )
 
@@ -212,17 +212,17 @@ class TestGame(unittest.TestCase):
         deck = Mazo()
         game = Game([self.player01, self.player02], deck)
         game.deal()
-        self.player01.hiddenCards = []
+        self.player01.hidden_cards = []
         carta_0 = Carta(ESPADA, 3)
         carta_1 = Carta(BASTO, 7)
         carta_2 = Carta(ESPADA, 5)
-        self.player01.hiddenCards = [carta_0, carta_1, carta_2]
+        self.player01.hidden_cards = [carta_0, carta_1, carta_2]
         self.player01.play_card(1)
         carta_3 = Carta(ORO, 2)
         carta_4 = Carta(BASTO, 4)
         carta_5 = Carta(COPA, 5)
-        self.player02.hiddenCards = []
-        self.player02.hiddenCards = [carta_3, carta_4, carta_5]
+        self.player02.hidden_cards = []
+        self.player02.hidden_cards = [carta_3, carta_4, carta_5]
         self.player02.play_card(1)
         result = game.who_is_next()
         self.assertEqual(result, "PLAYER1")
@@ -241,13 +241,13 @@ class TestGame(unittest.TestCase):
         carta_0 = Carta(ESPADA, 3)
         carta_1 = Carta(BASTO, 7)
         carta_2 = Carta(ESPADA, 5)
-        self.player01.hiddenCards = [carta_0, carta_1, carta_2]
+        self.player01.hidden_cards = [carta_0, carta_1, carta_2]
         self.player01.play_card(0)
 
         carta_3 = Carta(ORO, 3)
         carta_4 = Carta(BASTO, 4)
         carta_5 = Carta(COPA, 5)
-        self.player02.hiddenCards = [carta_3, carta_4, carta_5]
+        self.player02.hidden_cards = [carta_3, carta_4, carta_5]
         self.player02.play_card(0)
 
         result = game.who_is_next()
@@ -276,7 +276,7 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         game = Game([self.player01, self.player02], deck)
         game.deal()
-        self.player01.playedCards.append(self.player01.hiddenCards[1])
+        self.player01.played_cards.append(self.player01.hidden_cards[1])
         resultado = game.cantos_envido(1, "Envido")
         self.assertEqual(resultado, ["2", "Envido"])
 
@@ -298,7 +298,7 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         game = Game([self.player01, self.player02], deck)
         game.deal()
-        self.player01.playedCards.append(self.player01.hiddenCards[1])
+        self.player01.played_cards.append(self.player01.hidden_cards[1])
         resultado = game.cantos_real_envido(1, "Real Envido")
         self.assertEqual(resultado, ["2", "Real Envido"])
 
@@ -320,7 +320,7 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         game = Game([self.player01, self.player02], deck)
         game.deal()
-        self.player01.playedCards.append(self.player01.hiddenCards[1])
+        self.player01.played_cards.append(self.player01.hidden_cards[1])
         resultado = game.cantos_falta_envido(1, "Falta Envido")
         self.assertEqual(resultado, ["2", "Falta Envido"])
 
@@ -328,9 +328,9 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 1), Carta(
+        player1.hidden_cards = [Carta(ESPADA, 1), Carta(
             ESPADA, 10), Carta(ESPADA, 4)]
-        player2.hiddenCards = [
+        player2.hidden_cards = [
             Carta(BASTO, 1), Carta(BASTO, 5), Carta(BASTO, 2)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
@@ -340,9 +340,9 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 10), Carta(
+        player1.hidden_cards = [Carta(ESPADA, 10), Carta(
             ESPADA, 11), Carta(ESPADA, 12)]
-        player2.hiddenCards = [
+        player2.hidden_cards = [
             Carta(BASTO, 10), Carta(BASTO, 12), Carta(BASTO, 5)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
@@ -352,9 +352,9 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [
+        player1.hidden_cards = [
             Carta(ESPADA, 1), Carta(ESPADA, 2), Carta(ESPADA, 3)]
-        player2.hiddenCards = [
+        player2.hidden_cards = [
             Carta(BASTO, 1), Carta(BASTO, 10), Carta(BASTO, 5)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
@@ -364,9 +364,9 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 10), Carta(
+        player1.hidden_cards = [Carta(ESPADA, 10), Carta(
             ESPADA, 12), Carta(ESPADA, 3)]
-        player2.hiddenCards = [
+        player2.hidden_cards = [
             Carta(BASTO, 11), Carta(BASTO, 10), Carta(BASTO, 12)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
@@ -376,9 +376,9 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [
+        player1.hidden_cards = [
             Carta(ESPADA, 2), Carta(ORO, 12), Carta(ESPADA, 3)]
-        player2.hiddenCards = [Carta(BASTO, 11), Carta(
+        player2.hidden_cards = [Carta(BASTO, 11), Carta(
             ESPADA, 10), Carta(BASTO, 12)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
@@ -388,9 +388,9 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(ESPADA, 10), Carta(
+        player1.hidden_cards = [Carta(ESPADA, 10), Carta(
             BASTO, 12), Carta(ESPADA, 11)]
-        player2.hiddenCards = [Carta(BASTO, 5), Carta(
+        player2.hidden_cards = [Carta(BASTO, 5), Carta(
             ESPADA, 10), Carta(BASTO, 12)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
@@ -400,9 +400,9 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [Carta(COPA, 10), Carta(
+        player1.hidden_cards = [Carta(COPA, 10), Carta(
             ESPADA, 12), Carta(ESPADA, 3)]
-        player2.hiddenCards = [
+        player2.hidden_cards = [
             Carta(BASTO, 1), Carta(COPA, 3), Carta(BASTO, 5)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
@@ -412,9 +412,9 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [
+        player1.hidden_cards = [
             Carta(ESPADA, 10), Carta(ESPADA, 1), Carta(BASTO, 1)]
-        player2.hiddenCards = [
+        player2.hidden_cards = [
             Carta(BASTO, 6), Carta(COPA, 10), Carta(BASTO, 7)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
@@ -424,9 +424,9 @@ class test_cantos(unittest.TestCase):
         deck = Mazo()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hiddenCards = [
+        player1.hidden_cards = [
             Carta(ESPADA, 10), Carta(ESPADA, 1), Carta(BASTO, 1)]
-        player2.hiddenCards = [
+        player2.hidden_cards = [
             Carta(BASTO, 6), Carta(COPA, 10), Carta(BASTO, 7)]
         game = Game([player1, player2], deck)
         game.change_hand()

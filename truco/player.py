@@ -1,32 +1,29 @@
 class Player():
     def __init__(self, name):
         self.name = name
-        self.hiddenCards = []
+        self.hidden_cards = []
         self.score = []
-        self.playedCards = []
+        self.played_cards = []
         self.is_hand = bool
 
     def play_card(self, index):
-        playedCard = self.hiddenCards.pop(index)
-        self.playedCards.append(playedCard)
+        played_card = self.hidden_cards.pop(index)
+        self.played_cards.append(played_card)
 
     def reset_hand(self):
-        del self.hiddenCards[:]
-        del self.playedCards[:]
+        del self.hidden_cards[:]
+        del self.played_cards[:]
 
     def get_name(self):
         return self.name
 
-    def is_hand(self):
-        return self.is_hand
-
     def show_hand_to_board(self):
         hidden = ''
         played = ''
-        for i in self.hiddenCards:
+        for i in self.hidden_cards:
             hidden += i.__str__()
             hidden += ', '
-        for i in self.playedCards:
+        for i in self.played_cards:
             played += i.__str__()
             played += ', '
         return "Cartas en mano: {} \n {}{}".format(
