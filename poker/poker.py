@@ -1,6 +1,31 @@
 from collections import defaultdict
 
 
+five_cards_combinations = [
+    [0, 1, 2, 3, 4],
+    [0, 1, 2, 3, 5],
+    [0, 1, 2, 3, 6],
+    [0, 1, 2, 4, 5],
+    [0, 1, 2, 4, 6],
+    [0, 1, 2, 5, 6],
+    [0, 1, 3, 4, 5],
+    [0, 1, 3, 4, 6],
+    [0, 1, 3, 5, 6],
+    [0, 1, 4, 5, 6],
+    [0, 2, 3, 4, 5],
+    [0, 2, 3, 4, 6],
+    [0, 2, 3, 5, 6],
+    [0, 2, 4, 5, 6],
+    [0, 3, 4, 5, 6],
+    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 6],
+    [1, 2, 3, 5, 6],
+    [1, 2, 4, 5, 6],
+    [1, 3, 4, 5, 6],
+    [2, 3, 4, 5, 6],
+]
+
+
 def ordenar_cartas_numeros(cards):
     # Obtiene cartas con la pinta y devuelve un array con los numeros ordenados
     numbers = []
@@ -36,7 +61,7 @@ def get_value(card):
         return int(card[0])
 
 
-def encontrarEscaleraReal(cards):
+def encontrar_escalera_real(cards):
     numbers = ordenar_cartas_numeros(cards)
     # Escalera con AS,10,J,Q,K
     if numbers == [1, 10, 11, 12, 13] and encontrar_color(cards):
@@ -101,3 +126,50 @@ def encontrar_cartas_pintas(cards):
             if(get_value(card[0]) == number):
                 orderCards.append(card)
     return orderCards
+
+
+def combine_card(complete_card):
+    all_combination = []
+    for index_combination in five_cards_combinations:
+        card_combination = []
+        for index in index_combination:
+            card_combination.append(complete_card[index])
+        all_combination.append(card_combination)
+    return all_combination
+
+
+def better_hand(combinations):
+    greater_full = 0
+    greater_flush = 0
+    greater_straight = 0
+    greater_set = 0
+    greater_pair = 0
+    card = ''
+    for combination in combinations:
+        iguales = encontrar_iguales(combination)
+        if encontrar_escalera_real(combination):
+            return "Escalera Real"
+        elif encontrar_escalera_color(combination):
+            return "Escalera Color"
+        elif len(iguales['poker']) > 0:
+            return "Poker"
+        elif len(iguales['trio']) > 0:
+            for trio in iguales['trio']:
+                if (get_value(trio) > greater_set):
+                    greater_set = get_value(trio)
+    if (greater_set > 0):
+        if (greater_set == 1):
+            card = 'A'
+        elif (greater_set == 10):
+            card = 'T'
+        elif (greater_set == 11):
+            card = 'J'
+        elif (greater_set == 12):
+            card = 'Q'
+        elif (greater_set == 13):
+            card = 'K'
+        else:
+            card = greater_set
+        return 'Trio de {}'.format(card)
+        # TODO quitar el return y actualizar los test
+    return "No es Escalera Real"
