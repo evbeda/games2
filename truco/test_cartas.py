@@ -10,6 +10,17 @@ from .game import Game
 
 class TestCartas (unittest.TestCase):
 
+    def test_eq_cards(self):
+        carta_uno = Carta(ESPADA, 10)
+        carta_dos = Carta(ESPADA, 10)
+        result = carta_uno.__eq__(carta_dos)
+        self.assertTrue(result)
+
+    def test_eq_cards_false(self):
+        carta_uno = Carta(ESPADA, 10)
+        carta_dos = Carta(ESPADA, 9)
+        result = carta_uno.__eq__(carta_dos)
+        self.assertFalse(result)
 
     def test_play_card(self):
         player = Player('Leo')

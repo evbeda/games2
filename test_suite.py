@@ -7,7 +7,11 @@ from Blackjack.testBlackjack import (
     TestDeck,
     TestGame as TestBlackjackGame
 )
+
+from truco.test_truco import test_cantos as TC
+from truco.test_truco import TestGame as TG
 from truco.test_truco import *
+
 from poker.test_poker import *
 from guess_number_game import test_guess_number_game
 import test_game
@@ -40,6 +44,8 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestGame))
     test_suite.addTest(unittest.makeSuite(test_guess_number_game))
     test_suite.addTest(test_game)
+    test_suite.addTest(TG)
+    test_suite.addTest(TC)
     return test_suite
 
 
