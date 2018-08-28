@@ -16,7 +16,7 @@ class Game():
         self.is_playing = True
         self.deck = Deck(cardsDictionary, colorDictionary)
 
-    def start_game(self):   
+    def start_game(self):
         name = 'Martin'
         buy_in = 100
         self.min_bet = 5
@@ -56,7 +56,7 @@ class Game():
             return 'Dealer Wins!'
         elif self.player.hand.value == 21:
             self.is_playing = False
-            return 'Player Wins!' 
+            return 'Player Wins!'
         elif self.dealer_hand.value >= 17 and (self.player.hand.value > self.dealer_hand.value):
             self.is_playing = False
             return 'Player Wins!'

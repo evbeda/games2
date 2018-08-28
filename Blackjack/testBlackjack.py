@@ -265,7 +265,43 @@ class TestGame(unittest.TestCase):
         game.start_game()
         game.player.money = 5
         result = game.play('+')
+
         self.assertEqual('Player Wins!', result)
+
+    def test_player_dealer_21(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['Kh', '7d']
+        game.player.hand.value = 17
+        game.dealer_hand.cards = ['Kd', 'Ah']
+        game.dealer_hand.value = 21
+        result = game.who_wins()
+        self.assertEqual('Dealer Wins!', result)
+
+    def test_next_turn(self):
+        game = Game()
+        game.start_game()
+        self.assertEqual(game.next_turn(), 'Do you want to stop (=) or have another card (+)?')
+
+    def test_next_turn_game_finished(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['Kh', '7d']
+        game.player.hand.value = 17
+        game.dealer_hand.cards = ['Kd', 'Ah']
+        game.dealer_hand.value = 21
+        game.who_wins()
+        self.assertEqual(game.next_turn(), 'Game Over')
+
+    def test_next_turn_game_continue(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['Kh', '6d']
+        game.player.hand.value = 16
+        game.dealer_hand.cards = ['Kd', '5h']
+        game.dealer_hand.value = 15
+        with unittest.mock.patch('Blackjack.hand.Hand.deal_card', return_value = '2d'):
+            self.assertEqual(game.play('+'), 'CONTINUE')
 
 
 if __name__ == "__main__":
