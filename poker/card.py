@@ -1,10 +1,10 @@
 class Card(object):
-    def __init__(self, value, color):
+    def __init__(self, value, suit):
         self.value = value
-        self.color = color
+        self.suit = suit
 
     def __repr__(self):
         return '{}{}'.format(
             self.value,
-            self.color,
+            self.suit,
         )

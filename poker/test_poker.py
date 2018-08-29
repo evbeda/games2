@@ -3,13 +3,14 @@ from unittest.mock import patch
 from .poker import (
     combine_card,
     better_hand,
-    encontrar_escalera_color,
-    encontrar_escalera_real,
-    encontrar_iguales,
-    encontrar_color,
-    encontrar_cartas_pintas,
-    encontrar_escalera,
-    ordenar_cartas_numeros,
+    find_straight_flush,
+    find_royal_flush,
+    find_repeated_cards,
+    find_flush,
+    find_cards_suits,
+    find_straight,
+    sort_cards_by_number,
+    get_value,
 )
 from .card import Card
 from .deck import Deck
@@ -18,9 +19,9 @@ from .game import Game
 
 
 class PokerTest(unittest.TestCase):
-    def test_escaleraReal(self):
+    def test_royal_flush(self):
         # test
-        result = encontrar_escalera_real(['Ah', 'Kh', 'Qh', 'Jh', 'Th'])
+        result = find_royal_flush(['Ah', 'Kh', 'Qh', 'Jh', 'Th'])
         # assert
         self.assertTrue(result)
 
@@ -32,7 +33,7 @@ class PokerTest(unittest.TestCase):
             'par': ['3'],
         }
         # test
-        result = encontrar_iguales(['Kh', '8d', '3c', '3d', '2s'])
+        result = find_repeated_cards(['Kh', '8d', '3c', '3d', '2s'])
         # assert
         self.assertEqual(result, expected)
 
@@ -42,16 +43,16 @@ class PokerTest(unittest.TestCase):
             'trio': ['K'],
             'par': [],
         }
-        result = encontrar_iguales(['Kh', 'Kd', 'Ks', '8h', 'Ts'])
+        result = find_repeated_cards(['Kh', 'Kd', 'Ks', '8h', 'Ts'])
         self.assertEqual(result, expected)
 
-    def test_doblepar(self):
+    def test_doblepair(self):
         expected = {
             'poker': [],
             'trio': [],
             'par': ['Q', '8'],
         }
-        result = encontrar_iguales(['Qd', 'Qh', '8d', '8s', '4s'])
+        result = find_repeated_cards(['Qd', 'Qh', '8d', '8s', '4s'])
         self.assertEqual(result, expected)
 
     def test_poker(self):
@@ -60,15 +61,15 @@ class PokerTest(unittest.TestCase):
             'trio': [],
             'par': [],
         }
-        result = encontrar_iguales(['7d', '7h', '7d', '7s', '4s'])
+        result = find_repeated_cards(['7d', '7h', '7d', '7s', '4s'])
         self.assertEqual(result, expected)
 
     def test_color_true(self):
-        result = encontrar_color(['Ad', '2d', '3d', '7d', '4d'])
+        result = find_flush(['Ad', '2d', '3d', '7d', '4d'])
         self.assertTrue(result)
 
     def test_color_false(self):
-        result = encontrar_color(['Ah', '2d', '3d', '7d', '4d'])
+        result = find_flush(['Ah', '2d', '3d', '7d', '4d'])
         self.assertFalse(result)
 
     def test_full_house(self):
@@ -77,61 +78,61 @@ class PokerTest(unittest.TestCase):
             'trio': ['7'],
             'par': ['2'],
         }
-        result = encontrar_iguales(['2d', '2h', '7d', '7s', '7s'])
+        result = find_repeated_cards(['2d', '2h', '7d', '7s', '7s'])
         self.assertEqual(result, expected)
 
-    def test_escalera_true(self):
-        result = encontrar_escalera(['2h', 'Ad', '3d', '4d', '5d'])
+    def test_straight_true(self):
+        result = find_straight(['2h', 'Ad', '3d', '4d', '5d'])
         self.assertTrue(result)
 
-    def test_escalera_false(self):
-        result = encontrar_escalera(['8h', 'Ad', '3d', '4d', '5d'])
+    def test_straight_false(self):
+        result = find_straight(['8h', 'Ad', '3d', '4d', '5d'])
         self.assertFalse(result)
 
-    def test_escalera_as(self):
-        result = encontrar_escalera(['Th', 'Ad', 'Kd', 'Jd', 'Qd'])
+    def test_straight_as(self):
+        result = find_straight(['Th', 'Ad', 'Kd', 'Jd', 'Qd'])
         self.assertTrue(result)
 
-    def test_escalera_color_true(self):
-        result = encontrar_escalera_color(['2h', 'Ah', '3h', '4h', '5h'])
+    def test_straight_flush_true(self):
+        result = find_straight_flush(['2h', 'Ah', '3h', '4h', '5h'])
         self.assertTrue(result)
 
-    def test_escalera_color_false_not_color(self):
-        result = encontrar_escalera_color(['2d', 'Ah', '3h', '4h', '5h'])
+    def test_straight_flush_false_not_color(self):
+        result = find_straight_flush(['2d', 'Ah', '3h', '4h', '5h'])
         self.assertFalse(result)
 
-    def test_escalera_color_false_not_escalera(self):
-        result = encontrar_escalera_color(['8h', 'Ah', '3h', '4h', '5h'])
+    def test_straight_flush_false_not_escalera(self):
+        result = find_straight_flush(['8h', 'Ah', '3h', '4h', '5h'])
         self.assertFalse(result)
 
-    def test_escalera_color_false_not_any(self):
-        result = encontrar_escalera_color(['8d', 'Ah', '3h', '4h', '5h'])
+    def test_straight_flush_false_not_any(self):
+        result = find_straight_flush(['8d', 'Ah', '3h', '4h', '5h'])
         self.assertFalse(result)
 
-    def test_carta_cartas_pintas(self):
+    def test_cards_suits(self):
         expected = ['Ad', '3h', '4h', '5h', '8d']
-        result = encontrar_cartas_pintas(['8d', 'Ad', '3h', '4h', '5h'])
+        result = find_cards_suits(['8d', 'Ad', '3h', '4h', '5h'])
         self.assertEqual(result, expected)
 
-    def test_ordenar_cartas_numeros(self):
+    def test_sort_cards_by_number(self):
         expected = [1, 3, 4, 5, 8]
-        result = ordenar_cartas_numeros(['8d', 'Ad', '3h', '4h', '5h'])
+        result = sort_cards_by_number(['8d', 'Ad', '3h', '4h', '5h'])
         self.assertEqual(result, expected)
 
-    def test_crear_carta(self):
+    def test_create_card(self):
         expected_value = '7'
-        expected_color = 'd'
+        expected_suit = 'd'
         result = Card('7', 'd')
         self.assertEqual(result.value, expected_value)
-        self.assertEqual(result.color, expected_color)
+        self.assertEqual(result.suit, expected_suit)
 
-    def test_crear_mazo(self):
+    def test_create_deck(self):
         expected_value = 52
         deck = Deck()
         result = len(deck.cards)
         self.assertEqual(result, expected_value)
 
-    def test_pintas_mazo(self):
+    def test_deck_suits(self):
         resultD = 0
         resultS = 0
         resultH = 0
@@ -139,20 +140,20 @@ class PokerTest(unittest.TestCase):
         expected_value = 13
         deck = Deck()
         for c in range(0, len(deck.cards)):
-            if deck.cards[c].color == 'd':
+            if deck.cards[c].suit == 'd':
                 resultD += 1
-            if deck.cards[c].color == 's':
+            if deck.cards[c].suit == 's':
                 resultS += 1
-            if deck.cards[c].color == 'h':
+            if deck.cards[c].suit == 'h':
                 resultH += 1
-            if deck.cards[c].color == 'c':
+            if deck.cards[c].suit == 'c':
                 resultC += 1
         self.assertEqual(resultD, expected_value)
         self.assertEqual(resultS, expected_value)
         self.assertEqual(resultH, expected_value)
         self.assertEqual(resultC, expected_value)
 
-    def test_repartir_cartas(self):
+    def test_deal_cards(self):
         expected_value = 3
         expected_deck_size = 52 - expected_value
         deck = Deck()
@@ -160,7 +161,7 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(len(result), expected_value)
         self.assertEqual(len(deck.cards), expected_deck_size)
 
-    def test_reconstruir_mazo(self):
+    def test_rebuid_deck(self):
         expected_value = 6
         expected_deck_size = 52
         deck = Deck()
@@ -168,7 +169,7 @@ class PokerTest(unittest.TestCase):
         deck.rebuild()
         self.assertEqual(len(deck.cards), expected_deck_size)
 
-    def test_crear_jugador(self):
+    def test_create_player(self):
         jugador_money = 10
         jugador = Player(jugador_money)
         cards_dealed = 2
@@ -177,12 +178,12 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(len(jugador.cards), cards_dealed)
         self.assertEqual(jugador.money, jugador_money)
 
-    def test_crear_jugador_sin_dinero(self):
+    def test_create_player_without_money(self):
         with self.assertRaises(Exception):
             Player(0)
         self.assertTrue('Player money must be greater than 0')
 
-    def test_tomar_apuestas(self):
+    def test_take_bets(self):
         player1_money = 1000
         player2_money = 2000
         player1 = Player(player1_money)
@@ -208,7 +209,7 @@ class PokerTest(unittest.TestCase):
         game.take_bets(500, 500)
         self.assertEqual(game.pot, 1000)
 
-    def test_verificar_mano(self):
+    def test_check_hand(self):
         player1_money = 1000
         player2_money = 2000
         player1 = Player(player1_money)
@@ -224,6 +225,11 @@ class PokerTest(unittest.TestCase):
         player1.cards.append(deck.cards[28])
         player1.cards.append(deck.cards[38])
         player2.cards = deck.deal(5)
+
+    def test_get_value_J_Q_K(self):
+        self.assertEquals(get_value('J'),11)
+        self.assertEquals(get_value('Q'),12)
+        self.assertEquals(get_value('K'),13)
 
     def test_21combinations(self):
         result = combine_card(['Ah', '2h', '5h', '6h', '7h', '8h', '9h'])
@@ -253,12 +259,12 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(result[19], ['2h', '6h', '7h', '8h', '9h'])
         self.assertEqual(result[20], ['5h', '6h', '7h', '8h', '9h'])
 
-    def test_best_hand_escalera_real(self):
+    def test_best_hand_royal_flush(self):
         combination = combine_card(['Ah', 'Th', '5h', 'Jh', '7h', 'Qh', 'Kh'])
         result = better_hand(combination)
         self.assertEqual(result, "Escalera Real")
 
-    def test_best_hand_no_escalera_real(self):
+    def test_best_hand_no_royal_flsuh(self):
         combination = combine_card(['Ad', 'Th', '5h', 'Jh', '7h', 'Qh', 'Kh'])
         result = better_hand(combination)
         self.assertEqual(result, "No es Escalera Real")
@@ -283,6 +289,34 @@ class PokerTest(unittest.TestCase):
         combination = combine_card(['Td', '3c', 'Th', '3s', '7h', '3d', 'Ts'])
         result = better_hand(combination)
         self.assertEqual(result, "Trio de T")
+    
+    def test_card_repr(self):
+        card = Card('K', 'h')
+        result = card.__repr__()
+        self.assertEqual(result, 'Kh')
+
+    def test_player1_wins(self):
+        player01 = Player(20)
+        player02 = Player(20)
+        player02.money = 0
+        deck = Deck()
+        deck.create()
+        game = Game(player01, player02, deck)
+        game.round = 1
+        result = game.deal_players()
+        self.assertFalse(result)
+    
+    def test_player2_wins(self):
+        player01 = Player(20)
+        player02 = Player(20)
+        player01.money = 0
+        deck = Deck()
+        deck.create()
+        game = Game(player01, player02, deck)
+        game.round = 1
+        result = game.deal_players()
+        self.assertFalse(result)
+        
 
 if __name__ == "__main__":
     unittest.main()

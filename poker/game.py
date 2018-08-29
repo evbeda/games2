@@ -19,12 +19,12 @@ class Game(object):
                 self.round += 1
                 return True
             else:
-                if round > 0:
+                if self.round > 0:
                     print("Player 1 Wins!")
                 print("Player 2 has no money")
                 return False
         else:
-            if round > 0:
+            if self.round > 0:
                 print("Player 2 Wins!")
             print("Player 1 has no money")
             return False
