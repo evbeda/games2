@@ -1,4 +1,4 @@
-from .mazo import cardsDictionary
+from . import cardsDictionary
 
 
 class Hand():
