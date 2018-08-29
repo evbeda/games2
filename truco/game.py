@@ -1,4 +1,4 @@
-from .jugadas import combinaciones_envido
+from truco import envido_combinations
 
 
 class Game():
@@ -94,8 +94,8 @@ class Game():
     def aceptar_canto(self):
         if len(self.cantos_envidos) == 1:
             canto = self.cantos_envidos[0][1]
-            for c in range(len(combinaciones_envido)):
-                if combinaciones_envido[c][0] == canto and len(combinaciones_envido[c]) == 3:
+            for c in range(len(envido_combinations)):
+                if envido_combinations[c][0] == canto and len(envido_combinations[c]) == 3:
                     self.comparar_puntos()
 
     def comparar_puntos(self):

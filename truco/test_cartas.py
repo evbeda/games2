@@ -124,7 +124,7 @@ class TestMazo(unittest.TestCase):
         mazo = Deck()
         mazo.get_card()
         mazo.get_card()
-        self.assertEqual(len(mazo.hierarchical_deck), 38)
+        self.assertEqual(len(mazo.ordered_deck), 38)
 
     @unittest.mock.patch('random.randint')
     def test_verificar_cartas_sacadas_2(self, mock_rand_int):
