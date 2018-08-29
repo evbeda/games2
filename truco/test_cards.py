@@ -16,6 +16,12 @@ class TestCards(unittest.TestCase):
         result = card_one.__eq__(card_two)
         self.assertTrue(result)
 
+    def test_not_eq_cards(self):
+        card_one = Card(SWORD, 10)
+        card_two = Card(SWORD, 9)
+        result = card_one.__eq__(card_two)
+        self.assertFalse(result)
+
     def test_eq_cards_false(self):
         card_one = Card(SWORD, 10)
         card_two = Card(SWORD, 9)
