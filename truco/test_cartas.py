@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from .carta import Carta
-from .mazo import Mazo
+from .deck import Deck
 from . import ESPADA, BASTO, ORO, COPA
 from .player import Player
 from .game import Game
@@ -110,26 +110,26 @@ class TestCartas (unittest.TestCase):
 
 class TestMazo(unittest.TestCase):
     def test_repartir_cartas_uno(self):
-        mazo = Mazo()
+        mazo = Deck()
         result = mazo.get_card()
         self.assertIsInstance(result, Carta)
 
     def test_repartir_dos_cartas_distintas(self):
-        mazo = Mazo()
+        mazo = Deck()
         result1 = mazo.get_card()
         result2 = mazo.get_card()
         self.assertNotEqual(result1, result2)
 
     def test_contar_cartas_del_mazo_repartiendo_dos(self):
-        mazo = Mazo()
+        mazo = Deck()
         mazo.get_card()
         mazo.get_card()
-        self.assertEqual(len(mazo.mazo), 38)
+        self.assertEqual(len(mazo.hierarchical_deck), 38)
 
     @unittest.mock.patch('random.randint')
     def test_verificar_cartas_sacadas_2(self, mock_rand_int):
         mock_rand_int.return_value = 0
-        mazo = Mazo()
+        mazo = Deck()
         mazo.get_card()
         result2 = mazo.get_card()
         cartaCorrecta = Carta('basto', 1)
@@ -139,7 +139,7 @@ class TestMazo(unittest.TestCase):
     @unittest.mock.patch('random.randint')
     def test_verificar_cartas_sacadas_4(self, mock_rand_int):
         mock_rand_int.return_value = 0
-        mazo = Mazo()
+        mazo = Deck()
         result2 = mazo.get_card()
         result2 = mazo.get_card()
         result2 = mazo.get_card()
@@ -151,7 +151,7 @@ class TestMazo(unittest.TestCase):
     @unittest.mock.patch('random.randint')
     def test_verificar_cartas_sacadas_2_de_a_4(self, mock_rand_int):
         mock_rand_int.return_value = 4
-        mazo = Mazo()
+        mazo = Deck()
         result2 = mazo.get_card()
         result2 = mazo.get_card()
         cartaCorrecta = Carta('basto', 3)
@@ -161,7 +161,7 @@ class TestMazo(unittest.TestCase):
     def test_states(self):
         player01 = Player('1')
         player02 = Player('2')
-        deck = Mazo()
+        deck = Deck()
         game = Game([player01, player02], deck)
         game.deal()
         self.assertEqual(game.get_state(), [0, None, None, None, None])
@@ -173,7 +173,7 @@ class TestGame(unittest.TestCase):
 
     def test_deal_cards(self):
         # setup
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         # test
         game.deal()
@@ -182,7 +182,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(self.player02.hidden_cards), 3)
 
     def test_reset_hand(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         self.player01.play_card(1)
@@ -191,7 +191,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(self.player01.played_cards), 0)
 
     def test_change_hand(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         self.player01.play_card(0)
@@ -220,7 +220,7 @@ class TestGame(unittest.TestCase):
         )
 
     def test_who_is_next_greater_p1(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         self.player01.hidden_cards = []
@@ -239,7 +239,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(result, "PLAYER1")
 
     def test_who_is_next_same_card_p2(self):
-        deck = Mazo()
+        deck = Deck()
         self.player01 = Player('1')
         self.player02 = Player('2')
         game = Game([self.player01, self.player02], deck)
@@ -270,21 +270,21 @@ class test_cantos(unittest.TestCase):
     player02 = Player('2')
 
     def test_envido_player_01(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         resultado = game.cantos_envido(0, "Envido")
         self.assertEqual(resultado, ["1", "Envido"])
 
     def test_not_envido_player_02(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         resultado = game.cantos_envido(1, "Envido")
         self.assertEqual(resultado, None)
 
     def test_envido_player_02(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         self.player01.played_cards.append(self.player01.hidden_cards[1])
@@ -292,21 +292,21 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, ["2", "Envido"])
 
     def test_real_envido_player_01(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         resultado = game.cantos_real_envido(0, "Real Envido")
         self.assertEqual(resultado, ["1", "Real Envido"])
 
     def test_not_real_envido_player_02(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         resultado = game.cantos_real_envido(1, "Real Envido")
         self.assertEqual(resultado, None)
 
     def test_real_envido_player_02(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         self.player01.played_cards.append(self.player01.hidden_cards[1])
@@ -314,21 +314,21 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, ["2", "Real Envido"])
 
     def test_falta_envido_player_01(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         resultado = game.cantos_falta_envido(0, "Falta Envido")
         self.assertEqual(resultado, ["1", "Falta Envido"])
 
     def test_not_falta_envido_player_02(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         resultado = game.cantos_falta_envido(1, "Falta Envido")
         self.assertEqual(resultado, None)
 
     def test_falta_envido_player_02(self):
-        deck = Mazo()
+        deck = Deck()
         game = Game([self.player01, self.player02], deck)
         game.deal()
         self.player01.played_cards.append(self.player01.hidden_cards[1])
@@ -336,7 +336,7 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, ["2", "Falta Envido"])
 
     def test_calcular_envido_pintas_iguales(self):
-        deck = Mazo()
+        deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [Carta(ESPADA, 1), Carta(
@@ -348,7 +348,7 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, [25, 27])
 
     def test_calcular_envido_pintas_iguales_2(self):
-        deck = Mazo()
+        deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [Carta(ESPADA, 10), Carta(
@@ -360,7 +360,7 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, [20, 25])
 
     def test_calcular_envido_pintas_iguales_3(self):
-        deck = Mazo()
+        deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [
@@ -372,7 +372,7 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, [25, 26])
 
     def test_calcular_envido_pintas_iguales_4(self):
-        deck = Mazo()
+        deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [Carta(ESPADA, 10), Carta(
@@ -384,7 +384,7 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, [23, 20])
 
     def test_calcular_envido_2_iguales(self):
-        deck = Mazo()
+        deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [
@@ -396,7 +396,7 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, [25, 20])
 
     def test_calcular_envido_2_iguales_2(self):
-        deck = Mazo()
+        deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [Carta(ESPADA, 10), Carta(
@@ -408,7 +408,7 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, [20, 25])
 
     def test_calcular_envido_2_iguales_3(self):
-        deck = Mazo()
+        deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [Carta(COPA, 10), Carta(
@@ -420,7 +420,7 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, [23, 26])
 
     def test_calcular_envido_2_iguales_4(self):
-        deck = Mazo()
+        deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [
@@ -432,7 +432,7 @@ class test_cantos(unittest.TestCase):
         self.assertEqual(resultado, [21, 33])
 
     def test_return_board(self):
-        deck = Mazo()
+        deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [

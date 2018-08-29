@@ -4,10 +4,10 @@ from .carta import Carta
 from . import ESPADA, BASTO, ORO, COPA
 
 
-class Mazo():
+class Deck(object):
 
     def __init__(self):
-        self.mazo = [
+        self.hierarchical_deck = [
             Carta(ESPADA, 1), Carta(BASTO, 1), Carta(ESPADA, 7),
             Carta(ORO, 7), Carta(ESPADA, 3), Carta(BASTO, 3), Carta(ORO, 3), Carta(COPA, 3),
             Carta(ESPADA, 2), Carta(BASTO, 2), Carta(ORO, 2), Carta(COPA, 2),
@@ -22,7 +22,7 @@ class Mazo():
         ]
 
     def get_card(self):
-        indice = random.randint(0, len(self.mazo) - 1)
-        aux = self.mazo[indice]
-        del self.mazo[indice]
+        indice = random.randint(0, len(self.hierarchical_deck) - 1)
+        aux = self.hierarchical_deck[indice]
+        del self.hierarchical_deck[indice]
         return aux
