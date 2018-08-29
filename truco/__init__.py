@@ -1,7 +1,4 @@
-ESPADA = 'espada'
-BASTO = 'basto'
-ORO = 'oro'
-COPA = 'copa'
+
 envido_combinations = [
     ['Envido', 2, 1],
     ['Real Envido', 3, 1],
@@ -14,3 +11,7 @@ envido_combinations = [
     ['Envido', 'Real Envido', 'Falta Envido', 0, 5],
     ['Envido', 'Envido', 'Real Envido', 'Falta Envido', 0, 7],
 ]
+SWORD = 'espada'
+COARSE = 'basto'
+GOLD = 'oro'
+CUP = 'copa'

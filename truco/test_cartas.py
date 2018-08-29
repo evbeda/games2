@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch
 
-from .carta import Carta
+from .card import Card
 from .deck import Deck
-from . import ESPADA, BASTO, ORO, COPA
+from . import SWORD, COARSE, GOLD, CUP
 from .player import Player
 from .game import Game
 
@@ -11,50 +11,50 @@ from .game import Game
 class TestCartas (unittest.TestCase):
 
     def test_eq_cards(self):
-        carta_uno = Carta(ESPADA, 10)
-        carta_dos = Carta(ESPADA, 10)
-        result = carta_uno.__eq__(carta_dos)
+        card_one = Card(SWORD, 10)
+        card_two = Card(SWORD, 10)
+        result = card_one.__eq__(card_two)
         self.assertTrue(result)
 
     def test_eq_cards_false(self):
-        carta_uno = Carta(ESPADA, 10)
-        carta_dos = Carta(ESPADA, 9)
-        result = carta_uno.__eq__(carta_dos)
+        card_one = Card(SWORD, 10)
+        card_two = Card(SWORD, 9)
+        result = card_one.__eq__(card_two)
         self.assertFalse(result)
 
     def test_play_card(self):
         player = Player('Leo')
-        player.hidden_cards = [Carta(ESPADA, 10),
-                               Carta(ESPADA, 11),
-                               Carta(ESPADA, 12)
+        player.hidden_cards = [Card(SWORD, 10),
+                               Card(SWORD, 11),
+                               Card(SWORD, 12)
                                ]
         player.play_card(0)
-        expected = Carta(ESPADA, 10)
+        expected = Card(SWORD, 10)
         self.assertEqual(expected, player.played_cards[0])
 
     def test_play_card_not_empty(self):
         player = Player('Leo')
-        player.hidden_cards = [Carta(ESPADA, 10),
-                               Carta(ESPADA, 11),
-                               Carta(ESPADA, 12)
+        player.hidden_cards = [Card(SWORD, 10),
+                               Card(SWORD, 11),
+                               Card(SWORD, 12)
                                ]
         player.play_card(0)
         self.assertEqual(len(player.played_cards), 1)
 
     def test_show_hand_to_board(self):
         player = Player('Leo')
-        player.hidden_cards = [Carta(ESPADA, 10),
-                               Carta(ESPADA, 11),
-                               Carta(ESPADA, 12)
+        player.hidden_cards = [Card(SWORD, 10),
+                               Card(SWORD, 11),
+                               Card(SWORD, 12)
                                ]
         expected = "Cartas en mano: 10 espada, 11 espada, 12 espada,  \n Cartas jugadas: "
         self.assertEqual(expected, player.show_hand_to_board())
 
     def test_show_hand_to_board_one_played(self):
         player = Player('Leo')
-        player.hidden_cards = [Carta(ESPADA, 10),
-                               Carta(ESPADA, 11),
-                               Carta(ESPADA, 12)
+        player.hidden_cards = [Card(SWORD, 10),
+                               Card(SWORD, 11),
+                               Card(SWORD, 12)
                                ]
         player.play_card(1)
         expected = "Cartas en mano: 10 espada, 12 espada,  \n Cartas jugadas: 11 espada, "
@@ -62,49 +62,49 @@ class TestCartas (unittest.TestCase):
 
     # CREACIONES
     def test_si_se_crea_carta(self):
-        carta1 = Carta(ESPADA, 1)
-        self.assertIsInstance(carta1, Carta)
+        carta1 = Card(SWORD, 1)
+        self.assertIsInstance(carta1, Card)
     # POSICIONES
 
     def test_obtener_posicion_cero(self):
-        cartaMacho = Carta(ESPADA, 1)
+        cartaMacho = Card(SWORD, 1)
         self.assertEqual(cartaMacho.get_position(), 0)
 
     def test_obtener_posicion_uno(self):
-        cartaMacho = Carta(BASTO, 1)
+        cartaMacho = Card(COARSE, 1)
         self.assertEqual(cartaMacho.get_position(), 1)
 
     def test_obtener_posicion_trece(self):
-        cartaMacho = Carta(ESPADA, 4)
+        cartaMacho = Card(SWORD, 4)
         self.assertEqual(cartaMacho.get_position(), 13)
 
     # COMPARACIONES
     def test_comparar_as_espadas_con_as_bastos(self):
-        carta1 = Carta(ESPADA, 1)
-        carta2 = Carta(BASTO, 1)
+        carta1 = Card(SWORD, 1)
+        carta2 = Card(COARSE, 1)
         result = carta1.compare_with(carta2)
         self.assertEqual(result, 'GREATER')
 
     def test_comparar_4_de_espadas_con_4_de_bastos(self):
-        carta1 = Carta(ESPADA, 4)
-        carta2 = Carta(BASTO, 4)
+        carta1 = Card(SWORD, 4)
+        carta2 = Card(COARSE, 4)
         result = carta1.compare_with(carta2)
         self.assertEqual(result, 'EQUAL')
 
     def test_comparar_7_de_espadas_con_7_de_bastos(self):
-        carta1 = Carta(ESPADA, 7)
-        carta2 = Carta(BASTO, 7)
+        carta1 = Card(SWORD, 7)
+        carta2 = Card(COARSE, 7)
         result = carta1.compare_with(carta2)
         self.assertEqual(result, 'GREATER')
 
     def test_comparar_5_de_espadas_con_2_de_bastos(self):
-        carta1 = Carta(ESPADA, 5)
-        carta2 = Carta(BASTO, 2)
+        carta1 = Card(SWORD, 5)
+        carta2 = Card(COARSE, 2)
         result = carta1.compare_with(carta2)
         self.assertEqual(result, 'LOWER')
 
     def test_to_string(self):
-        carta1 = Carta(ESPADA, 5)
+        carta1 = Card(SWORD, 5)
         self.assertEqual(carta1.__str__(), "5 espada")
 
 
@@ -112,7 +112,7 @@ class TestMazo(unittest.TestCase):
     def test_repartir_cartas_uno(self):
         mazo = Deck()
         result = mazo.get_card()
-        self.assertIsInstance(result, Carta)
+        self.assertIsInstance(result, Card)
 
     def test_repartir_dos_cartas_distintas(self):
         mazo = Deck()
@@ -132,7 +132,7 @@ class TestMazo(unittest.TestCase):
         mazo = Deck()
         mazo.get_card()
         result2 = mazo.get_card()
-        cartaCorrecta = Carta('basto', 1)
+        cartaCorrecta = Card('basto', 1)
         self.assertEqual(cartaCorrecta.suit, result2.suit)
         self.assertEqual(cartaCorrecta.number, result2.number)
 
@@ -144,7 +144,7 @@ class TestMazo(unittest.TestCase):
         result2 = mazo.get_card()
         result2 = mazo.get_card()
         result2 = mazo.get_card()
-        cartaCorrecta = Carta('oro', 7)
+        cartaCorrecta = Card('oro', 7)
         self.assertEqual(cartaCorrecta.suit, result2.suit)
         self.assertEqual(cartaCorrecta.number, result2.number)
 
@@ -154,7 +154,7 @@ class TestMazo(unittest.TestCase):
         mazo = Deck()
         result2 = mazo.get_card()
         result2 = mazo.get_card()
-        cartaCorrecta = Carta('basto', 3)
+        cartaCorrecta = Card('basto', 3)
         self.assertEqual(cartaCorrecta.number, result2.number)
         self.assertEqual(cartaCorrecta.suit, result2.suit)
 
@@ -203,9 +203,9 @@ class TestGame(unittest.TestCase):
     def test_play_first_card_p1(self):
         del self.player01.hidden_cards[:]
         del self.player01.played_cards[:]
-        carta_0 = Carta(ESPADA, 3)
-        carta_1 = Carta(BASTO, 7)
-        carta_2 = Carta(ESPADA, 5)
+        carta_0 = Card(SWORD, 3)
+        carta_1 = Card(COARSE, 7)
+        carta_2 = Card(SWORD, 5)
         self.player01.hidden_cards = [carta_0, carta_1, carta_2]
         # test
         self.player01.play_card(1)
@@ -224,14 +224,14 @@ class TestGame(unittest.TestCase):
         game = Game([self.player01, self.player02], deck)
         game.deal()
         self.player01.hidden_cards = []
-        carta_0 = Carta(ESPADA, 3)
-        carta_1 = Carta(BASTO, 7)
-        carta_2 = Carta(ESPADA, 5)
+        carta_0 = Card(SWORD, 3)
+        carta_1 = Card(COARSE, 7)
+        carta_2 = Card(SWORD, 5)
         self.player01.hidden_cards = [carta_0, carta_1, carta_2]
         self.player01.play_card(1)
-        carta_3 = Carta(ORO, 2)
-        carta_4 = Carta(BASTO, 4)
-        carta_5 = Carta(COPA, 5)
+        carta_3 = Card(GOLD, 2)
+        carta_4 = Card(COARSE, 4)
+        carta_5 = Card(CUP, 5)
         self.player02.hidden_cards = []
         self.player02.hidden_cards = [carta_3, carta_4, carta_5]
         self.player02.play_card(1)
@@ -249,15 +249,15 @@ class TestGame(unittest.TestCase):
         self.player01.reset_hand()
         self.player02.reset_hand()
 
-        carta_0 = Carta(ESPADA, 3)
-        carta_1 = Carta(BASTO, 7)
-        carta_2 = Carta(ESPADA, 5)
+        carta_0 = Card(SWORD, 3)
+        carta_1 = Card(COARSE, 7)
+        carta_2 = Card(SWORD, 5)
         self.player01.hidden_cards = [carta_0, carta_1, carta_2]
         self.player01.play_card(0)
 
-        carta_3 = Carta(ORO, 3)
-        carta_4 = Carta(BASTO, 4)
-        carta_5 = Carta(COPA, 5)
+        carta_3 = Card(GOLD, 3)
+        carta_4 = Card(COARSE, 4)
+        carta_5 = Card(CUP, 5)
         self.player02.hidden_cards = [carta_3, carta_4, carta_5]
         self.player02.play_card(0)
 
@@ -339,10 +339,10 @@ class test_cantos(unittest.TestCase):
         deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hidden_cards = [Carta(ESPADA, 1), Carta(
-            ESPADA, 10), Carta(ESPADA, 4)]
+        player1.hidden_cards = [Card(SWORD, 1), Card(
+            SWORD, 10), Card(SWORD, 4)]
         player2.hidden_cards = [
-            Carta(BASTO, 1), Carta(BASTO, 5), Carta(BASTO, 2)]
+            Card(COARSE, 1), Card(COARSE, 5), Card(COARSE, 2)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
         self.assertEqual(resultado, [25, 27])
@@ -351,10 +351,10 @@ class test_cantos(unittest.TestCase):
         deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hidden_cards = [Carta(ESPADA, 10), Carta(
-            ESPADA, 11), Carta(ESPADA, 12)]
+        player1.hidden_cards = [Card(SWORD, 10), Card(
+            SWORD, 11), Card(SWORD, 12)]
         player2.hidden_cards = [
-            Carta(BASTO, 10), Carta(BASTO, 12), Carta(BASTO, 5)]
+            Card(COARSE, 10), Card(COARSE, 12), Card(COARSE, 5)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
         self.assertEqual(resultado, [20, 25])
@@ -364,9 +364,9 @@ class test_cantos(unittest.TestCase):
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [
-            Carta(ESPADA, 1), Carta(ESPADA, 2), Carta(ESPADA, 3)]
+            Card(SWORD, 1), Card(SWORD, 2), Card(SWORD, 3)]
         player2.hidden_cards = [
-            Carta(BASTO, 1), Carta(BASTO, 10), Carta(BASTO, 5)]
+            Card(COARSE, 1), Card(COARSE, 10), Card(COARSE, 5)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
         self.assertEqual(resultado, [25, 26])
@@ -375,10 +375,10 @@ class test_cantos(unittest.TestCase):
         deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hidden_cards = [Carta(ESPADA, 10), Carta(
-            ESPADA, 12), Carta(ESPADA, 3)]
+        player1.hidden_cards = [Card(SWORD, 10), Card(
+            SWORD, 12), Card(SWORD, 3)]
         player2.hidden_cards = [
-            Carta(BASTO, 11), Carta(BASTO, 10), Carta(BASTO, 12)]
+            Card(COARSE, 11), Card(COARSE, 10), Card(COARSE, 12)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
         self.assertEqual(resultado, [23, 20])
@@ -388,9 +388,9 @@ class test_cantos(unittest.TestCase):
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [
-            Carta(ESPADA, 2), Carta(ORO, 12), Carta(ESPADA, 3)]
-        player2.hidden_cards = [Carta(BASTO, 11), Carta(
-            ESPADA, 10), Carta(BASTO, 12)]
+            Card(SWORD, 2), Card(GOLD, 12), Card(SWORD, 3)]
+        player2.hidden_cards = [Card(COARSE, 11), Card(
+            SWORD, 10), Card(COARSE, 12)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
         self.assertEqual(resultado, [25, 20])
@@ -399,10 +399,10 @@ class test_cantos(unittest.TestCase):
         deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hidden_cards = [Carta(ESPADA, 10), Carta(
-            BASTO, 12), Carta(ESPADA, 11)]
-        player2.hidden_cards = [Carta(BASTO, 5), Carta(
-            ESPADA, 10), Carta(BASTO, 12)]
+        player1.hidden_cards = [Card(SWORD, 10), Card(
+            COARSE, 12), Card(SWORD, 11)]
+        player2.hidden_cards = [Card(COARSE, 5), Card(
+            SWORD, 10), Card(COARSE, 12)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
         self.assertEqual(resultado, [20, 25])
@@ -411,10 +411,10 @@ class test_cantos(unittest.TestCase):
         deck = Deck()
         player1 = Player('1')
         player2 = Player('2')
-        player1.hidden_cards = [Carta(COPA, 10), Carta(
-            ESPADA, 12), Carta(ESPADA, 3)]
+        player1.hidden_cards = [Card(CUP, 10), Card(
+            SWORD, 12), Card(SWORD, 3)]
         player2.hidden_cards = [
-            Carta(BASTO, 1), Carta(COPA, 3), Carta(BASTO, 5)]
+            Card(COARSE, 1), Card(CUP, 3), Card(COARSE, 5)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
         self.assertEqual(resultado, [23, 26])
@@ -424,9 +424,9 @@ class test_cantos(unittest.TestCase):
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [
-            Carta(ESPADA, 10), Carta(ESPADA, 1), Carta(BASTO, 1)]
+            Card(SWORD, 10), Card(SWORD, 1), Card(COARSE, 1)]
         player2.hidden_cards = [
-            Carta(BASTO, 6), Carta(COPA, 10), Carta(BASTO, 7)]
+            Card(COARSE, 6), Card(CUP, 10), Card(COARSE, 7)]
         game = Game([player1, player2], deck)
         resultado = game.comparar_puntos()
         self.assertEqual(resultado, [21, 33])
@@ -436,9 +436,9 @@ class test_cantos(unittest.TestCase):
         player1 = Player('1')
         player2 = Player('2')
         player1.hidden_cards = [
-            Carta(ESPADA, 10), Carta(ESPADA, 1), Carta(BASTO, 1)]
+            Card(SWORD, 10), Card(SWORD, 1), Card(COARSE, 1)]
         player2.hidden_cards = [
-            Carta(BASTO, 6), Carta(COPA, 10), Carta(BASTO, 7)]
+            Card(COARSE, 6), Card(CUP, 10), Card(COARSE, 7)]
         game = Game([player1, player2], deck)
         game.change_hand()
         result = game.board()
