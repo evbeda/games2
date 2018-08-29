@@ -227,9 +227,9 @@ class PokerTest(unittest.TestCase):
         player2.cards = deck.deal(5)
 
     def test_get_value_J_Q_K(self):
-        self.assertEquals(get_value('J'),11)
-        self.assertEquals(get_value('Q'),12)
-        self.assertEquals(get_value('K'),13)
+        self.assertEqual(get_value('J'),11)
+        self.assertEqual(get_value('Q'),12)
+        self.assertEqual(get_value('K'),13)
 
     def test_21combinations(self):
         result = combine_card(['Ah', '2h', '5h', '6h', '7h', '8h', '9h'])
@@ -274,16 +274,31 @@ class PokerTest(unittest.TestCase):
         result = better_hand(combination)
         self.assertEqual(result, "Poker")
 
-    # TODO replace value '1' for A
-    def test_one_trio_hand(self):
-        combination = combine_card(['Ad', 'Ac', 'Th', 'Ts', '7h', '3d', 'As'])
+    def test_poker_hand(self):
+        combination = combine_card(['Ad', 'Ac', 'Th', 'Ts', 'Ah', '3d', 'As'])
         result = better_hand(combination)
-        self.assertEqual(result, "Trio de A")
+        self.assertEqual(result, "Poker")
+    # TODO replace value '1' for A
+
+    def test_straight_flush_hand(self):
+        combination = combine_card(['6d', 'Ac', 'Td', 'Ts', '7d', '8d', '9d'])
+        result = better_hand(combination)
+        self.assertEqual(result, "Escalera Color")
 
     def test_one_trio_of_no_faced_cards(self):
         combination = combine_card(['Ad', '3c', 'Th', '3s', '7h', '3d', 'As'])
         result = better_hand(combination)
         self.assertEqual(result, "Trio de 3")
+        combination = combine_card(['Jd', '3c', 'Jh', '3s', '7h', '3d', 'Js'])
+        result = better_hand(combination)
+        self.assertEqual(result, "Trio de J")
+        combination = combine_card(['Qd', '3c', 'Qh', '3s', 'Qh', '3d', 'As'])
+        result = better_hand(combination)
+        self.assertEqual(result, "Trio de Q")
+        combination = combine_card(['Ad', '3c', 'Kh', '3s', 'Kh', '3d', 'Ks'])
+        result = better_hand(combination)
+        self.assertEqual(result, "Trio de K")
+
 
     def test_two_trio_hand(self):
         combination = combine_card(['Td', '3c', 'Th', '3s', '7h', '3d', 'Ts'])

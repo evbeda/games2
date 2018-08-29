@@ -20,13 +20,13 @@ class Game(object):
                 return True
             else:
                 if self.round > 0:
-                    print("Player 1 Wins!")
-                print("Player 2 has no money")
+                    print('')  # print("Player 1 Wins!")
+                print('')  # print("Player 2 has no money")
                 return False
         else:
             if self.round > 0:
-                print("Player 2 Wins!")
-            print("Player 1 has no money")
+                print('')  # print("Player 2 Wins!")
+            print('')  # print("Player 1 has no money")
             return False
 
     def take_bets(self, player1_bet, player2_bet):
