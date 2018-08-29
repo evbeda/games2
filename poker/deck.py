@@ -7,9 +7,9 @@ class Deck(object):
         self.rebuild()
 
     def create(self):
-        colors = ['h', 'd', 's', 'c']
+        suits = ['h', 'd', 's', 'c']
         values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
-        return [Card(value, color) for value in values for color in colors]
+        return [Card(value, suit) for value in values for suit in suits]
 
     def shuffle_cards(self):
         shuffle(self.cards)

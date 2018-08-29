@@ -26,7 +26,7 @@ five_cards_combinations = [
 ]
 
 
-def ordenar_cartas_numeros(cards):
+def sort_cards_by_number(cards):
     # Obtiene cartas con la pinta y devuelve un array con los numeros ordenados
     numbers = []
     for card in cards:
@@ -61,16 +61,16 @@ def get_value(card):
         return int(card[0])
 
 
-def encontrar_escalera_real(cards):
-    numbers = ordenar_cartas_numeros(cards)
+def find_royal_flush(cards):
+    numbers = sort_cards_by_number(cards)
     # Escalera con AS,10,J,Q,K
-    if numbers == [1, 10, 11, 12, 13] and encontrar_color(cards):
+    if numbers == [1, 10, 11, 12, 13] and find_flush(cards):
         return True
     else:
         return False
 
 
-def encontrar_iguales(cards):
+def find_repeated_cards(cards):
     cardsDictionary = defaultdict(int)
     for card in cards:
         cardNumber = card[0]
@@ -92,7 +92,7 @@ def encontrar_iguales(cards):
     return result
 
 
-def encontrar_color(cards):
+def find_flush(cards):
     color = cards[0][1]
     for card in cards:
         if card[1] != color:
@@ -100,8 +100,8 @@ def encontrar_color(cards):
     return True
 
 
-def encontrar_escalera(cards):
-    numbers = ordenar_cartas_numeros(cards)
+def find_straight(cards):
+    numbers = sort_cards_by_number(cards)
     # Escalera con AS,10,J,Q,K
     if numbers == [1, 10, 11, 12, 13]:
         return True
@@ -111,15 +111,15 @@ def encontrar_escalera(cards):
     return True
 
 
-def encontrar_escalera_color(cards):
-    if encontrar_color(cards) and encontrar_escalera(cards):
+def find_straight_flush(cards):
+    if find_flush(cards) and find_straight(cards):
         return True
     else:
         return False
 
 
-def encontrar_cartas_pintas(cards):
-    numbers = ordenar_cartas_numeros(cards)
+def find_cards_suits(cards):
+    numbers = sort_cards_by_number(cards)
     orderCards = []
     for number in numbers:
         for card in cards:
@@ -146,10 +146,10 @@ def better_hand(combinations):
     greater_pair = 0
     card = ''
     for combination in combinations:
-        iguales = encontrar_iguales(combination)
-        if encontrar_escalera_real(combination):
+        iguales = find_repeated_cards(combination)
+        if find_royal_flush(combination):
             return "Escalera Real"
-        elif encontrar_escalera_color(combination):
+        elif find_straight_flush(combination):
             return "Escalera Color"
         elif len(iguales['poker']) > 0:
             return "Poker"
