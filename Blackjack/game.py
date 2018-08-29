@@ -1,8 +1,7 @@
-from .mazo import cardsDictionary, colorDictionary
+from . import cardsDictionary, colorDictionary, cards_colors
 from .player import Player
 from .deck import Deck
 from .hand import Hand
-from . import cards_colors
 
 
 class Game():
@@ -40,9 +39,16 @@ class Game():
             self.is_playing = False
             return False
 
+    def compare_bet(self, min_bet, bet):
+        if(bet >= min_bet):
+            return True
+        else:
+            return False
+
     def who_wins(self):
         if self.dealer_hand.value == 21 and len(self.dealer_hand.cards) == 2:
-            if self.player.hand.value == 21 and len(self.player.hand.cards) == 2:
+            if (self.player.hand.value == 21 and
+                    len(self.player.hand.cards) == 2):
                 return 'TIE!'
             return 'Dealer Wins!'
         elif self.player.hand.value == 21 and len(self.player.hand.cards) == 2:
@@ -65,15 +71,18 @@ class Game():
             self.is_finished = True
             self.is_playing = False
             return 'Player Wins!'
-        elif self.dealer_hand.value >= 17 and (self.player.hand.value > self.dealer_hand.value):
+        elif (self.dealer_hand.value >= 17 and
+              (self.player.hand.value > self.dealer_hand.value)):
             self.is_finished = True
             self.is_playing = False
             return 'Player Wins!'
-        elif self.dealer_hand.value >= 17 and (self.dealer_hand.value > self.player.hand.value):
+        elif (self.dealer_hand.value >= 17 and
+              (self.dealer_hand.value > self.player.hand.value)):
             self.is_finished = True
             self.is_playing = False
             return 'Dealer Wins!'
-        elif self.dealer_hand.value >= 17 and (self.dealer_hand.value == self.player.hand.value):
+        elif (self.dealer_hand.value >= 17 and
+              (self.dealer_hand.value == self.player.hand.value)):
             self.is_finished = True
             self.is_playing = False
             return 'TIE!'
@@ -83,7 +92,8 @@ class Game():
 
     def next_turn(self):
         if self.is_playing:
-            return 'Do you want to stop (=) or have another card (+)?, q to quit'
+            return ('Do you want to stop (=) '
+                    'or have another card (+)?, q to quit')
         else:
             if self.is_finished:
                 return 'Do you want to start a new game? y(yes) / q(quit)'
@@ -105,7 +115,9 @@ class Game():
             else:
                 player_cards.append(card[0] + cards_colors[card[1]])
 
-        return '\n\nDealer: {dealer_cards} \nPlayer: {player_cards}\nMoney: {player_money} \n\n'.format(
+        return ('\n\nDealer: {dealer_cards}'
+                '\nPlayer: {player_cards}\n'
+                'Money: {player_money} \n\n').format(
             dealer_cards=dealer_cards,
             player_cards=player_cards,
             player_money=self.player.money,
@@ -135,4 +147,3 @@ class Game():
                 return 'You left the game'
             else:
                 return 'Wrong command, please use + or = .'
-

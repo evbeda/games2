@@ -1,7 +1,5 @@
 import unittest
-from unittest.mock import patch
-from .blackjack import *
-from .mazo import cardsDictionary, colorDictionary
+from . import cardsDictionary, colorDictionary
 from .game import Game
 from .player import Player
 from .hand import Hand
@@ -11,25 +9,26 @@ from .deck import Deck
 class TestBets(unittest.TestCase):
     player_name = 'John'
     # Bet tests
+
     def test_bet_equal(self):
         player = Player(self.player_name, 10)
         game = Game()
         game.min_bet = 10
-        result = compare_bet(game.min_bet, player.money)
+        result = game.compare_bet(game.min_bet, player.money)
         self.assertEqual(result, True)
 
     def test_bet_minor(self):
         player = Player(self.player_name, 5)
         game = Game()
         game.min_bet = 10
-        result = compare_bet(game.min_bet, player.money)
+        result = game.compare_bet(game.min_bet, player.money)
         self.assertEqual(result, False)
 
     def test_bet_upper(self):
         player = Player(self.player_name, 10)
         game = Game()
         game.min_bet = 5
-        result = compare_bet(game.min_bet, player.money)
+        result = game.compare_bet(game.min_bet, player.money)
         self.assertEqual(result, True)
 
     def test_bet_balance(self):
@@ -114,7 +113,7 @@ class TestDeck(unittest.TestCase):
     def test_reduce_len_when_deal(self):
         deck = Deck(cardsDictionary, colorDictionary)
         initial_len = len(deck.cards)
-        cards = deck.deal(2)
+        deck.deal(2)
         result = len(deck.cards)
         expected = initial_len - 2
         self.assertEqual(expected, result)
@@ -261,12 +260,13 @@ class TestGame(unittest.TestCase):
         game.player.hand.value = 19
         game.dealer_hand.cards = ['Kd', 'Th']
         game.dealer_hand.value = 20
-        with unittest.mock.patch('Blackjack.deck.Deck.deal', return_value = ['3d']):
+        with unittest.mock.patch('Blackjack.deck.Deck.deal',
+                                 return_value=['3d']):
             self.assertEqual(game.play('+'), 'Dealer Wins!')
 
     def test_play_one_more_wins(self):
         game = Game()
-        game.deck.cards = ['As','6h','Jd','Qd','Kh']
+        game.deck.cards = ['As', '6h', 'Jd', 'Qd', 'Kh']
         game.start_game()
         game.player.money = 5
         result = game.play('+')
@@ -285,7 +285,9 @@ class TestGame(unittest.TestCase):
     def test_next_turn(self):
         game = Game()
         game.start_game()
-        self.assertEqual(game.next_turn(), 'Do you want to stop (=) or have another card (+)?, q to quit')
+        self.assertEqual(
+            game.next_turn(),
+            'Do you want to stop (=) or have another card (+)?, q to quit')
 
     def test_next_turn_game_finished(self):
         game = Game()
@@ -300,12 +302,15 @@ class TestGame(unittest.TestCase):
         game.player.hand.value = 16
         game.dealer_hand.cards = ['Kd', '5h']
         game.dealer_hand.value = 15
-        with unittest.mock.patch('Blackjack.hand.Hand.deal_card', return_value = '2d'):
+        with unittest.mock.patch('Blackjack.hand.Hand.deal_card',
+                                 return_value='2d'):
             self.assertEqual(game.play('+'), 'CONTINUE')
 
     def test_force_quit(self):
         game = Game()
-        self.assertEqual(game.next_turn(), 'Do you want to stop (=) or have another card (+)?, q to quit')
+        self.assertEqual(
+            game.next_turn(),
+            'Do you want to stop (=) or have another card (+)?, q to quit')
         self.assertEqual(game.play('q'), 'You left the game')
         self.assertFalse(game.is_playing)
 
