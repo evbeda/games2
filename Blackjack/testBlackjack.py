@@ -88,7 +88,7 @@ class TestHands(unittest.TestCase):
 
     def test_as_count_one(self):
         hand = Hand()
-        hand.deal_card(['8h', 'Ah', '3d'])
+        hand.deal_card(['8h', '3d', 'Ah'])
         result = hand.value
         self.assertEqual(result, 12)
 
@@ -313,6 +313,28 @@ class TestGame(unittest.TestCase):
             'Do you want to stop (=) or have another card (+)?, q to quit')
         self.assertEqual(game.play('q'), 'You left the game')
         self.assertFalse(game.is_playing)
+
+    def test_game_with_as(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['4h', 'Ad']
+        game.player.hand.value = 15
+        game.dealer_hand.cards = ['4d', '5h']
+        game.dealer_hand.value = 9
+        with unittest.mock.patch('Blackjack.hand.Hand.deal_card',
+                                 return_value='9d'):
+            self.assertEqual(game.play('+'), 'CONTINUE')
+
+    def test_game_with_as_2(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['4h', 'Ad', '9d']
+        game.player.hand.value = 14
+        game.dealer_hand.cards = ['4d', '5h']
+        game.dealer_hand.value = 9
+        with unittest.mock.patch('Blackjack.hand.Hand.deal_card',
+                                 return_value='8d'):
+            self.assertEqual(game.play('+'), 'CONTINUE')
 
 
 if __name__ == "__main__":

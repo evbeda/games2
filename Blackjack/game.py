@@ -46,6 +46,8 @@ class Game():
             return False
 
     def who_wins(self):
+        # print('VALUE PLAYER: ' + str(self.player.hand.value))
+        # print('VALUE CPU: ' + str(self.dealer_hand.value))
         if self.dealer_hand.value == 21 and len(self.dealer_hand.cards) == 2:
             if (self.player.hand.value == 21 and
                     len(self.player.hand.cards) == 2):
@@ -72,17 +74,22 @@ class Game():
             self.is_playing = False
             return 'Player Wins!'
         elif (self.dealer_hand.value >= 17 and
-              (self.player.hand.value > self.dealer_hand.value)):
+              self.player.hand.value > self.dealer_hand.value):
             self.is_finished = True
             self.is_playing = False
             return 'Player Wins!'
         elif (self.dealer_hand.value >= 17 and
-              (self.dealer_hand.value > self.player.hand.value)):
+              self.dealer_hand.value > self.player.hand.value):
             self.is_finished = True
             self.is_playing = False
             return 'Dealer Wins!'
+        elif (self.dealer_hand.value >= 17 and self.dealer_hand.value < 21 and
+              self.player.hand.value > self.dealer_hand.value):
+                self.is_finished = True
+                self.is_playing = False
+                return 'Player Wins!'
         elif (self.dealer_hand.value >= 17 and
-              (self.dealer_hand.value == self.player.hand.value)):
+              self.dealer_hand.value == self.player.hand.value):
             self.is_finished = True
             self.is_playing = False
             return 'TIE!'
