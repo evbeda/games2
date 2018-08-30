@@ -48,3 +48,6 @@ class Card():
         if isinstance(other, Card):
             return self.number == other.number and self.suit == other.suit
         return False
+
+    def __gt__(self, other):
+        return self.number > other.number

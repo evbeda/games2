@@ -12,6 +12,41 @@ class TestGame(unittest.TestCase):
     player01 = Player('1')
     player02 = Player('2')
 
+    def test_score_envido_7(self):
+        carta_0 = Card(GOLD, 5)
+        carta_1 = Card(CUP, 6)
+        carta_2 = Card(COARSE, 7)
+        self.player01.hidden_cards = [carta_0, carta_1, carta_2]
+        self.assertEqual(7, self.player01.get_score_envido())
+
+    def test_score_envido_28_sword(self):
+        carta_0 = Card(SWORD, 2)
+        carta_1 = Card(SWORD, 6)
+        carta_2 = Card(COARSE, 7)
+        self.player01.hidden_cards = [carta_0, carta_1, carta_2]
+        self.assertEqual(28, self.player01.get_score_envido())
+
+    def test_score_envido_12_coarse(self):
+        carta_0 = Card(COARSE, 10)
+        carta_1 = Card(COARSE, 11)
+        carta_2 = Card(COARSE, 12)
+        self.player01.hidden_cards = [carta_0, carta_1, carta_2]
+        self.assertEqual(20, self.player01.get_score_envido())
+
+    def test_score_envido_12_coarse_disctinct(self):
+        carta_0 = Card(GOLD, 10)
+        carta_1 = Card(COARSE, 11)
+        carta_2 = Card(SWORD, 12)
+        self.player01.hidden_cards = [carta_0, carta_1, carta_2]
+        self.assertEqual(12, self.player01.get_score_envido())
+
+    def test_score_envido_33_coarse(self):
+        carta_0 = Card(COARSE, 7)
+        carta_1 = Card(COARSE, 6)
+        carta_2 = Card(COARSE, 5)
+        self.player01.hidden_cards = [carta_0, carta_1, carta_2]
+        self.assertEqual(33, self.player01.get_score_envido())
+
     def test_deal_cards(self):
         # setup
         deck = Deck()
