@@ -49,8 +49,8 @@ class TestCategories(unittest.TestCase):
 
     def test_full(self):
         numOfThrows = 2
-        for index_3 in range(1, 6):
-            for index_2 in range(1, 6):
+        for index_3 in range(1, 7):
+            for index_2 in range(1, 7):
                 #import ipdb; ipdb.set_trace()
                 mockThrow = [index_3, index_3, index_3, index_2, index_2]
                 isFull = check_throw(mockThrow, FULL['name'], numOfThrows)
@@ -61,8 +61,8 @@ class TestCategories(unittest.TestCase):
 
     def test_served_full(self):
         numOfThrows = 1
-        for index_3 in range(1, 6):
-            for index_2 in range(1, 6):
+        for index_3 in range(1, 7):
+            for index_2 in range(1, 7):
                 #import ipdb; ipdb.set_trace()
                 mockThrow = [index_3, index_3, index_3, index_2, index_2]
                 isFull = check_throw(mockThrow, FULL['name'], numOfThrows)
