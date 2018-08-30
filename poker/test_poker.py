@@ -11,14 +11,42 @@ from .poker import (
     find_straight,
     sort_cards_by_number,
     get_value,
+    PREFLOP,
+    FLOP,
+    TURN,
+    RIVER,
+    SHOWDOWN,
 )
 from .card import Card
 from .deck import Deck
 from .player import Player
 from .game import Game
+from .hand import Hand
 
 
 class PokerTest(unittest.TestCase):
+    def test_player1_wins(self):
+        player01 = Player(20)
+        player02 = Player(20)
+        player02.money = 0
+        deck = Deck()
+        deck.create()
+        game = Game(player01, player02, deck)
+        game.round = 1
+        result = game.deal_players()
+        self.assertFalse(result)
+    
+    def test_player2_wins(self):
+        player01 = Player(20)
+        player02 = Player(20)
+        player01.money = 0
+        deck = Deck()
+        deck.create()
+        game = Game(player01, player02, deck)
+        game.round = 1
+        result = game.deal_players()
+        self.assertFalse(result)
+
     def test_royal_flush(self):
         # test
         result = find_royal_flush(['Ah', 'Kh', 'Qh', 'Jh', 'Th'])
@@ -274,12 +302,6 @@ class PokerTest(unittest.TestCase):
         result = better_hand(combination)
         self.assertEqual(result, "Poker")
 
-    def test_poker_hand(self):
-        combination = combine_card(['Ad', 'Ac', 'Th', 'Ts', 'Ah', '3d', 'As'])
-        result = better_hand(combination)
-        self.assertEqual(result, "Poker")
-    # TODO replace value '1' for A
-
     def test_straight_flush_hand(self):
         combination = combine_card(['6d', 'Ac', 'Td', 'Ts', '7d', '8d', '9d'])
         result = better_hand(combination)
@@ -310,28 +332,132 @@ class PokerTest(unittest.TestCase):
         result = card.__repr__()
         self.assertEqual(result, 'Kh')
 
-    def test_player1_wins(self):
-        player01 = Player(20)
-        player02 = Player(20)
-        player02.money = 0
-        deck = Deck()
-        deck.create()
-        game = Game(player01, player02, deck)
-        game.round = 1
-        result = game.deal_players()
-        self.assertFalse(result)
-    
-    def test_player2_wins(self):
-        player01 = Player(20)
-        player02 = Player(20)
-        player01.money = 0
-        deck = Deck()
-        deck.create()
-        game = Game(player01, player02, deck)
-        game.round = 1
-        result = game.deal_players()
-        self.assertFalse(result)
-        
+    def test_hand_deal_initial_cards(self):
+        hand = Hand()
+        self.assertEqual(
+            hand.stage,
+            PREFLOP,
+        )
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.player02_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.common_cards),
+            0,
+        )
+        # ----
+        # ronda apuestas o retira
+        # ----
+
+    def test_hand_deal_flop(self):
+        hand = Hand() 
+        hand.next_stage()
+        hand.deal_cards()
+        self.assertEqual(
+            hand.stage,
+            FLOP,
+        )
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.common_cards),
+            3,
+        )
+        # ----
+        # ronda apuestas o retira
+        # ----
+
+    def test_hand_deal_turn(self):
+        hand = Hand() 
+        hand.next_stage()
+        hand.deal_cards()
+        hand.next_stage()
+        hand.deal_cards()
+        self.assertEqual(
+            hand.stage,
+            TURN,
+        )
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.common_cards),
+            4,
+        )
+        # ----
+        # ronda apuestas o retira
+        # ----
+
+    def test_hand_deal_river(self):
+        hand = Hand() 
+        hand.next_stage()
+        hand.deal_cards()
+        hand.next_stage()
+        hand.deal_cards()
+        hand.next_stage()
+        hand.deal_cards()
+        self.assertEqual(
+            hand.stage,
+            RIVER,
+        )
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.common_cards),
+            5,
+        )
+        # ----
+        # ronda apuestas o retira
+        # ----
+
+    def test_hand_showdown(self):
+        hand = Hand() 
+        hand.next_stage()
+        hand.deal_cards()
+        hand.next_stage()
+        hand.deal_cards()
+        hand.next_stage()
+        hand.deal_cards()
+        hand.next_stage()
+        self.assertEqual(
+            hand.stage,
+            SHOWDOWN
+        )
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.common_cards),
+            5,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
