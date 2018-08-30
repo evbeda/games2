@@ -12,6 +12,7 @@ from truco.test_truco import TestCantos as TC
 from truco.test_truco import TestGame as TG
 from truco.test_truco import TestDeck as TD
 from truco.test_truco import TestCards as TCD
+from truco.test_truco import TestHand as TestTrucoHand
 from poker.test_poker import *
 from guess_number_game import test_guess_number_game
 import test_game
@@ -48,6 +49,7 @@ def suite():
     test_suite.addTest(TC)
     test_suite.addTest(TD)
     test_suite.addTest(TCD)
+    test_suite.addTest(TestTrucoHand)
     return test_suite
 
 

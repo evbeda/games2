@@ -1,7 +1,7 @@
 from truco import envido_combinations
 
 
-class Game():
+class Game(object):
     name = 'Truco Game'
 
     def __init__(self, players, deck):
@@ -14,6 +14,7 @@ class Game():
         self.turno_retruco = None
         self.turno_vale_cuatro = None
         self.is_playing = True
+        self.players[0].is_hand = True
 
     def deal(self):
         self.reset_state()
@@ -218,11 +219,6 @@ class Game():
                 puntaje_player_02 = cartas[c] + cartas[c + 1] + 20
         return [puntaje_player_01, puntaje_player_02]
 
-        # print(cartas)
-        # elif 2 son iguales
-        # elif 3 distintas
-        # c = 0
-
     def get_cantos_envido(self):
         try:
             return self.cantos_envidos[-1]
@@ -256,3 +252,15 @@ class Game():
         self.turno_truco = None
         self.turno_retruco = None
         self.turno_vale_cuatro = None
+
+    def who_win_envido(self):
+        if self.players[0].get_score_envido() < self.players[1].get_score_envido():
+            return 'PLAYER1'
+        if self.players[0].get_score_envido() > self.players[1].get_score_envido():
+            return 'PLAYER2'
+        return self.who_is_hand()
+
+    def who_is_hand(self):
+        if self.players[0].is_hand:
+            return 'PLAYER1'
+        return 'PLAYER2'
