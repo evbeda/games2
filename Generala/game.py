@@ -22,9 +22,13 @@ class Game():
 
     def finished(self):
         for key, value in self.player1.combinations.items():
+            if self.player1.score >= 3000:
+                return True
             if self.player1.combinations[key] == '':
                 return False
         for key, value in self.player2.combinations.items():
+            if self.player2.score >= 3000:
+                return True
             if self.player2.combinations[key] == '':
                 return False
         return True
@@ -64,10 +68,9 @@ class Game():
         elif 'ANOTAR' == text_input:
             categoria = value
             your_dices = self.throw.dice
-            print('DADOS {}'.format(your_dices))
-            print('CATEGORIA {}'.format(categoria))
-            print('TURNO {}'.format(self.throw.number))
-            #import ipdb; ipdb.set_trace()
+            # print('DADOS {}'.format(your_dices))
+            # print('CATEGORIA {}'.format(categoria))
+            # print('TURNO {}'.format(self.throw.number))
             points = check_throw(your_dices, categoria, self.throw.number)
             is_possible = self.turno.choose_combination(categoria, points)
             if is_possible:
@@ -82,7 +85,7 @@ class Game():
         else:
             return 'Ingrese ANOTAR (TIRADA), CONSERVAR (1,2..), o TIRAR'
 
-    @property
+   #@property
     def board(self):
         return '{} TIENE {} PUNTOS \n{} TIENE {} PUNTOS\nRONDA {}'.format(
             self.player1.name,
