@@ -11,32 +11,25 @@ class TestBets(unittest.TestCase):
     # Bet tests
 
     def test_bet_equal(self):
-        player = Player(self.player_name, 10)
+        bet = 50
         game = Game()
-        game.min_bet = 10
-        result = game.compare_bet(game.min_bet, player.money)
-        self.assertEqual(result, True)
-
-    def test_bet_minor(self):
-        player = Player(self.player_name, 5)
-        game = Game()
-        game.min_bet = 10
-        result = game.compare_bet(game.min_bet, player.money)
-        self.assertEqual(result, False)
+        game.start_game()
+        result = game.check_bet(bet)
+        self.assertEqual(result, 'NEW ROUND!')
 
     def test_bet_upper(self):
-        player = Player(self.player_name, 10)
+        bet = 120
         game = Game()
-        game.min_bet = 5
-        result = game.compare_bet(game.min_bet, player.money)
-        self.assertEqual(result, True)
+        game.start_game()
+        result = game.check_bet(bet)
+        self.assertEqual(result, 'You dont have enough money')
 
-    def test_bet_balance(self):
-        player = Player(self.player_name, 10)
+    def test_bet_lower_than_min_bet(self):
+        bet = 1
         game = Game()
-        game.min_bet = 5
-        player.balance(game.min_bet)
-        self.assertEqual(player.money, 5)
+        game.start_game()
+        result = game.check_bet(bet)
+        self.assertEqual(result, 'The bet is too low, the min bet is 5')
 
     def test_bet_win_no_blackjack(self):
         player = Player(self.player_name, 10)
@@ -200,6 +193,8 @@ class TestGame(unittest.TestCase):
 
     def test_player_has_better_hand(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.hand.cards = ['Kd', '7d', '3d']
         game.player.hand.value = 20
@@ -210,6 +205,8 @@ class TestGame(unittest.TestCase):
 
     def test_player_dealer_same_cards(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.hand.cards = ['Kh', '7d']
         game.player.hand.value = 17
@@ -220,6 +217,8 @@ class TestGame(unittest.TestCase):
 
     def test_should_continue_playing(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.hand.cards = ['Kh', '8d']
         game.player.hand.value = 18
@@ -230,6 +229,8 @@ class TestGame(unittest.TestCase):
 
     def test_play_no_money(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.money = 0
         result = game.play('=')
@@ -237,6 +238,8 @@ class TestGame(unittest.TestCase):
 
     def test_play_wrong_command(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.money = 5
         result = game.play('AAA')
@@ -244,6 +247,8 @@ class TestGame(unittest.TestCase):
 
     def test_play_stand(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.money = 5
         game.player.hand.cards = ['Kh', 'Qd']
@@ -254,6 +259,8 @@ class TestGame(unittest.TestCase):
 
     def test_play_one_more(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.money = 5
         game.player.hand.cards = ['Kh', '9d']
@@ -267,6 +274,8 @@ class TestGame(unittest.TestCase):
     def test_play_one_more_wins(self):
         game = Game()
         game.deck.cards = ['As', '6h', 'Jd', 'Qd', 'Kh']
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.money = 5
         result = game.play('+')
@@ -274,6 +283,8 @@ class TestGame(unittest.TestCase):
 
     def test_player_dealer_21(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.hand.cards = ['Kh', '7d']
         game.player.hand.value = 17
@@ -284,6 +295,8 @@ class TestGame(unittest.TestCase):
 
     def test_next_turn(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         self.assertEqual(
             game.next_turn(),
@@ -291,12 +304,16 @@ class TestGame(unittest.TestCase):
 
     def test_next_turn_game_finished(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.is_playing = False
         self.assertEqual(game.next_turn(), 'Game Over')
 
     def test_next_turn_game_continue(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.hand.cards = ['Kh', '6d']
         game.player.hand.value = 16
@@ -308,6 +325,8 @@ class TestGame(unittest.TestCase):
 
     def test_force_quit(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         self.assertEqual(
             game.next_turn(),
             'Do you want to stop (=) or have another card (+)?, q to quit')
@@ -316,6 +335,8 @@ class TestGame(unittest.TestCase):
 
     def test_game_with_as(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.hand.cards = ['4h', 'Ad']
         game.player.hand.value = 15
@@ -330,6 +351,8 @@ class TestGame(unittest.TestCase):
 
     def test_game_with_as_2(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.hand.cards = ['4h', 'Ad', 'Ah']
         game.player.hand.value = 16
@@ -342,6 +365,8 @@ class TestGame(unittest.TestCase):
 
     def test_game_with_as_mock(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.hand.cards = ['4h', 'Ad', '9d']
         game.player.hand.value = 14
@@ -355,6 +380,8 @@ class TestGame(unittest.TestCase):
 
     def test_game_with_as_3(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.hand.cards = ['4h', 'Ah', 'Ad']
         game.player.hand.value = 16
@@ -367,6 +394,8 @@ class TestGame(unittest.TestCase):
 
     def test_game_with_as_4(self):
         game = Game()
+        game.bet_time = False
+        game.is_finished = False
         game.start_game()
         game.player.hand.cards = ['As', 'Ah', 'Ad']
         game.player.hand.value = 13
@@ -376,6 +405,24 @@ class TestGame(unittest.TestCase):
         with unittest.mock.patch('Blackjack.deck.Deck.deal',
                                  return_value=['Ac']):
             self.assertEqual(game.play('+'), 'CONTINUE')
+
+    def test_money_winner(self):
+        game = Game()
+        game.bet_time = False
+        game.is_finished = False
+        game.start_game()
+        game.bet = 20
+        game.give_money_to_winner('Player Wins!')
+        self.assertEqual(game.player.money, 120)
+
+    def test_money_lose(self):
+        game = Game()
+        game.bet_time = False
+        game.is_finished = False
+        game.start_game()
+        game.bet = 20
+        game.give_money_to_winner('Dealer Wins!')
+        self.assertEqual(game.player.money, 80)
 
 
 if __name__ == "__main__":
