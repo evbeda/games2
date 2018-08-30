@@ -71,6 +71,14 @@ class TestCategories(unittest.TestCase):
                 else:
                     self.assertEqual(isFull, FULLSERVIDO['score'])
 
+    def test_not_full(self):
+        numOfThrows = 1
+        for index_3 in range(1, 7):
+            for index_2 in range(1, 7):
+                mockThrow = [index_3, index_3, 7, index_3, index_2]
+                isFull = check_throw(mockThrow, FULL['name'], numOfThrows)
+                self.assertEqual(isFull, 0)
+
     def test_escalera(self):
         numOfThrows = 2
         mockThrow = [2, 3, 4, 5, 6]
