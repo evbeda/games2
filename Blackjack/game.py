@@ -46,52 +46,52 @@ class Game():
             return False
 
     def who_wins(self):
-        # print('VALUE PLAYER: ' + str(self.player.hand.value))
-        # print('VALUE CPU: ' + str(self.dealer_hand.value))
         if self.dealer_hand.value == 21 and len(self.dealer_hand.cards) == 2:
             if (self.player.hand.value == 21 and
                     len(self.player.hand.cards) == 2):
+                self.is_finished = True
                 return 'TIE!'
+            self.is_finished = True
             return 'Dealer Wins!'
         elif self.player.hand.value == 21 and len(self.player.hand.cards) == 2:
             self.is_finished = True
-            self.is_playing = False
             return 'Player Wins!'
         elif self.dealer_hand.value > 21:
             self.is_finished = True
-            self.is_playing = False
             return 'Player Wins!'
         elif self.player.hand.value > 21:
             self.is_finished = True
-            self.is_playing = False
             return 'Dealer Wins!'
         elif self.dealer_hand.value == 21:
             self.is_finished = True
-            self.is_playing = False
             return 'Dealer Wins!'
         elif self.player.hand.value == 21:
             self.is_finished = True
-            self.is_playing = False
             return 'Player Wins!'
-        elif (self.dealer_hand.value >= 17 and
-              self.player.hand.value > self.dealer_hand.value):
+        elif (
+            self.dealer_hand.value >= 17 and
+            self.player.hand.value > self.dealer_hand.value
+        ):
             self.is_finished = True
-            self.is_playing = False
             return 'Player Wins!'
-        elif (self.dealer_hand.value >= 17 and
-              self.dealer_hand.value > self.player.hand.value):
+        elif (
+            self.dealer_hand.value >= 17 and
+            self.dealer_hand.value > self.player.hand.value
+        ):
             self.is_finished = True
-            self.is_playing = False
             return 'Dealer Wins!'
-        elif (self.dealer_hand.value >= 17 and self.dealer_hand.value < 21 and
-              self.player.hand.value > self.dealer_hand.value):
-                self.is_finished = True
-                self.is_playing = False
-                return 'Player Wins!'
-        elif (self.dealer_hand.value >= 17 and
-              self.dealer_hand.value == self.player.hand.value):
+        elif (
+                self.dealer_hand.value >= 17 and
+                self.dealer_hand.value < 21 and
+                self.player.hand.value > self.dealer_hand.value
+        ):
             self.is_finished = True
-            self.is_playing = False
+            return 'Player Wins!'
+        elif (
+                self.dealer_hand.value >= 17 and
+                self.dealer_hand.value == self.player.hand.value
+        ):
+            self.is_finished = True
             return 'TIE!'
         elif self.dealer_hand.value < 17:
             self.is_playing = True
@@ -99,11 +99,12 @@ class Game():
 
     def next_turn(self):
         if self.is_playing:
-            return ('Do you want to stop (=) '
-                    'or have another card (+)?, q to quit')
-        else:
             if self.is_finished:
                 return 'Do you want to start a new game? y(yes) / q(quit)'
+            else:
+                return ('Do you want to stop (=) '
+                        'or have another card (+)?, q to quit')
+        else:
             return 'Game Over'
 
     @property
@@ -138,7 +139,7 @@ class Game():
             if command == '=':
                 if self.who_wins() == 'CONTINUE':
                     self.dealer_hand.deal_card(self.deck.deal(1))
-                    self.play('=')
+                    return self.play('=')
                 else:
                     return self.who_wins()
             elif command == '+':
@@ -149,6 +150,8 @@ class Game():
                     return self.who_wins()
             elif command == 'y':
                 self.reset_round()
+                self.is_finished = False
+                return 'New Round'
             elif command == 'q':
                 self.is_playing = False
                 return 'You left the game'

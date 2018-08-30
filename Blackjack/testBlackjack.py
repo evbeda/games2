@@ -83,7 +83,7 @@ class TestHands(unittest.TestCase):
     def test_cards_sum_normal(self):
         hand = Hand()
         hand.deal_card(['2h', 'Jh'])
-        result = hand.sum_cards()
+        result = hand.value
         self.assertEqual(result, 12)
 
     def test_as_count_one(self):
@@ -302,8 +302,8 @@ class TestGame(unittest.TestCase):
         game.player.hand.value = 16
         game.dealer_hand.cards = ['Kd', '5h']
         game.dealer_hand.value = 15
-        with unittest.mock.patch('Blackjack.hand.Hand.deal_card',
-                                 return_value='2d'):
+        with unittest.mock.patch('Blackjack.deck.Deck.deal',
+                                 return_value=['2d']):
             self.assertEqual(game.play('+'), 'CONTINUE')
 
     def test_force_quit(self):
@@ -321,19 +321,60 @@ class TestGame(unittest.TestCase):
         game.player.hand.value = 15
         game.dealer_hand.cards = ['4d', '5h']
         game.dealer_hand.value = 9
-        with unittest.mock.patch('Blackjack.hand.Hand.deal_card',
-                                 return_value='9d'):
+        game.player.hand.counter_as = 1
+        with unittest.mock.patch('Blackjack.deck.Deck.deal',
+                                 return_value=['9d']):
             self.assertEqual(game.play('+'), 'CONTINUE')
+            self.assertEqual(game.player.hand.value, 14)
+            self.assertEqual(game.dealer_hand.value, 9)
 
     def test_game_with_as_2(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['4h', 'Ad', 'Ah']
+        game.player.hand.value = 16
+        game.dealer_hand.cards = ['4d', '5h']
+        game.dealer_hand.value = 9
+        game.player.hand.counter_as = 2
+        with unittest.mock.patch('Blackjack.deck.Deck.deal',
+                                 return_value=['8d']):
+            self.assertEqual(game.play('+'), 'CONTINUE')
+
+    def test_game_with_as_mock(self):
         game = Game()
         game.start_game()
         game.player.hand.cards = ['4h', 'Ad', '9d']
         game.player.hand.value = 14
         game.dealer_hand.cards = ['4d', '5h']
         game.dealer_hand.value = 9
-        with unittest.mock.patch('Blackjack.hand.Hand.deal_card',
-                                 return_value='8d'):
+        with unittest.mock.patch('Blackjack.deck.Deck.deal',
+                                 return_value=['8d']):
+            game.play('+')
+            self.assertEqual(game.player.hand.cards, ['4h', 'Ad', '9d', '8d'])
+            self.assertEqual(game.player.hand.value, 22)
+
+    def test_game_with_as_3(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['4h', 'Ah', 'Ad']
+        game.player.hand.value = 16
+        game.dealer_hand.cards = ['4d', '5h']
+        game.dealer_hand.value = 9
+        game.player.hand.counter_as = 2
+        with unittest.mock.patch('Blackjack.deck.Deck.deal',
+                                 return_value=['Ac']):
+            self.assertEqual(game.play('+'), 'CONTINUE')
+
+    def test_game_with_as_4(self):
+        game = Game()
+        game.start_game()
+        game.player.hand.cards = ['As', 'Ah', 'Ad']
+        game.player.hand.value = 13
+        game.dealer_hand.cards = ['4d', '5h']
+        game.dealer_hand.value = 9
+        game.player.hand.counter_as = 3
+        with unittest.mock.patch('Blackjack.deck.Deck.deal',
+                                 return_value=['Ac']):
             self.assertEqual(game.play('+'), 'CONTINUE')
 
 
