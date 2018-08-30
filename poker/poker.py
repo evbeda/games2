@@ -36,7 +36,7 @@ def sort_cards_by_number(cards):
     numbers = []
     for card in cards:
         if card[0] == 'A':
-            numbers.append(1)
+            numbers.append(14)
         elif card[0] == 'T':
             numbers.append(10)
         elif card[0] == 'J':
@@ -53,7 +53,7 @@ def sort_cards_by_number(cards):
 
 def get_value(card):
     if card[0] == 'A':
-        return 1
+        return 14
     elif card[0] == 'T':
         return 10
     elif card[0] == 'J':
@@ -69,7 +69,7 @@ def get_value(card):
 def find_royal_flush(cards):
     numbers = sort_cards_by_number(cards)
     # Escalera con AS,10,J,Q,K
-    if numbers == [1, 10, 11, 12, 13] and find_flush(cards):
+    if numbers == [10, 11, 12, 13, 14] and find_flush(cards):
         return True
     else:
         return False
@@ -108,7 +108,9 @@ def find_flush(cards):
 def find_straight(cards):
     numbers = sort_cards_by_number(cards)
     # Escalera con AS,10,J,Q,K
-    if numbers == [1, 10, 11, 12, 13]:
+    if numbers == [10, 11, 12, 13, 14]:
+        return True
+    elif numbers == [2, 3, 4, 5, 14]:
         return True
     for i in range(len(numbers) - 1):
         if (numbers[i + 1] - numbers[i]) != 1:
@@ -163,7 +165,7 @@ def better_hand(combinations):
                 if (get_value(trio) > greater_set):
                     greater_set = get_value(trio)
     if (greater_set > 0):
-        if (greater_set == 1):
+        if (greater_set == 14):
             card = 'A'
         elif (greater_set == 10):
             card = 'T'
@@ -176,5 +178,19 @@ def better_hand(combinations):
         else:
             card = greater_set
         return 'Trio de {}'.format(card)
+    if (greater_pair > 0):
+        if (greater_pair == 14):
+            card = 'A'
+        elif (greater_pair == 10):
+            card = 'T'
+        elif (greater_pair == 11):
+            card = 'J'
+        elif (greater_pair == 12):
+            card = 'Q'
+        elif (greater_pair == 13):
+            card = 'K'
+        else:
+            card = greater_pair
+        return 'Par de {}'.format(card)
         # TODO quitar el return y actualizar los test
     return "No es Escalera Real"

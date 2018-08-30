@@ -47,6 +47,11 @@ class PokerTest(unittest.TestCase):
         result = game.deal_players()
         self.assertFalse(result)
 
+    def test_card_repr(self):
+        card = Card('K', 'h')
+        result = card.__repr__()
+        self.assertEqual(result, 'Kh')
+
     def test_royal_flush(self):
         # test
         result = find_royal_flush(['Ah', 'Kh', 'Qh', 'Jh', 'Th'])
@@ -113,10 +118,6 @@ class PokerTest(unittest.TestCase):
         result = find_straight(['2h', 'Ad', '3d', '4d', '5d'])
         self.assertTrue(result)
 
-    def test_straight_false(self):
-        result = find_straight(['8h', 'Ad', '3d', '4d', '5d'])
-        self.assertFalse(result)
-
     def test_straight_as(self):
         result = find_straight(['Th', 'Ad', 'Kd', 'Jd', 'Qd'])
         self.assertTrue(result)
@@ -138,12 +139,12 @@ class PokerTest(unittest.TestCase):
         self.assertFalse(result)
 
     def test_cards_suits(self):
-        expected = ['Ad', '3h', '4h', '5h', '8d']
+        expected = ['3h', '4h', '5h', '8d', 'Ad']
         result = find_cards_suits(['8d', 'Ad', '3h', '4h', '5h'])
         self.assertEqual(result, expected)
 
     def test_sort_cards_by_number(self):
-        expected = [1, 3, 4, 5, 8]
+        expected = [3, 4, 5, 8, 14]
         result = sort_cards_by_number(['8d', 'Ad', '3h', '4h', '5h'])
         self.assertEqual(result, expected)
 
@@ -292,11 +293,6 @@ class PokerTest(unittest.TestCase):
         result = better_hand(combination)
         self.assertEqual(result, "Escalera Real")
 
-    def test_best_hand_no_royal_flsuh(self):
-        combination = combine_card(['Ad', 'Th', '5h', 'Jh', '7h', 'Qh', 'Kh'])
-        result = better_hand(combination)
-        self.assertEqual(result, "No es Escalera Real")
-
     def test_poker_hand(self):
         combination = combine_card(['Ad', 'Ac', 'Th', 'Ts', 'Ah', '3d', 'As'])
         result = better_hand(combination)
@@ -320,17 +316,19 @@ class PokerTest(unittest.TestCase):
         combination = combine_card(['Ad', '3c', 'Kh', '3s', 'Kh', '3d', 'Ks'])
         result = better_hand(combination)
         self.assertEqual(result, "Trio de K")
-
+        combination = combine_card(['Ad', '3c', 'Kh', '3s', 'Ah', '3d', 'As'])
+        result = better_hand(combination)
+        self.assertEqual(result, "Trio de A")
 
     def test_two_trio_hand(self):
         combination = combine_card(['Td', '3c', 'Th', '3s', '7h', '3d', 'Ts'])
         result = better_hand(combination)
         self.assertEqual(result, "Trio de T")
-    
-    def test_card_repr(self):
-        card = Card('K', 'h')
-        result = card.__repr__()
-        self.assertEqual(result, 'Kh')
+
+    # def test_one_pair_hand(self):
+    #     combination = combine_card(['Td', 'Tc', '6h', '2s', '7h', '8d', 'Js'])
+    #     result = better_hand(combination)
+    #     self.assertEqual(result, "Par de T")
 
     def test_hand_deal_initial_cards(self):
         hand = Hand()
