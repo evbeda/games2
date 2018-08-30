@@ -22,7 +22,7 @@ class test_battleship(unittest.TestCase):
         board = Board()
         board_table = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 1, 9, 31, 32, 4, 5, 0, 0, 0],
+            [0, 1, 2, 31, 32, 4, 5, 0, 0, 0],
             [0, 0, 2, 31, 32, 4, 5, 0, 0, 0],
             [0, 0, 0, 31, 32, 4, 5, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 4, 5, 0, 0],
@@ -193,7 +193,7 @@ class test_battleship(unittest.TestCase):
         board_cpu.board = board
         self.game.state = game_states[1]
         self.game.player_cpu.board_own = board_cpu
-        expected = 'Congratulations! You sunk a boat'
+        expected = 'Congratulations! You sunk a boat.'
         result = self.game.play('0, 0')
         self.assertEqual(expected, result)
 
@@ -214,7 +214,7 @@ class test_battleship(unittest.TestCase):
         board_cpu.board = board
         self.game.player_cpu.board_own = board_cpu
         self.game.state = game_states[1]
-        expected = 'You only hit water! Try it again'
+        expected = 'You only hit water! CPU turn'
         result = self.game.play('0, 0')
         self.assertEqual(expected, result)
 
@@ -259,93 +259,40 @@ class test_battleship(unittest.TestCase):
         self.game.play('1, 2')
         self.assertEqual(expected, self.game.state)
 
-    # def test_game_dont_change_state_hit(self):
-    #     board_cpu = Board()
-    #     board = [
-    #         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     ]
-    #     board_cpu.board = board
-    #     self.game.player_cpu.board_own = board_cpu
-    #     expected = self.game.state
-    #     self.game.play('0, 0')
-    #     self.assertEqual(expected, 'init')
+    @unittest.mock.patch('battleship.player.PlayerCPU.pick_coordenate')
+    def test_game_check_cpu_sunk(self, mock_pick_coordenate):
+        self.game.state = game_states[1]
+        self.game.turn = 'cpu'
+        self.game.player_human.board_own.sunked.append(2)
+        mock_pick_coordenate.return_value = [2, 2]
+        result = self.game.play('')
+        self.assertEqual('Your boat was sunk.', result)
 
-    # def test_game_change_state_hit(self):
-    #     board_cpu = Board()
-    #     board = [
-    #         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     ]
-    #     board_cpu.board = board
-    #     self.game.player_cpu.board_own = board_cpu
-    #     expected = self.game.state[1]
-    #     self.game.play('0, 0')
-    #     self.assertNotEqual(expected, 'init')
-
-    # @unittest.mock.patch('random.randint')
-    # def test_game_change_state_cpu_hit(self, mock_randint):
-    #         board_player = Board()
-    #         board = [
-    #             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #         ]
-    #         board_player.board = board
-    #         self.game.player_human.board_own = board_player
-    #         self.game.turn = possible_turn[1]
-    #         mock_randint = 0
-    #         self.game.play('')
-    #         self.assertEqual(self.game.state, game_states[2])
+    @unittest.mock.patch('battleship.player.PlayerCPU.pick_coordenate')
+    def test_game_check_cpu_sunk_3(self, mock_pick_coordenate):
+        self.game.state = game_states[1]
+        self.game.turn = 'cpu'
+        self.game.player_human.board_own.sunked.append(31)
+        self.game.player_human.board_own.sunked.append(31)
+        mock_pick_coordenate.return_value = [1, 3]
+        result = self.game.play('')
+        self.assertEqual('Your boat was sunk.', result)
 
     @unittest.mock.patch('battleship.player.PlayerCPU.pick_coordenate')
     def test_game_check_cpu_hit(self, mock_pick_coordenate):
         self.game.state = game_states[1]
         self.game.turn = 'cpu'
-        mock_pick_coordenate.return_value = [1, 1]
-        result = self.game.play('')
-        self.assertEqual('sunked', result)
-
-    # @unittest.mock.patch('battleship.player.PlayerCPU.pick_coordenate')
-    # def test_game_check_cpu_hit_already_shoot(self, mock_pick_coordenate):
-    #     self.game.state = game_states[1]
-    #     self.game.turn = 'cpu'
-    #     mock_pick_coordenate.return_value = [1, 2]
-    #     result = self.game.play('')
-    #     print(result)
-    #     print(self.game.player_human.board_own.board[1][2])
-    #     self.assertEqual('already shoot', result)
-
-    @unittest.mock.patch('battleship.player.PlayerCPU.pick_coordenate')
-    def test_game_check_cpu_hit_boat3(self, mock_pick_coordenate):
-        self.game.state = game_states[1]
-        self.game.turn = 'cpu'
         mock_pick_coordenate.return_value = [2, 2]
         result = self.game.play('')
-        self.assertEqual('hit', result)
+        self.assertEqual('Your boat was hit.', result)
+
+    @unittest.mock.patch('battleship.player.PlayerCPU.pick_coordenate')
+    def test_game_check_cpu_water(self, mock_pick_coordenate):
+        self.game.state = game_states[1]
+        self.game.turn = 'cpu'
+        mock_pick_coordenate.return_value = [0, 0]
+        result = self.game.play('')
+        self.assertEqual('Water! Now is your turn.', result)
 
     def test_player_cpu_pick_coordenate(self):
         cpu_player = PlayerCPU()

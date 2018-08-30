@@ -83,23 +83,23 @@ class GameBattleship():
                         int(params[0]),
                         int(params[1])
                     )
-                    self.turn = possible_turn[1]
                     if result == 'water':
                         self.player_human.board_opponent.mark_shoot(
                             int(params[0]),
                             int(params[1]),
                             False
                         )
-                        result = 'You only hit water! Try it again'
+                        self.turn = possible_turn[1]
+                        result = 'You only hit water! CPU turn'
                     elif result == 'Already shoot':
-                        result = 'You already shoo in this place. Try again'
+                        result = 'You already shoot in this place. Try again'
                     elif result == 'sunked':
                         self.player_human.board_opponent.mark_shoot(
                             int(params[0]),
                             int(params[1]),
                             True
                         )
-                        result = 'Congratulations! You sunk a boat'
+                        result = 'Congratulations! You sunk a boat.'
                     elif result == 'hit':
                         self.player_human.board_opponent.mark_shoot(
                             int(params[0]),
@@ -115,7 +115,17 @@ class GameBattleship():
             elif self.turn == possible_turn[1]:
                 coordenate = self.player_cpu.pick_coordenate()
                 result = self.player_human.board_own.shoot(*coordenate)
-                if not self.player_human.board_own.there_are_boats():
+                if result == 'water':
+                        self.player_cpu.board_opponent.mark_shoot(*coordenate, False)
+                        self.turn = possible_turn[0]
+                        result = 'Water! Now is your turn.'
+                elif result == 'sunked':
+                    self.player_cpu.board_opponent.mark_shoot(*coordenate, True)
+                    result = 'Your boat was sunk.'
+                elif result == 'hit':
+                    self.player_cpu.board_opponent.mark_shoot(*coordenate, True)
+                    result = 'Your boat was hit.'
+                if not self.player_cpu.board_own.there_are_boats():
                     self.state = game_states[2]
                     return 'You lose.'
                 else:
