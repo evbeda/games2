@@ -93,6 +93,21 @@ class TestGame(unittest.TestCase):
             'GENERALA DOBLE': 60,
         }
         self.assertFalse(game.finished())
+
+    def test_game_finished_p1_servida(self):
+        game = Game("Santi", "Beto")
+        game.throw.dice = [1, 1, 1, 1, 1]
+        game.play('ANOTAR', 'GENERALA')
+        self.assertTrue(game.finished())
+
+    def test_game_finished_p2_servida(self):
+        game = Game("Santi", "Beto")
+        game.play('ANOTAR', 'POKER')
+        game.throw.dice = [1, 1, 1, 1, 1]
+        game.play('ANOTAR', 'GENERALA')
+        self.assertTrue(game.finished())
+
+
     @unittest.mock.patch('builtins.input')
     @unittest.mock.patch('random.randint')
     def test_tirar_select_1(self, mock_rand_int, mock_input):

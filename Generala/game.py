@@ -21,14 +21,16 @@ class Game():
         self.throw = Throw()
 
     def finished(self):
-        for key, value in self.player1.combinations.items():
-            if self.player1.score >= 3000:
+        if self.player1.score >= 3000:
                 return True
+
+        if self.player2.score >= 3000:
+                return True
+
+        for key, value in self.player1.combinations.items():
             if self.player1.combinations[key] == '':
                 return False
         for key, value in self.player2.combinations.items():
-            if self.player2.score >= 3000:
-                return True
             if self.player2.combinations[key] == '':
                 return False
         return True
