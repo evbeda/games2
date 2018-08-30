@@ -1,5 +1,10 @@
 from collections import defaultdict
 
+PREFLOP = 0
+FLOP = 1
+TURN = 2
+RIVER = 3
+SHOWDOWN = 4
 
 five_cards_combinations = [
     [0, 1, 2, 3, 4],
