@@ -302,33 +302,21 @@ class PokerTest(unittest.TestCase):
         combination = combine_card(['6d', 'Ac', 'Td', 'Ts', '7d', '8d', '9d'])
         result = better_hand(combination)
         self.assertEqual(result, "Escalera Color")
+    
+    def test_full_house_6_T_hand(self):
+        combination = combine_card(['6d', '6c', '6h', 'Ts', 'Td', '8d', '9d'])
+        result = better_hand(combination)
+        self.assertEqual(result, "Full House de 6 y T")
 
-    def test_one_trio_of_no_faced_cards(self):
-        combination = combine_card(['Ad', '3c', 'Th', '3s', '7h', '3d', 'As'])
+    def test_full_house_6_3_hand(self):
+        combination = combine_card(['6d', '6c', '6h', '3s', '3d', '8d', '9d'])
         result = better_hand(combination)
-        self.assertEqual(result, "Trio de 3")
-        combination = combine_card(['Jd', '3c', 'Jh', '3s', '7h', '3d', 'Js'])
-        result = better_hand(combination)
-        self.assertEqual(result, "Trio de J")
-        combination = combine_card(['Qd', '3c', 'Qh', '3s', 'Qh', '3d', 'As'])
-        result = better_hand(combination)
-        self.assertEqual(result, "Trio de Q")
-        combination = combine_card(['Ad', '3c', 'Kh', '3s', 'Kh', '3d', 'Ks'])
-        result = better_hand(combination)
-        self.assertEqual(result, "Trio de K")
-        combination = combine_card(['Ad', '3c', 'Kh', '3s', 'Ah', '3d', 'As'])
-        result = better_hand(combination)
-        self.assertEqual(result, "Trio de A")
+        self.assertEqual(result, "Full House de 6 y 3")
 
-    def test_two_trio_hand(self):
-        combination = combine_card(['Td', '3c', 'Th', '3s', '7h', '3d', 'Ts'])
+    def test_one_pair_hand(self):
+        combination = combine_card(['Jd', 'Jc', '6h', '2s', '7h', '8d', 'Ts'])
         result = better_hand(combination)
-        self.assertEqual(result, "Trio de T")
-
-    # def test_one_pair_hand(self):
-    #     combination = combine_card(['Td', 'Tc', '6h', '2s', '7h', '8d', 'Js'])
-    #     result = better_hand(combination)
-    #     self.assertEqual(result, "Par de T")
+        self.assertEqual(result, "Par de J")
 
     def test_hand_deal_initial_cards(self):
         hand = Hand()
