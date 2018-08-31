@@ -65,7 +65,19 @@ def get_value(card):
     else:
         return int(card[0])
 
-
+def get_face(card):
+    if (card == 14):
+        return 'A'
+    elif (card == 10):
+        return 'T'
+    elif (card == 11):
+        return 'J'
+    elif (card == 12):
+        return 'Q'
+    elif (card == 13):
+        return 'K'
+    else:
+        return card
 def find_royal_flush(cards):
     numbers = sort_cards_by_number(cards)
     # Escalera con AS,10,J,Q,K
@@ -152,45 +164,37 @@ def better_hand(combinations):
     greater_set = 0
     greater_pair = 0
     card = ''
+    repetead_cards = {
+        'poker': set([]),
+        'trio': set([]),
+        'par': set([])
+    }
     for combination in combinations:
-        iguales = find_repeated_cards(combination)
+        for key, cards in find_repeated_cards(combination).items():
+            for card in cards:
+                repetead_cards[key].add(card)
         if find_royal_flush(combination):
             return "Escalera Real"
         elif find_straight_flush(combination):
             return "Escalera Color"
-        elif len(iguales['poker']) > 0:
+        elif len(repetead_cards['poker']) > 0:
             return "Poker"
-        elif len(iguales['trio']) > 0:
-            for trio in iguales['trio']:
+        if len(repetead_cards['trio']) > 0:
+            for trio in repetead_cards['trio']:
                 if (get_value(trio) > greater_set):
                     greater_set = get_value(trio)
+        if len(repetead_cards['par']) > 0:
+            for pair in repetead_cards['par']:
+                if get_value(pair) > greater_pair:
+                    greater_pair = get_value(pair)
+    if (len(repetead_cards['trio']) > 0 and len(repetead_cards['par']) > 0):
+        if greater_pair != greater_set:
+            return 'Full House de {} y {}'.format(get_face(greater_set), get_face(greater_pair))
+        else:
+            repetead_cards['par'].discard(str(get_face(greater_set)))
+            second_best_pair = max(repetead_cards['par'])
+            return 'Full House de {} y {}'.format(get_face(greater_set), get_face(second_best_pair))
     if (greater_set > 0):
-        if (greater_set == 14):
-            card = 'A'
-        elif (greater_set == 10):
-            card = 'T'
-        elif (greater_set == 11):
-            card = 'J'
-        elif (greater_set == 12):
-            card = 'Q'
-        elif (greater_set == 13):
-            card = 'K'
-        else:
-            card = greater_set
-        return 'Trio de {}'.format(card)
+        return 'Trio de {}'.format(get_face(greater_set))
     if (greater_pair > 0):
-        if (greater_pair == 14):
-            card = 'A'
-        elif (greater_pair == 10):
-            card = 'T'
-        elif (greater_pair == 11):
-            card = 'J'
-        elif (greater_pair == 12):
-            card = 'Q'
-        elif (greater_pair == 13):
-            card = 'K'
-        else:
-            card = greater_pair
-        return 'Par de {}'.format(card)
-        # TODO quitar el return y actualizar los test
-    return "No es Escalera Real"
+        return 'Par de {}'.format(get_face(greater_pair))
