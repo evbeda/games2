@@ -8,10 +8,10 @@ from Blackjack.testBlackjack import (
     TestGame as TestBlackjackGame
 )
 
-from truco.test_truco import TestCantos as TC
 from truco.test_truco import TestGame as TG
 from truco.test_truco import TestDeck as TD
 from truco.test_truco import TestCards as TCD
+from truco.test_hand import TestHand as TestHandTruco
 from poker.test_poker import *
 from guess_number_game import test_guess_number_game
 import test_game
@@ -47,9 +47,9 @@ def suite():
     test_suite.addTest(unittest.makeSuite(test_guess_number_game))
     test_suite.addTest(test_game)
     test_suite.addTest(TG)
-    test_suite.addTest(TC)
     test_suite.addTest(TD)
     test_suite.addTest(TCD)
+    test_suite.addTest(TestHandTruco)
     return test_suite
 
 

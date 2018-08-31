@@ -28,44 +28,6 @@ class TestCards(unittest.TestCase):
         result = card_one.__eq__(card_two)
         self.assertFalse(result)
 
-    def test_play_card(self):
-        player = Player('Leo')
-        player.hidden_cards = [Card(SWORD, 10),
-                               Card(SWORD, 11),
-                               Card(SWORD, 12)
-                               ]
-        player.play_card(0)
-        expected = Card(SWORD, 10)
-        self.assertEqual(expected, player.played_cards[0])
-
-    def test_play_card_not_empty(self):
-        player = Player('Leo')
-        player.hidden_cards = [Card(SWORD, 10),
-                               Card(SWORD, 11),
-                               Card(SWORD, 12)
-                               ]
-        player.play_card(0)
-        self.assertEqual(len(player.played_cards), 1)
-
-    def test_show_hand_to_board(self):
-        player = Player('Leo')
-        player.hidden_cards = [Card(SWORD, 10),
-                               Card(SWORD, 11),
-                               Card(SWORD, 12)
-                               ]
-        expected = "Cartas en mano: 10 espada, 11 espada, 12 espada,  \n Cartas jugadas: "
-        self.assertEqual(expected, player.show_hand_to_board())
-
-    def test_show_hand_to_board_one_played(self):
-        player = Player('Leo')
-        player.hidden_cards = [Card(SWORD, 10),
-                               Card(SWORD, 11),
-                               Card(SWORD, 12)
-                               ]
-        player.play_card(1)
-        expected = "Cartas en mano: 10 espada, 12 espada,  \n Cartas jugadas: 11 espada, "
-        self.assertEqual(expected, player.show_hand_to_board())
-
     # CREACIONES
     def test_si_se_crea_carta(self):
         carta1 = Card(SWORD, 1)

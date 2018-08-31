@@ -4,9 +4,8 @@ from truco import envido_combinations
 class Game():
     name = 'Truco Game'
 
-    def __init__(self, players, deck):
+    def __init__(self, players):
         self.players = players
-        self.deck = deck
         self.cantos_envidos = []
         self.turno_juego = None
         self.turno_envido = None
@@ -15,26 +14,16 @@ class Game():
         self.turno_vale_cuatro = None
         self.is_playing = True
 
-    def deal(self):
-        self.reset_state()
-        self.change_hand()
-        self.players[0].reset_hand()
-        self.players[1].reset_hand()
-        for i in range(3):
-            for player in self.players:
-                if len(player.hidden_cards) < 3:
-                    player.hidden_cards.append(self.deck.get_card())
-
-    def change_hand(self):
-        if ((len(self.players[0].played_cards) == 0) and (len(self.players[0].hidden_cards) == 0)) and (
-                (len(self.players[1].played_cards) == 0) and (len(self.players[1].hidden_cards) == 0)):
-            self.players[0].is_hand = True
-            self.players[1].is_hand = False
-            self.turno_juego = 0
-        else:
-            self.players[0].is_hand = self.players[1].is_hand
-            self.players[1].is_hand = not self.players[0].is_hand
-            self.turno_juego = 1
+    # def change_hand(self):
+    #     if ((len(self.players[0].played_cards) == 0) and (len(self.players[0].hidden_cards) == 0)) and (
+    #             (len(self.players[1].played_cards) == 0) and (len(self.players[1].hidden_cards) == 0)):
+    #         self.players[0].is_hand = True
+    #         self.players[1].is_hand = False
+    #         self.turno_juego = 0
+    #     else:
+    #         self.players[0].is_hand = self.players[1].is_hand
+    #         self.players[1].is_hand = not self.players[0].is_hand
+    #         self.turno_juego = 1
 
     def who_is_next(self):
         card_p1 = self.players[0].played_cards[-1]

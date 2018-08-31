@@ -57,11 +57,3 @@ class TestDeck(unittest.TestCase):
         cartaCorrecta = Card('basto', 3)
         self.assertEqual(cartaCorrecta.number, result2.number)
         self.assertEqual(cartaCorrecta.suit, result2.suit)
-
-    def test_states(self):
-        player01 = Player('1')
-        player02 = Player('2')
-        deck = Deck()
-        game = Game([player01, player02], deck)
-        game.deal()
-        self.assertEqual(game.get_state(), [0, None, None, None, None])
