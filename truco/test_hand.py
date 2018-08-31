@@ -37,37 +37,43 @@ class TestHand(unittest.TestCase):
 
     def test_hand_envido(self):
         hand = Hand()
-        hand.hidden_cards = [[Card(COARSE, 1), Card(COARSE, 5), Card(COARSE, 6)], [Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
+        hand.hidden_cards = [[Card(COARSE, 1), Card(COARSE, 5), Card(COARSE, 6)], [
+            Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
         result = hand.get_score_envido(0)
         self.assertEqual(result, 31)
 
     def test_hand_envido_2_whites(self):
         hand = Hand()
-        hand.hidden_cards = [[Card(COARSE, 1), Card(GOLD, 5), Card(COARSE, 6)], [Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
+        hand.hidden_cards = [[Card(COARSE, 1), Card(GOLD, 5), Card(COARSE, 6)], [
+            Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
         result = hand.get_score_envido(0)
         self.assertEqual(result, 27)
 
     def test_hand_envido_1_white(self):
         hand = Hand()
-        hand.hidden_cards = [[Card(COARSE, 1), Card(GOLD, 5), Card(SWORD, 6)], [Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
+        hand.hidden_cards = [[Card(COARSE, 1), Card(GOLD, 5), Card(SWORD, 6)], [
+            Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
         result = hand.get_score_envido(0)
         self.assertEqual(result, 6)
 
     def test_hand_envido_3_blacks(self):
         hand = Hand()
-        hand.hidden_cards = [[Card(COARSE, 10), Card(COARSE, 11), Card(COARSE, 12)], [Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
+        hand.hidden_cards = [[Card(COARSE, 10), Card(COARSE, 11), Card(COARSE, 12)], [
+            Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
         result = hand.get_score_envido(0)
         self.assertEqual(result, 20)
 
     def test_hand_envido_2_blacks_1_white(self):
         hand = Hand()
-        hand.hidden_cards = [[Card(COARSE, 10), Card(COARSE, 5), Card(COARSE, 11)], [Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
+        hand.hidden_cards = [[Card(COARSE, 10), Card(COARSE, 5), Card(COARSE, 11)], [
+            Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
         result = hand.get_score_envido(0)
         self.assertEqual(result, 25)
 
     def test_hand_envido_high_card(self):
         hand = Hand()
-        hand.hidden_cards = [[Card(GOLD, 1), Card(SWORD, 10), Card(COARSE, 6)], [Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
+        hand.hidden_cards = [[Card(GOLD, 1), Card(SWORD, 10), Card(COARSE, 6)], [
+            Card(COARSE, 5), Card(COARSE, 5), Card(COARSE, 5)]]
         result = hand.get_score_envido(0)
         self.assertEqual(result, 6)
 
@@ -123,3 +129,110 @@ class TestHand(unittest.TestCase):
         hand.deal_cards()
         hand.play_card(0)
         self.assertEqual(1, hand.turn)
+
+    def test_play_two_card_change_turn_player_one_bigger(self):
+        hand = Hand()
+        hand.hidden_cards = [[Card(GOLD, 1),
+                              Card(SWORD, 10),
+                              Card(COARSE, 6)],
+                             [Card(COARSE, 4),
+                              Card(COARSE, 5),
+                              Card(COARSE, 6)]]
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+        self.assertEqual(0, hand.turn)
+
+    def test_play_two_card_change_turn_player_two_bigger(self):
+        hand = Hand()
+        hand.hidden_cards = [[Card(COARSE, 4),
+                              Card(SWORD, 10),
+                              Card(COARSE, 6)],
+                             [Card(SWORD, 1),
+                              Card(COARSE, 5),
+                              Card(COARSE, 6)]]
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+        self.assertEqual(1, hand.turn)
+
+    def test_play_two_card_change_turn_players_equals(self):
+        hand = Hand()
+        hand.hidden_cards = [[Card(COARSE, 4),
+                              Card(SWORD, 10),
+                              Card(COARSE, 6)],
+                             [Card(SWORD, 4),
+                              Card(COARSE, 5),
+                              Card(COARSE, 6)]]
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+        self.assertEqual(0, hand.turn)
+
+    def test_play_four_card_change_turn_players_equals(self):
+        hand = Hand()
+        hand.hidden_cards = [[Card(COARSE, 4),
+                              Card(SWORD, 10),
+                              Card(COARSE, 6)],
+                             [Card(SWORD, 4),
+                              Card(COARSE, 5),
+                              Card(COARSE, 6)]]
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        self.assertEqual(0, hand.turn)
+        self.assertEqual(3, hand.number_hand)
+
+    def test_play_six_card_change_turn_players_equals(self):
+        hand = Hand()
+        hand.hidden_cards = [[Card(COARSE, 5),
+                              Card(SWORD, 10),
+                              Card(COARSE, 6)],
+                             [Card(SWORD, 4),
+                              Card(SWORD, 1),
+                              Card(COARSE, 7)]]
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        hand.play_card(0)
+        hand.play_card(0)
+
+        self.assertEqual(1, hand.turn)
+        self.assertEqual(3, hand.number_hand)
+
+    def test_play_four_cards_is_playing_false(self):
+        hand = Hand()
+        hand.hidden_cards = [[Card(COARSE, 5),
+                              Card(SWORD, 10),
+                              Card(COARSE, 6)],
+                             [Card(COARSE, 1),
+                              Card(SWORD, 1),
+                              Card(COARSE, 7)]]
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        self.assertFalse(hand.is_playing)
