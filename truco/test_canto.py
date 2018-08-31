@@ -186,3 +186,9 @@ class TestCantos(unittest.TestCase):
         game.change_hand()
         result = game.board()
         self.assertEqual(result, 'Cartas en mano: 6 basto, 10 copa, 7 basto,  \n Cartas jugadas: ')
+
+    def test_who_is_hand(self):
+        game = Game([Player('1'), Player('2')], Deck())
+        game.deal()
+        result = game.who_is_hand()
+        self.assertEqual(result, 'PLAYER1')
