@@ -6,10 +6,11 @@ class Hand():
         self.deal_cards()
         self.turn = 0
         self.points = 0
+        self.number_hand = 1
 
     def deal_cards(self):
-        self.hidden_cards = [[],[]]
-        self.played_cards = [[],[]]
+        self.hidden_cards = [[], []]
+        self.played_cards = [[], []]
         deck = Deck()
         for player in range(2):
             for card_index in range(3):
@@ -18,10 +19,30 @@ class Hand():
     def play_card(self, card_index):
         played_card = self.hidden_cards[self.turn].pop(card_index)
         self.played_cards[self.turn].append(played_card)
-        self.turn = (self.turn + 1) % 2
+        self.turn = 0 if (self.turn == 1) else 1
 
     def next_hand(self):
         self.number_hand += 1
+
+    def who_is_next(self):
+        if self.played_cards[0][-1].compare_with(self.played_cards[1][-1]) == 'GREATER':
+            self.turn = 0
+        elif self.played_cards[0][-1].compare_with(self.played_cards[1][-1]) == 'EQUAL':
+            pass
+        else:
+            self.turn = 1
+
+    @property
+    def is_playing(self):
+        if len(self.played_cards[0]) == len(self.played_cards[1]):
+            win_hands = 0
+            for i in range(len(self.played_cards[0])):
+                if self.played_cards[0][i].compare_with(self.played_cards[1][i]) == 'GREATER':
+                    win_hands += 1
+            if win_hands >= 2:
+                return False
+
+
 
     def get_score_envido(self, player):
         same_suit_cards = set()
