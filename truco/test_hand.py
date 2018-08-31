@@ -1,7 +1,7 @@
 import unittest
+
+from . import SWORD, COARSE, GOLD
 from .card import Card
-from .deck import Deck
-from . import SWORD, COARSE, GOLD, CUP
 from .hand import Hand
 
 
@@ -236,3 +236,17 @@ class TestHand(unittest.TestCase):
         hand.who_is_next()
 
         self.assertFalse(hand.is_playing)
+
+    def test_show_cards(self):
+        hand = Hand()
+        hand.hidden_cards = [[Card(COARSE, 5),
+                              Card(SWORD, 10),
+                              Card(COARSE, 6)],
+                             [Card(COARSE, 1),
+                              Card(SWORD, 1),
+                              Card(COARSE, 7)]]
+        hand.play_card(0)
+        hand.play_card(0)
+        expected = '\nMis Cartas: \n10 espada 6 basto \nCartas jugadas: \n5 basto 1 basto '
+        result = hand.show_cards()
+        self.assertEqual(result, expected)

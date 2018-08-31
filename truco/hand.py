@@ -1,20 +1,36 @@
 from .deck import Deck
 
+envido_combinations = [
+    ['Envido', 2, 1],
+    ['Real Envido', 3, 1],
+    ['Falta Envido', 0, 1],
+    ['Envido', 'Envido', 4, 2],
+    ['Envido', 'Real Envido', 5, 2],
+    ['Envido', 'Falta Envido', 0, 2],
+    ['Envido', 'Envido', 'Real Envido', 7, 4],
+    ['Envido', 'Envido', 'Falta Envido', 0, 4],
+    ['Envido', 'Real Envido', 'Falta Envido', 0, 5],
+    ['Envido', 'Envido', 'Real Envido', 'Falta Envido', 0, 7],
+]
 
-class Hand():
+
+class Hand(object):
+
     def __init__(self):
-        self.deal_cards()
         self.turn = 0
         self.points = 0
         self.number_hand = 1
+        self.played_cards = None
+        self.hidden_cards = None
+        self.deal_cards()
 
     def deal_cards(self):
-        self.hidden_cards = [[], []]
-        self.played_cards = [[], []]
+        self.hidden_cards = [[], [], ]
+        self.played_cards = [[], [], ]
         deck = Deck()
         for player in range(2):
             for card_index in range(3):
-                self.hidden_cards[player].append(deck.get_card)
+                self.hidden_cards[player].append(deck.get_card())
 
     def play_card(self, card_index):
         played_card = self.hidden_cards[self.turn].pop(card_index)
@@ -22,7 +38,8 @@ class Hand():
         self.turn = 0 if (self.turn == 1) else 1
 
     def next_hand(self):
-        self.number_hand += 1
+        if len(self.played_cards[0]) == len(self.played_cards[1]):
+            self.number_hand += 1
 
     def who_is_next(self):
         if self.played_cards[0][-1].compare_with(self.played_cards[1][-1]) == 'GREATER':
@@ -41,8 +58,6 @@ class Hand():
                     win_hands += 1
             if win_hands >= 2:
                 return False
-
-
 
     def get_score_envido(self, player):
         same_suit_cards = set()
@@ -80,3 +95,14 @@ class Hand():
     @property
     def envido(self):
         return True
+
+    def show_cards(self):
+        result = []
+        result.append('\nMis Cartas: \n')
+        for card in self.hidden_cards[self.turn]:
+            result.append(str(card) + ' ')
+        result.append('\nCartas jugadas: \n')
+        for group in self.played_cards:
+            for card2 in group:
+                result.append(str(card2) + ' ')
+        return ''.join(result)
