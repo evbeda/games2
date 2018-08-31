@@ -281,7 +281,7 @@ class TestGame(unittest.TestCase):
         result = game.play('+')
         self.assertEqual('Player Wins!', result)
 
-    def test_player_dealer_21(self):
+    def test_player_dealer_21_2_cards(self):
         game = Game()
         game.bet_time = False
         game.is_finished = False
@@ -292,6 +292,19 @@ class TestGame(unittest.TestCase):
         game.dealer_hand.value = 21
         result = game.who_wins()
         self.assertEqual('Dealer Wins!', result)
+
+    def test_player_dealer_21_3_cards(self):
+        game = Game()
+        game.bet_time = False
+        game.is_finished = False
+        game.start_game()
+        game.player.hand.cards = ['Kh', '7d']
+        game.player.hand.value = 17
+        game.dealer_hand.cards = ['Kd', '2h', '9s']
+        game.dealer_hand.value = 21
+        result = game.who_wins()
+        self.assertEqual('Dealer Wins!', result)
+        self.assertTrue(game.is_finished)
 
     def test_next_turn(self):
         game = Game()
@@ -406,6 +419,46 @@ class TestGame(unittest.TestCase):
                                  return_value=['Ac']):
             self.assertEqual(game.play('+'), 'CONTINUE')
 
+    def test_game_with_as_3_2_as_1(self):
+        game = Game()
+        game.bet_time = False
+        game.is_finished = False
+        game.start_game()
+        game.player.hand.cards = ['Kh', 'Ah', 'Ad']
+        game.player.hand.value = 12
+        game.dealer_hand.cards = ['4d', '5h']
+        game.dealer_hand.value = 9
+        game.player.hand.counter_as = 2
+        with unittest.mock.patch('Blackjack.deck.Deck.deal',
+                                 return_value=['Ac']):
+            self.assertEqual(game.play('+'), 'CONTINUE')
+            self.assertEqual(game.player.hand.value, 13)
+
+    def test_game_with_as_4_3_as_1(self):
+        game = Game()
+        game.bet_time = False
+        game.is_finished = False
+        game.start_game()
+        game.player.hand.cards = ['Kh', 'As', 'Ah', 'Ad']
+        game.player.hand.value = 13
+        game.dealer_hand.cards = ['4d', '5h']
+        game.dealer_hand.value = 9
+        game.player.hand.counter_as = 3
+        with unittest.mock.patch('Blackjack.deck.Deck.deal',
+                                 return_value=['Ac']):
+            self.assertEqual(game.play('+'), 'CONTINUE')
+
+    def test_game_with_player_wins(self):
+        game = Game()
+        game.bet_time = False
+        game.is_finished = False
+        game.start_game()
+        game.player.hand.cards = ['Kh', 'Qs']
+        game.player.hand.value = 20
+        game.dealer_hand.cards = ['9d', 'Th']
+        game.dealer_hand.value = 19
+        self.assertEqual(game.who_wins(), 'Player Wins!')
+
     def test_money_winner(self):
         game = Game()
         game.bet_time = False
@@ -423,6 +476,92 @@ class TestGame(unittest.TestCase):
         game.bet = 20
         game.give_money_to_winner('Dealer Wins!')
         self.assertEqual(game.player.money, 80)
+
+    def test_no_money(self):
+        game = Game()
+        game.bet_time = False
+        game.is_finished = False
+        game.start_game()
+        game.bet = 100
+        game.give_money_to_winner('Dealer Wins!')
+        self.assertEqual(game.player.money, 0)
+        self.assertFalse(game.is_playing)
+
+    def test_quit_game_on_bet_time(self):
+        game = Game()
+        game.start_game()
+        self.assertEqual(game.next_turn(), 'Enter your bet or q(quit)')
+
+    def test_board_bet_time(self):
+        game = Game()
+        game.start_game()
+        self.assertEqual(game.board, '')
+
+    def test_board_without_ten(self):
+        game = Game()
+        game.bet_time = False
+        game.is_finished = False
+        game.start_game()
+        game.player.hand.cards = ['Kh', 'Qd']
+        game.player.hand.value = 20
+        game.dealer_hand.cards = ['9d', 'Kh']
+        game.dealer_hand.value = 19
+        result = game.board
+        self.assertEqual(result, ("\n\nDealer: ['9♦', 'K♥']"
+                                  "\nPlayer: ['K♥', 'Q♦']\n"
+                                  "Money: 100 \n\n"))
+
+    def test_board_with_ten(self):
+        game = Game()
+        game.bet_time = False
+        game.is_finished = False
+        game.start_game()
+        game.player.hand.cards = ['Th', 'Qd']
+        game.player.hand.value = 20
+        game.dealer_hand.cards = ['9d', 'Th']
+        game.dealer_hand.value = 19
+        result = game.board
+        self.assertEqual(result, ("\n\nDealer: ['9♦', '10♥']"
+                                  "\nPlayer: ['10♥', 'Q♦']\n"
+                                  "Money: 100 \n\n"))
+
+    def test_game_quit_bet_time(self):
+        game = Game()
+        game.start_game()
+        self.assertEqual(game.play('q'), 'You left the game')
+        self.assertTrue(game.bet_time)
+        self.assertFalse(game.is_playing)
+
+    def test_game_bet_time(self):
+        game = Game()
+        game.start_game()
+        self.assertEqual(game.play('20'), 'NEW ROUND!')
+        self.assertFalse(game.bet_time)
+        self.assertTrue(game.is_playing)
+        self.assertFalse(game.is_finished)
+        self.assertEqual(game.bet, 20)
+
+    def test_game_bet_time_no_number(self):
+        game = Game()
+        game.start_game()
+        self.assertEqual(game.play('a'), 'Please enter a number or q to quit')
+        self.assertTrue(game.bet_time)
+        self.assertTrue(game.is_playing)
+        self.assertTrue(game.is_finished)
+
+    def test_game_command_stop(self):
+        game = Game()
+        game.bet_time = False
+        game.is_finished = False
+        game.start_game()
+        game.player.hand.cards = ['Kh', 'As', 'Ah', 'Ad']
+        game.player.hand.value = 13
+        game.dealer_hand.cards = ['4d', '5h']
+        game.dealer_hand.value = 9
+        game.player.hand.counter_as = 3
+        with unittest.mock.patch('Blackjack.deck.Deck.deal',
+                                 return_value=['Ac']):
+            self.assertEqual(game.play('='), 'Dealer Wins!')
 
 
 if __name__ == "__main__":

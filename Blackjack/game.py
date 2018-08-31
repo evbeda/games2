@@ -101,13 +101,6 @@ class Game():
             return messages_who_win['Dealer']
         elif (
                 self.dealer_hand.value >= 17 and
-                self.dealer_hand.value < 21 and
-                self.player.hand.value > self.dealer_hand.value
-        ):
-            self.is_finished = True
-            return messages_who_win['Player']
-        elif (
-                self.dealer_hand.value >= 17 and
                 self.dealer_hand.value == self.player.hand.value
         ):
             self.is_finished = True
