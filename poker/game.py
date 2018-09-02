@@ -6,6 +6,8 @@ class Game(object):
         self.shared_cards = []
         self.pot = 0
         self.round = 0
+        self.is_playing = True
+        self.is_finnished = True
 
     def start(self):
         if self.deal_players():
@@ -43,5 +45,3 @@ class Game(object):
             return False
             # deberia ir el metodo que llame a take bets desde la consola
         return True
-
-    

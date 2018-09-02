@@ -10,6 +10,7 @@ from .poker import (
     find_cards_suits,
     find_straight,
     sort_cards_by_number,
+    transform_cards_to_str,
     get_value,
     PREFLOP,
     FLOP,
@@ -302,7 +303,7 @@ class PokerTest(unittest.TestCase):
         combination = combine_card(['6d', 'Ac', 'Td', 'Ts', '7d', '8d', '9d'])
         result = better_hand(combination)
         self.assertEqual(result, "Escalera Color")
-    
+
     def test_full_house_6_T_hand(self):
         combination = combine_card(['6d', '6c', '6h', 'Ts', 'Td', '8d', '9d'])
         result = better_hand(combination)
@@ -317,6 +318,12 @@ class PokerTest(unittest.TestCase):
         combination = combine_card(['Jd', 'Jc', '6h', '2s', '7h', '8d', 'Ts'])
         result = better_hand(combination)
         self.assertEqual(result, "Par de J")
+
+    def test_transform_card_to_str(self):
+        cards = [Card(1, 'h'), Card(2, 'h'), Card(3, 'h'), Card(4, 'h'), Card(5, 'h')]
+        expected = ['1h', '2h', '3h', '4h', '5h']
+        result = transform_cards_to_str(cards)
+        self.assertEqual(result, expected)
 
     def test_hand_deal_initial_cards(self):
         hand = Hand()
@@ -341,9 +348,8 @@ class PokerTest(unittest.TestCase):
         # ----
 
     def test_hand_deal_flop(self):
-        hand = Hand() 
+        hand = Hand()
         hand.next_stage()
-        hand.deal_cards()
         self.assertEqual(
             hand.stage,
             FLOP,
@@ -365,11 +371,9 @@ class PokerTest(unittest.TestCase):
         # ----
 
     def test_hand_deal_turn(self):
-        hand = Hand() 
+        hand = Hand()
         hand.next_stage()
-        hand.deal_cards()
         hand.next_stage()
-        hand.deal_cards()
         self.assertEqual(
             hand.stage,
             TURN,
@@ -391,13 +395,10 @@ class PokerTest(unittest.TestCase):
         # ----
 
     def test_hand_deal_river(self):
-        hand = Hand() 
+        hand = Hand()
         hand.next_stage()
-        hand.deal_cards()
         hand.next_stage()
-        hand.deal_cards()
         hand.next_stage()
-        hand.deal_cards()
         self.assertEqual(
             hand.stage,
             RIVER,
@@ -419,13 +420,10 @@ class PokerTest(unittest.TestCase):
         # ----
 
     def test_hand_showdown(self):
-        hand = Hand() 
+        hand = Hand()
         hand.next_stage()
-        hand.deal_cards()
         hand.next_stage()
-        hand.deal_cards()
         hand.next_stage()
-        hand.deal_cards()
         hand.next_stage()
         self.assertEqual(
             hand.stage,
@@ -444,6 +442,25 @@ class PokerTest(unittest.TestCase):
             5,
         )
 
+    def test_hand_showdown_better_hand(self):
+        hand = Hand()
+        hand.next_stage()
+        hand.next_stage()
+        hand.next_stage()
+        hand.next_stage()
+        hand.next_stage()
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.player01_cards),
+            2,
+        )
+        self.assertEqual(
+            len(hand.common_cards),
+            5,
+        )
 
 if __name__ == "__main__":
     unittest.main()
