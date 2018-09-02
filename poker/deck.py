@@ -18,7 +18,7 @@ class Deck(object):
         result = []
         for card in range(number):
             result.append(self.cards[0])
-            self.cards.pop()
+            self.cards.pop(0)
         return result
 
     def rebuild(self):
