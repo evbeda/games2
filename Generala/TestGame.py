@@ -1,5 +1,6 @@
-from unittest.mock import patch
 import unittest
+from unittest.mock import patch
+
 from .game import Game
 
 
@@ -107,7 +108,6 @@ class TestGame(unittest.TestCase):
         game.play('ANOTAR', 'GENERALA')
         self.assertTrue(game.finished())
 
-
     @unittest.mock.patch('builtins.input')
     @unittest.mock.patch('random.randint')
     def test_tirar_select_1(self, mock_rand_int, mock_input):
@@ -143,7 +143,7 @@ class TestGame(unittest.TestCase):
         game.throw.number = 5
         result = game.next_turn()
         self.assertEqual(result, '{}\nTu tirada: {} \nElija la categoria\n\
-                 que desea llenar (Ej: POKER, GENERALA, ETC.)'.format(game.turno.name, game.throw.dice,))
+                 que desea llenar (Ej: POKER, GENERALA, ETC.)'.format(game.turno.name, game.throw.dice, ))
 
     def test_conservar_1(self):
         game = Game("Santi", "Beto")
@@ -177,7 +177,7 @@ class TestGame(unittest.TestCase):
         game.play('ANOTAR', 'GENERALA')
         self.assertEqual(game.player1.score, 50)
         game.play('ANOTAR', 'POKER')
-        #import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
         self.assertEqual(
             game.play('ANOTAR', 'GENERALA'),
             'Categoria ya asignada'

@@ -11,7 +11,6 @@ messages_player_human = {
 
 
 class GameBattleship():
-
     name = 'Battle Ship Game'
 
     def __init__(self):
@@ -47,8 +46,8 @@ class GameBattleship():
 
     def is_ready_to_war(self):
         if (
-            self.player_cpu.board_own.is_ready_to_war() and
-            self.player_human.board_own.is_ready_to_war()
+                self.player_cpu.board_own.is_ready_to_war() and
+                self.player_human.board_own.is_ready_to_war()
         ):
             return True
         else:
@@ -116,9 +115,9 @@ class GameBattleship():
                 coordenate = self.player_cpu.pick_coordenate()
                 result = self.player_human.board_own.shoot(*coordenate)
                 if result == 'water':
-                        self.player_cpu.board_opponent.mark_shoot(*coordenate, False)
-                        self.turn = possible_turn[0]
-                        result = 'Water! Now is your turn.'
+                    self.player_cpu.board_opponent.mark_shoot(*coordenate, False)
+                    self.turn = possible_turn[0]
+                    result = 'Water! Now is your turn.'
                 elif result == 'sunked':
                     self.player_cpu.board_opponent.mark_shoot(*coordenate, True)
                     result = 'Your boat was sunk.'

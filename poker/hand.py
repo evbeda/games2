@@ -1,18 +1,10 @@
 from .deck import Deck
-from .poker import PREFLOP, FLOP, TURN, RIVER
-from .poker import CHECK, CALL, BET, RAISE, FOLD
+from .poker import CHECK
+from .poker import FLOP, TURN, RIVER
 from .poker import (
     transform_cards_to_str,
     combine_card,
     better_hand,
-    find_straight_flush,
-    find_royal_flush,
-    find_repeated_cards,
-    find_flush,
-    find_cards_suits,
-    find_straight,
-    sort_cards_by_number,
-    get_value,
 )
 
 
@@ -34,7 +26,7 @@ class Hand():
             self.common_cards.append(self.deck.deal(1)[0])
 
     def next_stage(self):
-        if(self.stage < 4):
+        if (self.stage < 4):
             self.stage += 1
             self.deal_cards()
         else:

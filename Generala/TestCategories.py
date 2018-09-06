@@ -1,7 +1,8 @@
 import unittest
+
 from . import *
 from .utils import check_throw
-import collections
+
 
 class TestCategories(unittest.TestCase):
 
@@ -51,7 +52,7 @@ class TestCategories(unittest.TestCase):
         numOfThrows = 2
         for index_3 in range(1, 7):
             for index_2 in range(1, 7):
-                #import ipdb; ipdb.set_trace()
+                # import ipdb; ipdb.set_trace()
                 mockThrow = [index_3, index_3, index_3, index_2, index_2]
                 isFull = check_throw(mockThrow, FULL['name'], numOfThrows)
                 if mockThrow.count(index_3) > 3:
@@ -63,7 +64,7 @@ class TestCategories(unittest.TestCase):
         numOfThrows = 1
         for index_3 in range(1, 7):
             for index_2 in range(1, 7):
-                #import ipdb; ipdb.set_trace()
+                # import ipdb; ipdb.set_trace()
                 mockThrow = [index_3, index_3, index_3, index_2, index_2]
                 isFull = check_throw(mockThrow, FULL['name'], numOfThrows)
                 if mockThrow.count(index_3) > 3:
@@ -125,7 +126,7 @@ class TestCategories(unittest.TestCase):
         numOfThrows = 2
         mockThrow = [1, 2, 4, 5, 6]
         isNotEscaleraServida = check_throw(mockThrow, ESCALERA['name'], numOfThrows)
-        self.assertNotEqual(isNotEscaleraServida, ESCALERASERVIDA['score'] )
+        self.assertNotEqual(isNotEscaleraServida, ESCALERASERVIDA['score'])
 
     def test_generala_doble_segunda_tercera(self):
         numOfThrows = 1

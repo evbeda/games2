@@ -3,9 +3,6 @@ from unittest.mock import patch
 
 from .card import Card
 from .deck import Deck
-from . import SWORD, COARSE, GOLD, CUP
-from .player import Player
-from .game import Game
 
 
 class TestDeck(unittest.TestCase):
@@ -32,28 +29,28 @@ class TestDeck(unittest.TestCase):
         mazo = Deck()
         mazo.get_card()
         result2 = mazo.get_card()
-        cartaCorrecta = Card('basto', 1)
-        self.assertEqual(cartaCorrecta.suit, result2.suit)
-        self.assertEqual(cartaCorrecta.number, result2.number)
+        carta_correcta = Card('basto', 1)
+        self.assertEqual(carta_correcta.suit, result2.suit)
+        self.assertEqual(carta_correcta.number, result2.number)
 
     @unittest.mock.patch('random.randint')
     def test_verificar_cartas_sacadas_4(self, mock_rand_int):
         mock_rand_int.return_value = 0
         mazo = Deck()
+        mazo.get_card()
+        mazo.get_card()
+        mazo.get_card()
         result2 = mazo.get_card()
-        result2 = mazo.get_card()
-        result2 = mazo.get_card()
-        result2 = mazo.get_card()
-        cartaCorrecta = Card('oro', 7)
-        self.assertEqual(cartaCorrecta.suit, result2.suit)
-        self.assertEqual(cartaCorrecta.number, result2.number)
+        carta_correcta = Card('oro', 7)
+        self.assertEqual(carta_correcta.suit, result2.suit)
+        self.assertEqual(carta_correcta.number, result2.number)
 
     @unittest.mock.patch('random.randint')
     def test_verificar_cartas_sacadas_2_de_a_4(self, mock_rand_int):
         mock_rand_int.return_value = 4
         mazo = Deck()
+        mazo.get_card()
         result2 = mazo.get_card()
-        result2 = mazo.get_card()
-        cartaCorrecta = Card('basto', 3)
-        self.assertEqual(cartaCorrecta.number, result2.number)
-        self.assertEqual(cartaCorrecta.suit, result2.suit)
+        carta_correcta = Card('basto', 3)
+        self.assertEqual(carta_correcta.number, result2.number)
+        self.assertEqual(carta_correcta.suit, result2.suit)

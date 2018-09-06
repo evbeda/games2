@@ -1,5 +1,11 @@
 import unittest
 from unittest.mock import patch
+
+from .card import Card
+from .deck import Deck
+from .game import Game
+from .hand import Hand
+from .player import Player
 from .poker import (
     combine_card,
     better_hand,
@@ -18,11 +24,6 @@ from .poker import (
     RIVER,
     SHOWDOWN,
 )
-from .card import Card
-from .deck import Deck
-from .player import Player
-from .game import Game
-from .hand import Hand
 
 
 class PokerTest(unittest.TestCase):
@@ -36,7 +37,7 @@ class PokerTest(unittest.TestCase):
         game.round = 1
         result = game.deal_players()
         self.assertFalse(result)
-    
+
     def test_player2_wins(self):
         player01 = Player(20)
         player02 = Player(20)
@@ -247,6 +248,7 @@ class PokerTest(unittest.TestCase):
 
         def side_effect(cards):
             return cards
+
         with unittest.mock.patch('poker.deck.shuffle', side_effect):
             deck = Deck()
         player1.cards.append(deck.cards[48])
@@ -257,9 +259,9 @@ class PokerTest(unittest.TestCase):
         player2.cards = deck.deal(5)
 
     def test_get_value_J_Q_K(self):
-        self.assertEqual(get_value('J'),11)
-        self.assertEqual(get_value('Q'),12)
-        self.assertEqual(get_value('K'),13)
+        self.assertEqual(get_value('J'), 11)
+        self.assertEqual(get_value('Q'), 12)
+        self.assertEqual(get_value('K'), 13)
 
     def test_21combinations(self):
         result = combine_card(['Ah', '2h', '5h', '6h', '7h', '8h', '9h'])
@@ -461,6 +463,7 @@ class PokerTest(unittest.TestCase):
             len(hand.common_cards),
             5,
         )
+
 
 if __name__ == "__main__":
     unittest.main()

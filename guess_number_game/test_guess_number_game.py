@@ -1,4 +1,5 @@
 import unittest
+
 from guess_number_game.guess_number_game import GuessNumberGame
 
 

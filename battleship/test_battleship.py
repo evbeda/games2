@@ -3,8 +3,8 @@ from unittest.mock import patch
 
 from battleship.board import Board
 from battleship.game import GameBattleship
+from .game import game_states
 from .player import PlayerCPU, PlayerHuman
-from .game import game_states, possible_turn
 
 
 class test_battleship(unittest.TestCase):

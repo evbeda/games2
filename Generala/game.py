@@ -1,11 +1,9 @@
 from .player import Player
-from .utils import check_throw
 from .throw import Throw
-import random
+from .utils import check_throw
 
 
 class Game():
-
     name = 'Generala'
     input_args = 2
 
@@ -22,10 +20,10 @@ class Game():
 
     def finished(self):
         if self.player1.score >= 3000:
-                return True
+            return True
 
         if self.player2.score >= 3000:
-                return True
+            return True
 
         for key, value in self.player1.combinations.items():
             if self.player1.combinations[key] == '':
@@ -37,8 +35,8 @@ class Game():
 
     def next_turn(self):
         if self.throw.is_possible_to_roll():
-            #import ipdb; ipdb.set_trace()
-            #self.throw.roll(self.which_to_roll)
+            # import ipdb; ipdb.set_trace()
+            # self.throw.roll(self.which_to_roll)
             return '{}\nTu tirada: {} \nIngrese CONSERVAR X, ANOTAR CATEGORIA\
  o TIRAR YA\nx'.format(
                 self.turno.name,
@@ -56,7 +54,7 @@ class Game():
     def play(self, text_input, value):
         if 'CONSERVAR' == text_input:
             dados_a_conservar = value.split(',')
-            #import ipdb; ipdb.set_trace()
+            # import ipdb; ipdb.set_trace()
             self.which_to_roll = [0, 1, 2, 3, 4, ]
             for dado_index in dados_a_conservar:
                 dice_to_check = int(dado_index)
@@ -87,7 +85,7 @@ class Game():
         else:
             return 'Ingrese ANOTAR (TIRADA), CONSERVAR (1,2..), o TIRAR'
 
-   #@property
+    # @property
     def board(self):
         return '{} TIENE {} PUNTOS \n{} TIENE {} PUNTOS\nRONDA {}'.format(
             self.player1.name,

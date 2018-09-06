@@ -1,13 +1,15 @@
 import unittest
+
 from . import cardsDictionary, colorDictionary
-from .game import Game
-from .player import Player
-from .hand import Hand
 from .deck import Deck
+from .game import Game
+from .hand import Hand
+from .player import Player
 
 
 class TestBets(unittest.TestCase):
     player_name = 'John'
+
     # Bet tests
 
     def test_bet_equal(self):
@@ -71,6 +73,7 @@ class TestHands(unittest.TestCase):
         hand.deal_card(['Ah'])
         result = hand.value
         self.assertEqual(result, 16)
+
     # Sum Cards tests
 
     def test_cards_sum_normal(self):

@@ -1,4 +1,5 @@
 import unittest
+
 from .throw import Throw
 
 

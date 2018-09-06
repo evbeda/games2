@@ -1,7 +1,7 @@
 from . import cardsDictionary, colorDictionary, cards_colors
-from .player import Player
 from .deck import Deck
 from .hand import Hand
+from .player import Player
 
 messages_who_win = {
     'Dealer': 'Dealer Wins!',
@@ -88,14 +88,14 @@ class Game():
             self.is_finished = True
             return messages_who_win['Player']
         elif (
-            self.dealer_hand.value >= 17 and
-            self.player.hand.value > self.dealer_hand.value
+                self.dealer_hand.value >= 17 and
+                self.player.hand.value > self.dealer_hand.value
         ):
             self.is_finished = True
             return messages_who_win['Player']
         elif (
-            self.dealer_hand.value >= 17 and
-            self.dealer_hand.value > self.player.hand.value
+                self.dealer_hand.value >= 17 and
+                self.dealer_hand.value > self.player.hand.value
         ):
             self.is_finished = True
             return messages_who_win['Dealer']
@@ -125,13 +125,13 @@ class Game():
             dealer_cards = []
             player_cards = []
             for card in self.dealer_hand.cards:
-                if(card[0] == 'T'):
+                if (card[0] == 'T'):
                     dealer_cards.append('10' + cards_colors[card[1]])
                 else:
                     dealer_cards.append(card[0] + cards_colors[card[1]])
 
             for card in self.player.hand.cards:
-                if(card[0] == 'T'):
+                if (card[0] == 'T'):
                     player_cards.append('10' + cards_colors[card[1]])
                 else:
                     player_cards.append(card[0] + cards_colors[card[1]])

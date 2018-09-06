@@ -1,5 +1,6 @@
-from battleship.board import Board
 from random import randint, choice
+
+from battleship.board import Board
 from . import orientation
 
 
@@ -35,7 +36,7 @@ class PlayerCPU(object):
             return False
 
     def pick_coordenate(self):
-        return self.possible_coordenates.pop(randint(0, len(self.possible_coordenates)-1))
+        return self.possible_coordenates.pop(randint(0, len(self.possible_coordenates) - 1))
 
 
 class PlayerHuman(object):

@@ -1,5 +1,5 @@
 import unittest
-from . import *
+
 from .player import Player
 
 
@@ -21,4 +21,3 @@ class TestPlayer(unittest.TestCase):
         result = player01.choose_combination('GENERALA', 50)
         # assert
         self.assertFalse(result)
-

@@ -11,6 +11,7 @@ class Game(object):
         self.cantos_envidos = []
         self.is_playing = True
         self.hand = Hand()
+        self.turno_envido = None
 
     def cantos_envido(self, pos, canto):
         if canto == "Envido":

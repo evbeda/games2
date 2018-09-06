@@ -71,6 +71,7 @@ def get_value(card):
     else:
         return int(card[0])
 
+
 def get_face(card):
     if (card == 14):
         return 'A'
@@ -85,6 +86,7 @@ def get_face(card):
     else:
         return card
 
+
 def find_royal_flush(cards):
     numbers = sort_cards_by_number(cards)
     # Escalera con AS,10,J,Q,K
@@ -93,11 +95,13 @@ def find_royal_flush(cards):
     else:
         return False
 
+
 def transform_cards_to_str(cards):
-        aux = []
-        for card in cards:
-            aux.append(card.__repr__())
-        return aux
+    aux = []
+    for card in cards:
+        aux.append(card.__repr__())
+    return aux
+
 
 def find_repeated_cards(cards):
     cardsDictionary = defaultdict(int)
@@ -110,13 +114,13 @@ def find_repeated_cards(cards):
         'par': [],
     }
     for cardKey in cardsDictionary:
-        if(cardsDictionary[cardKey] == 4):
+        if (cardsDictionary[cardKey] == 4):
             result['poker'].append(cardKey)
             break
-        if(cardsDictionary[cardKey] == 3):
+        if (cardsDictionary[cardKey] == 3):
             result['trio'].append(cardKey)
             break
-        if(cardsDictionary[cardKey] == 2):
+        if (cardsDictionary[cardKey] == 2):
             result['par'].append(cardKey)
     return result
 
@@ -154,7 +158,7 @@ def find_cards_suits(cards):
     orderCards = []
     for number in numbers:
         for card in cards:
-            if(get_value(card[0]) == number):
+            if (get_value(card[0]) == number):
                 orderCards.append(card)
     return orderCards
 
@@ -194,7 +198,7 @@ def better_hand(combinations):
             straight_flush = True
         elif len(repetead_cards['poker']) > 0:
             poker = True
-        elif find_flush(combination): 
+        elif find_flush(combination):
             flush = True
         elif find_straight(combination):
             straight = True

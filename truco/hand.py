@@ -97,8 +97,7 @@ class Hand(object):
         return True
 
     def show_cards(self):
-        result = []
-        result.append('\nMis Cartas: \n')
+        result = ['\nMis Cartas: \n']
         for card in self.hidden_cards[self.turn]:
             result.append(str(card) + ' ')
         result.append('\nCartas jugadas: \n')

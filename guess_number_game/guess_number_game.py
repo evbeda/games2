@@ -2,7 +2,6 @@ from random import randint
 
 
 class GuessNumberGame(object):
-
     name = 'Guess Number Game'
     input_args = 1
 
@@ -19,9 +18,9 @@ class GuessNumberGame(object):
 
     def play(self, number):
         self.played_numbers.append(number)
-        if number < self._guess_number:
+        if int(number) < self._guess_number:
             return 'too low'
-        elif number > self._guess_number:
+        elif int(number) > self._guess_number:
             return 'too high'
         self.is_playing = False
         return 'you win'

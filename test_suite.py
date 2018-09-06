@@ -1,26 +1,21 @@
-import unittest
-from battleship.test_board import test_board
-from battleship.test_battleship import test_battleship
+import test_game
 from Blackjack.testBlackjack import (
     TestBets,
-    TestHands,
-    TestDeck,
-    TestGame as TestBlackjackGame
+    TestHands
 )
-
-from truco.test_truco import TestGame as TG
-from truco.test_truco import TestDeck as TD
-from truco.test_truco import TestCards as TCD
-from truco.test_hand import TestHand as TestHandTruco
-from poker.test_poker import *
-from guess_number_game import test_guess_number_game
-import test_game
 from Generala.TestCategories import TestCategories
-from Generala.TestThrowDice import TestThrowDice
-from Generala.TestPlayer import TestPlayer
 from Generala.TestGame import TestGame
+from Generala.TestPlayer import TestPlayer
+from Generala.TestThrowDice import TestThrowDice
 from Generala.test_throw_class import TestThrow
+from battleship.test_battleship import test_battleship
+from battleship.test_board import test_board
 from guess_number_game import test_guess_number_game
+from poker.test_poker import *
+from truco.test_cards import TestCards as TCD
+from truco.test_deck import TestDeck as TD
+from truco.test_game import TestGame as TG
+from truco.test_hand import TestHand as TestHandTruco
 
 
 def suite():

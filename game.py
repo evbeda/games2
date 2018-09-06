@@ -1,6 +1,6 @@
-from guess_number_game.guess_number_game import GuessNumberGame
-from Generala.game import Game as GeneralaGame
 from Blackjack.game import Game as BlackjackGame
+from Generala.game import Game as GeneralaGame
+from guess_number_game.guess_number_game import GuessNumberGame
 
 
 class Game(object):
@@ -60,7 +60,7 @@ class Game(object):
 
     def select_game(self):
         result = ''
-        while(not result.isdigit()):
+        while (not result.isdigit()):
             result = self.get_input(self.game_inputs())
         return int(result)
 
@@ -73,13 +73,13 @@ class Game(object):
                 self.active_game = self.games[game_selection]()
                 # try:
                 while (
-                    (
-                        hasattr(self.active_game, 'playing') and
-                        self.active_game.playing
-                    ) or (
-                        hasattr(self.active_game, 'is_playing') and
-                        self.active_game.is_playing
-                    )
+                        (
+                                hasattr(self.active_game, 'playing') and
+                                self.active_game.playing
+                        ) or (
+                                hasattr(self.active_game, 'is_playing') and
+                                self.active_game.is_playing
+                        )
                 ):
                     self.output(self.active_game.board)
                     game_input = self.get_turn_input(
