@@ -99,7 +99,7 @@ class Hand(object):
     def show_cards(self):
         result = []
         result.append('\nMis Cartas: \n')
-        for card in self.hidden_cards[self.turn]:
+        for card in self.hidden_cards[0]:
             result.append(str(card) + ' ')
         result.append('\nCartas jugadas: \n')
         for group in self.played_cards:

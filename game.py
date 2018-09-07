@@ -1,7 +1,7 @@
 from guess_number_game.guess_number_game import GuessNumberGame
 from Generala.game import Game as GeneralaGame
 from Blackjack.game import Game as BlackjackGame
-
+from truco.game import Game as TrucoGame
 
 class Game(object):
 
@@ -11,6 +11,7 @@ class Game(object):
             GuessNumberGame,
             GeneralaGame,
             BlackjackGame,
+            TrucoGame,
         ]
 
     def output(self, text):

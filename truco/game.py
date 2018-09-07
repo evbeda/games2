@@ -67,7 +67,7 @@ class Game(object):
 
     def next_turn(self):
         if self.is_playing:
-            return 'E para cantar envido \n T para cantar Truco, 0-2 para jugar una carta'
+            return 'E: Para cantar envido \nT: Para cantar Truco \n0: Para jugar la primer carta \n1: Para jugar la segunda carta\n2: Para jugar la tercer carta\n'
         else:
             return 'Game Over!'
 
@@ -81,4 +81,5 @@ class Game(object):
     def board(self):
         if self.hand.is_playing is False:
             self.hand = Hand()
+            print ("asdasda")
         return self.hand.show_cards()
