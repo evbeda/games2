@@ -8,6 +8,7 @@ class PlayerCPU(object):
         self.board_own = Board()
         self.board_opponent = Board()
         self.possible_coordenates = []
+        self.messages = []
         for i in range(9):
             for j in range(9):
                 self.possible_coordenates.append([i, j])
@@ -42,6 +43,7 @@ class PlayerHuman(object):
     def __init__(self):
         self.board_own = Board()
         self.board_opponent = Board()
+        self.messages = []
 
     def get_boards(self):
         return [self.board_own, self.board_opponent]
