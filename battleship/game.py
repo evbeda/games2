@@ -60,13 +60,15 @@ class GameBattleship():
                     False
                 )
                 self.turn = possible_turn[1]
-                self.player_human.messages.append('You only hit water! CPU turn')
+                self.player_human.messages.append(
+                    'You only hit water! CPU turn')
                 self.war_cpu()
                 for message in self.player_cpu.messages:
                     self.player_human.messages.append(message)
                 result = self.player_human.messages
             elif result == 'already shoot':
                 self.player_human.messages.append('You already shoot in this place. Try again')
+
                 result = self.player_human.messages
             elif result == 'sunked':
                 self.player_human.board_opponent.mark_shoot(
@@ -74,7 +76,8 @@ class GameBattleship():
                     int(params[1]),
                     True
                 )
-                self.player_human.messages.append('Congratulations! You sunk a boat.')
+                self.player_human.messages.append(
+                    'Congratulations! You sunk a boat.')
                 result = self.player_human.messages
             elif result == 'hit':
                 self.player_human.board_opponent.mark_shoot(
@@ -117,7 +120,7 @@ class GameBattleship():
             )
             self.player_cpu.messages.append('Your boat was hit.')
             result = self.player_cpu.messages
-        if not self.player_cpu.board_own.there_are_boats():
+        if not self.player_human.board_own.there_are_boats():
             self.state = game_states[2]
             self.player_cpu.messages.append('You lose.')
             result = self.player_cpu.messages
@@ -131,18 +134,6 @@ class GameBattleship():
             self.player_human.board_own.is_ready_to_war()
         ):
             return True
-        else:
-            return False
-
-    def check_state_message(self):
-        if self.state == game_states[0]:
-            return messages_player_human['init']
-        elif self.state == game_states[1]:
-            return messages_player_human['shoot']
-        elif self.state == game_states[2]:
-            return messages_player_human['cpu_win']
-        else:
-            return messages_player_human['player_win']
 
     def next_turn(self):
         if self.is_playing:
@@ -150,8 +141,6 @@ class GameBattleship():
                 return messages_player_human['init']
             elif self.state == game_states[1] and self.turn == possible_turn[0]:
                 return messages_player_human['shoot']
-        else:
-            return 'Game Over'
 
     def play(self, text_input):
         if self.state == game_states[0]:
@@ -160,7 +149,3 @@ class GameBattleship():
             return self.war_human(text_input)
         elif self.state == game_states[1] and self.turn == possible_turn[1]:
             return self.war_cpu()
-        elif self.state == game_states[2]:
-            return 'La CPU gano!'
-        elif self.state == game_states[3]:
-            return 'Felicitaciones! Ganaste!'
