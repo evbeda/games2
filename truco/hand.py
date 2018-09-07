@@ -52,12 +52,16 @@ class Hand(object):
     @property
     def is_playing(self):
         if len(self.played_cards[0]) == len(self.played_cards[1]):
-            win_hands = 0
-            for i in range(len(self.played_cards[0])):
-                if self.played_cards[0][i].compare_with(self.played_cards[1][i]) == 'GREATER':
-                    win_hands += 1
-            if win_hands >= 2:
-                return False
+            for player in range(2):
+                win_hands = 0
+                for i in range(len(self.played_cards[player])):
+                    if self.played_cards[player][i].compare_with(self.played_cards[1 - player][i]) == 'GREATER':
+                        win_hands += 1
+                if win_hands >= 2:
+                    return False
+            return True
+        else:
+            return True
 
     def get_score_envido(self, player):
         same_suit_cards = set()
@@ -102,7 +106,14 @@ class Hand(object):
         for card in self.hidden_cards[0]:
             result.append(str(card) + ' ')
         result.append('\nCartas jugadas: \n')
+        contador = 0
         for group in self.played_cards:
+            if contador == 0:
+                result.append("H: ")
+                contador += 1
+            else:
+                result.append("C: ")
             for card2 in group:
                 result.append(str(card2) + ' ')
+            result.append('\n')
         return ''.join(result)
