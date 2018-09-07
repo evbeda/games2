@@ -65,7 +65,7 @@ class GameBattleship():
                 for message in self.player_cpu.messages:
                     self.player_human.messages.append(message)
                 result = self.player_human.messages
-            elif result == 'Already shoot':
+            elif result == 'already shoot':
                 self.player_human.messages.append('You already shoot in this place. Try again')
                 result = self.player_human.messages
             elif result == 'sunked':

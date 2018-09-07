@@ -351,7 +351,6 @@ class test_battleship(unittest.TestCase):
 
     @unittest.mock.patch('battleship.player.PlayerCPU.pick_coordenate')
     def test_play_human_water(self, mock_pick_coordenate):
-        board_cpu = Board()
         board = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -370,6 +369,47 @@ class test_battleship(unittest.TestCase):
         mock_pick_coordenate.return_value = [1, 1]
         result = self.game.play('0, 0')
         expected = ['You only hit water! CPU turn', 'Your boat was sunk.']
+        self.assertEqual(result, expected)
+
+    def test_play_human_already_shoot(self):
+        board = [
+            [9, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 4, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 4, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 4, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 4, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        self.game.player_cpu.board_own.board = board
+        self.game.state = game_states[1]
+        self.game.turn = 'human'
+        result = self.game.play('0, 0')
+        expected = ['You already shoot in this place. Try again']
+        self.assertEqual(result, expected)
+
+    def test_play_human_win(self):
+        board = [
+            [9, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 9],
+            [0, 0, 0, 0, 0, 9, 0, 0, 0, 9],
+            [0, 0, 9, 0, 0, 9, 0, 0, 0, 9],
+            [0, 0, 9, 0, 0, 9, 0, 0, 0, 9],
+            [0, 0, 9, 0, 0, 2, 2, 0, 0, 0],
+            [0, 0, 9, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 9, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 9, 9, 9, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        self.game.player_cpu.board_own.board = board
+        self.game.state = game_states[1]
+        self.game.turn = 'human'
+        self.game.play('5, 5')
+        result = self.game.play('5, 6')
+        expected = ['You hit a boat', 'Congratulations! You sunk a boat.', 'You Win']
         self.assertEqual(result, expected)
 
 
