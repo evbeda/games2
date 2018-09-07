@@ -219,12 +219,13 @@ class TestHand(unittest.TestCase):
 
     def test_play_four_cards_is_playing_false(self):
         hand = Hand()
-        hand.hidden_cards = [[Card(COARSE, 5),
-                              Card(SWORD, 10),
-                              Card(COARSE, 6)],
-                             [Card(COARSE, 1),
+        hand.hidden_cards = [[Card(COARSE, 1),
                               Card(SWORD, 1),
-                              Card(COARSE, 7)]]
+                              Card(COARSE, 7)],
+                             [Card(COARSE, 5),
+                              Card(SWORD, 10),
+                              Card(COARSE, 6)]
+                             ]
         hand.play_card(0)
         hand.play_card(0)
         hand.next_hand()
@@ -237,6 +238,41 @@ class TestHand(unittest.TestCase):
 
         self.assertFalse(hand.is_playing)
 
+    def test_play_four_cards_is_playing_false_two(self):
+        hand = Hand()
+        hand.hidden_cards = [[Card(COARSE, 5),
+                              Card(SWORD, 10),
+                              Card(COARSE, 6)],
+                             [Card(COARSE, 1),
+                              Card(SWORD, 1),
+                              Card(COARSE, 7)]
+                             ]
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        self.assertFalse(hand.is_playing)
+
+    def test_play_two_cards_is_playing_true(self):
+        hand = Hand()
+        hand.hidden_cards = [[Card(COARSE, 5),
+                              Card(SWORD, 10),
+                              Card(COARSE, 6)],
+                             [Card(COARSE, 1),
+                              Card(SWORD, 1),
+                              Card(COARSE, 7)]]
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+        self.assertTrue(hand.is_playing)
+
     def test_show_cards(self):
         hand = Hand()
         hand.hidden_cards = [[Card(COARSE, 5),
@@ -247,6 +283,32 @@ class TestHand(unittest.TestCase):
                               Card(COARSE, 7)]]
         hand.play_card(0)
         hand.play_card(0)
-        expected = '\nMis Cartas: \n10 espada 6 basto \nCartas jugadas: \n5 basto 1 basto '
+        expected = '\nMis Cartas: \n10 espada 6 basto \nCartas jugadas: \nH: 5 basto \nC: 1 basto \n'
         result = hand.show_cards()
         self.assertEqual(result, expected)
+
+    def test_play_six_cards_is_playing_false(self):
+        hand = Hand()
+        hand.hidden_cards = [[Card(COARSE, 5),
+                              Card(SWORD, 1),
+                              Card(COARSE, 6)],
+                             [Card(COARSE, 1),
+                              Card(SWORD, 10),
+                              Card(COARSE, 7)]
+                             ]
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        hand.play_card(0)
+        hand.play_card(0)
+        hand.next_hand()
+        hand.who_is_next()
+
+        self.assertFalse(hand.is_playing)
