@@ -10,13 +10,26 @@ from .poker import (
     find_cards_suits,
     find_straight,
     sort_cards_by_number,
+    compare_combinations,
+    compare_hands,
     transform_cards_to_str,
     get_value,
-    PREFLOP,
-    FLOP,
-    TURN,
-    RIVER,
-    SHOWDOWN,
+    PREFLOP, FLOP, TURN, RIVER, SHOWDOWN,
+    CHECK, BET, FOLD, RAISE, CALL, NONE,
+    PLAYER, CPU,
+    FIRST,
+    SECOND,
+    EQUAL,
+    ROYAL_FLUSH,
+    STRAIGHT_FLUSH,
+    POKER,
+    FULL_HOUSE,
+    FLUSH,
+    STRAIGHT,
+    SET,
+    DOUBLE_PAIR,
+    PAIR,
+    HIGH_CARD,
 )
 from .card import Card
 from .deck import Deck
@@ -36,7 +49,7 @@ class PokerTest(unittest.TestCase):
         game.round = 1
         result = game.deal_players()
         self.assertFalse(result)
-    
+
     def test_player2_wins(self):
         player01 = Player(20)
         player02 = Player(20)
@@ -109,10 +122,10 @@ class PokerTest(unittest.TestCase):
     def test_full_house(self):
         expected = {
             'poker': [],
-            'trio': ['7'],
-            'par': ['2'],
+            'trio': ['6'],
+            'par': ['T'],
         }
-        result = find_repeated_cards(['2d', '2h', '7d', '7s', '7s'])
+        result = find_repeated_cards(['6d', '6c', '6h', 'Ts', 'Td'])
         self.assertEqual(result, expected)
 
     def test_straight_true(self):
@@ -257,9 +270,9 @@ class PokerTest(unittest.TestCase):
         player2.cards = deck.deal(5)
 
     def test_get_value_J_Q_K(self):
-        self.assertEqual(get_value('J'),11)
-        self.assertEqual(get_value('Q'),12)
-        self.assertEqual(get_value('K'),13)
+        self.assertEqual(get_value('J'), 11)
+        self.assertEqual(get_value('Q'), 12)
+        self.assertEqual(get_value('K'), 13)
 
     def test_21combinations(self):
         result = combine_card(['Ah', '2h', '5h', '6h', '7h', '8h', '9h'])
@@ -292,32 +305,49 @@ class PokerTest(unittest.TestCase):
     def test_best_hand_royal_flush(self):
         combination = combine_card(['Ah', 'Th', '5h', 'Jh', '7h', 'Qh', 'Kh'])
         result = better_hand(combination)
-        self.assertEqual(result, "Escalera Real")
+        self.assertEqual(result, (ROYAL_FLUSH, ['Ah', 'Th', 'Jh', 'Qh', 'Kh']))
 
     def test_poker_hand(self):
         combination = combine_card(['Ad', 'Ac', 'Th', 'Ts', 'Ah', '3d', 'As'])
         result = better_hand(combination)
-        self.assertEqual(result, "Poker")
+        self.assertEqual(result, (POKER, ['Ad', 'Ac', 'Th', 'Ah', 'As']))
 
     def test_straight_flush_hand(self):
         combination = combine_card(['6d', 'Ac', 'Td', 'Ts', '7d', '8d', '9d'])
         result = better_hand(combination)
-        self.assertEqual(result, "Escalera Color")
+        self.assertEqual(result, (STRAIGHT_FLUSH, ['6d', 'Ac', 'Td', 'Ts', '9d']))
 
     def test_full_house_6_T_hand(self):
         combination = combine_card(['6d', '6c', '6h', 'Ts', 'Td', '8d', '9d'])
         result = better_hand(combination)
-        self.assertEqual(result, "Full House de 6 y T")
+        self.assertEqual(result, (FULL_HOUSE, ['6d', '6c', '6h', 'Ts', 'Td']))
 
     def test_full_house_6_3_hand(self):
         combination = combine_card(['6d', '6c', '6h', '3s', '3d', '8d', '9d'])
         result = better_hand(combination)
-        self.assertEqual(result, "Full House de 6 y 3")
+        self.assertEqual(result, (FULL_HOUSE, ['6d', '6c', '6h', '3s', '3d']) )
 
     def test_one_pair_hand(self):
         combination = combine_card(['Jd', 'Jc', '6h', '2s', '7h', '8d', 'Ts'])
         result = better_hand(combination)
-        self.assertEqual(result, "Par de J")
+        self.assertEqual(result, (PAIR, ['Jd', 'Jc', '7h', '8d', 'Ts']))
+
+    def test_player_wins(self):
+        hand_1 = (FULL_HOUSE, ['6d', '6c', '6h', '3s', '3d'])
+        hand_2 = (PAIR, ['Jd', 'Jc', '7h', '8d', 'Ts'])
+        result = compare_hands(hand_1, hand_2)
+        self.assertEqual(result, 'PLAYER WINS!')
+
+    def test_cpu_wins(self):
+        hand_1 = (FULL_HOUSE, ['6d', '6c', '6h', '3s', '3d'])
+        hand_2 = (PAIR, ['Jd', 'Jc', '7h', '8d', 'Ts'])
+        result = compare_hands(hand_2, hand_1)
+        self.assertEqual(result, 'CPU WINS!')
+
+    def test_player_cpu_tie(self):
+        hand_1 = (FULL_HOUSE, ['6d', '6c', '6h', '3s', '3d'])
+        result = compare_hands(hand_1, hand_1)
+        self.assertEqual(result, 'TIE')
 
     def test_transform_card_to_str(self):
         cards = [Card(1, 'h'), Card(2, 'h'), Card(3, 'h'), Card(4, 'h'), Card(5, 'h')]
@@ -332,11 +362,11 @@ class PokerTest(unittest.TestCase):
             PREFLOP,
         )
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
-            len(hand.player02_cards),
+            len(hand.cpu_cards),
             2,
         )
         self.assertEqual(
@@ -355,11 +385,11 @@ class PokerTest(unittest.TestCase):
             FLOP,
         )
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
@@ -379,11 +409,11 @@ class PokerTest(unittest.TestCase):
             TURN,
         )
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
@@ -404,11 +434,11 @@ class PokerTest(unittest.TestCase):
             RIVER,
         )
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
@@ -430,11 +460,11 @@ class PokerTest(unittest.TestCase):
             SHOWDOWN
         )
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
@@ -450,17 +480,111 @@ class PokerTest(unittest.TestCase):
         hand.next_stage()
         hand.next_stage()
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
-            len(hand.player01_cards),
+            len(hand.player_cards),
             2,
         )
         self.assertEqual(
             len(hand.common_cards),
             5,
         )
+
+    def test_player_check(self):
+        hand = Hand()
+        hand.take_action(CHECK)
+        self.assertEqual(hand.turn, CPU)
+        self.assertEqual(hand.last_action, CHECK)
+
+    def test_player_check_cpu_check(self):
+        hand = Hand()
+        hand.take_action(CHECK)
+        hand.take_action(CHECK)
+        self.assertEqual(hand.turn, PLAYER)
+        self.assertEqual(
+            hand.stage,
+            FLOP
+        )
+        self.assertEqual(hand.last_action, NONE)
+
+    def test_player_bet(self):
+        hand = Hand()
+        hand.take_action(BET, 50)
+        self.assertEqual(hand.turn, CPU)
+        self.assertEqual(
+            hand.stage,
+            PREFLOP
+        )
+        self.assertEqual(hand.last_action, BET)
+        self.assertEqual(hand.pot, 50)
+        self.assertEqual(hand.last_bet, 50)
+
+    def test_player_bet_cpu_call(self):
+        hand = Hand()
+        hand.take_action(BET, 50)
+        hand.take_action(CALL)
+        self.assertEqual(hand.turn, PLAYER)
+        self.assertEqual(
+            hand.stage,
+            FLOP
+        )
+        self.assertEqual(hand.last_action, NONE)
+        self.assertEqual(hand.pot, 100)
+        self.assertEqual(hand.last_bet, 0)
+
+    def test_player_bet_cpu_raise(self):
+        hand = Hand()
+        hand.take_action(BET, 50)
+        hand.take_action(RAISE, 100)
+        self.assertEqual(hand.turn, PLAYER)
+        self.assertEqual(
+            hand.stage,
+            PREFLOP
+        )
+        self.assertEqual(hand.last_action, RAISE)
+        self.assertEqual(hand.pot, 150)
+        self.assertEqual(hand.last_bet, 50)
+
+    def test_player_bet_cpu_raise_not_enough(self):
+        hand = Hand()
+        hand.take_action(BET, 50)
+        result = hand.take_action(RAISE, 70)
+        self.assertEqual(hand.turn, CPU)
+        self.assertEqual(
+            hand.stage,
+            PREFLOP
+        )
+        self.assertEqual(hand.last_action, BET)
+        self.assertEqual(hand.pot, 50)
+        self.assertEqual(hand.last_bet, 50)
+        self.assertEqual(result, "You must raise at least twice last bet")
+
+    def test_player_bet_cpu_fold(self):
+        hand = Hand()
+        hand.take_action(BET, 50)
+        result = hand.take_action(FOLD)
+        self.assertEqual(hand.last_action, BET)
+        self.assertEqual(hand.pot, 50)
+        self.assertEqual(result, "the player win")
+
+    def test_compare_combinations_first(self):
+        first_combination = ['2h', '7d', 'Kd', 'Tc', 'Ks']
+        second_combination = ['Qs', '8h', '4d', 'Jc', '2s']
+        result = compare_combinations(first_combination, second_combination)
+        self.assertEqual(result, FIRST)
+
+    def test_compare_combinations_second(self):
+        first_combination = ['2h', '7d', 'Kd', 'Tc', 'Ks']
+        second_combination = ['Qs', '8h', '4d', 'Jc', '2s']
+        result = compare_combinations(second_combination, first_combination)
+        self.assertEqual(result, SECOND)
+
+    def test_compare_combinations_equal(self):
+        first_combination = ['2h', '7d', 'Kd', 'Tc', 'Ks']
+        result = compare_combinations(first_combination, first_combination)
+        self.assertEqual(result, EQUAL)
 
 if __name__ == "__main__":
     unittest.main()
