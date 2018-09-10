@@ -3,6 +3,8 @@ from truco.player import (
     HumanPlayer,
     CPUPlayer,
 )
+import random
+from .hand import envido_posibilities
 
 
 class Game(object):
@@ -26,7 +28,9 @@ class Game(object):
             return '\nGame Over!'
 
     def play(self, command):
-        if command == "ENVIDO":
+        if (command == "ENVIDO" or
+            command == "REAL ENVIDO" or
+                command == "FALTA ENVIDO"):
             return self.envido_logic(command)
         if command == "TRUCO" and self.hand.truco_fase:
             return self.truco_logic()
@@ -34,7 +38,7 @@ class Game(object):
             self.hand.envido_fase = False
         if command.isdigit():
             self.normal_round_logic(command)
-            self.hand.cpu_auto_play()
+            self.cpu_auto_play()
 
         else:
             return "\nComando Erroneo"
@@ -63,18 +67,24 @@ class Game(object):
         self.hand.siguiente_ronda()
         self.hand.who_is_next()
 
+    def cpu_auto_play(self):
+        result = self.players[1].cpu_play()
+        if result == 'ENVIDO':
+            self.hand.envidos.append(random.choice(envido_posibilities))
+        elif result == 'JUGAR':
+            self.hand.play_card(random.randint(
+                0, len(self.hand.hidden_cards[1])))
+
     def envido_logic(self, command):
         try:
             self.hand.sing_envido(command)
-            result = self.hand.ask_envido()
+            result = self.players[1].ask_envido(self.hand.envidos)
             if result == 'ACCEPTED':
                 self.hand.accept_envido()
             elif result == 'REJECTED':
                 self.hand.reject_envido()
             else:
                 self.hand.sing_envido(result)
-
-
         except Exception:
             return "No en fase de envido"
         human_points = self.hand.get_score_envido(0)
