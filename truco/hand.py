@@ -1,3 +1,5 @@
+import random
+
 from .deck import Deck
 
 envido_combinations = [
@@ -13,6 +15,8 @@ envido_combinations = [
     ['Envido', 'Envido', 'Real Envido', 'Falta Envido', 0, 7],
 ]
 
+envido_posibilities = ["ENVIDO", "REAL ENVIDO", "FALTA ENVIDO"]
+
 
 class Hand(object):
 
@@ -26,6 +30,7 @@ class Hand(object):
         self.winner_index = None
         self.mano = mano
         self.deal_cards()
+        self.envidos = []
 
     def limpiar_mesa(self):
         self.hidden_cards = [[], [], ]
@@ -59,6 +64,18 @@ class Hand(object):
             pass
         else:
             self.turn = 1
+
+    def accept_envido(self):
+        self.envido_fase = False
+
+    def reject_envido(self):
+        self.envido_fase = False
+        self.envidos = []
+
+    def sing_envido(self, command):
+        if not self.envido_fase:
+            raise Exception()
+        self.envidos.append(command)
 
     @property
     def is_playing(self):
@@ -111,6 +128,19 @@ class Hand(object):
                 white.remove(card)
                 card_two = max(white)
                 return card + card_two + 20
+
+    def cpu_auto_play(self):
+        result = self.cpu_play()
+        if result == 'ENVIDO':
+            self.envidos.append(random.choice(envido_posibilities))
+        elif result == 'JUGAR':
+            self.play_card(random.randint(0, len(self.hidden_cards[1])))
+
+    def cpu_play(self):
+        return random.choice(['ENVIDO', 'JUGAR'])
+
+    def ask_envido(self):
+        return random.choice(['ENVIDO', 'ACCEPTED', 'REJECTED', 'REAL ENVIDO', ])
 
     def show_cards(self):
         result = []
