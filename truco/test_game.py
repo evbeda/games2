@@ -3,11 +3,50 @@ import unittest
 from truco import *
 from truco.card import Card
 from truco.game import Game
+from truco.player import CPUPlayer
 
 
 class TestGame(unittest.TestCase):
 
-    @unittest.mock.patch("truco.hand.Hand.ask_envido", return_value='REAL ENVIDO')
+    # @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='REAL ENVIDO')
+    # def test_cpu_sing_real_envido_when_p1_sing_falta_envido(self, mocksito):
+    #     game = Game()
+    #     game.play("FALTA ENVIDO")
+    #     self.assertTrue(game.hand.envido_fase)
+    #     self.assertEqual(game.hand.envidos, ['FALTA ENVIDO', 'REAL ENVIDO'])
+
+    def test_player_ask_falta_envido(self):
+        player = CPUPlayer('CPY')
+        all_ready_envidos = ['REAL ENVIDO', 'ENVIDO', 'ENVIDO']
+        self.assertEqual(
+            player.choose_one_action(all_ready_envidos),
+            ['ACCEPTED', 'REJECTED', 'FALTA ENVIDO'],
+        )
+
+    def test_player_ask_envido_when_there_are_not_more_sings(self):
+        player = CPUPlayer('CPY')
+        all_ready_envidos = ['FALTA ENVIDO']
+        self.assertEqual(
+            player.choose_one_action(all_ready_envidos),
+            ['ACCEPTED', 'REJECTED'],
+        )
+
+    def test_sing_real_envido_and_only_can_sing_falta_envido(self):
+        player = CPUPlayer('mocky')
+        all_ready_envidos = ['REAL ENVIDO']
+        self.assertEqual(
+            player.choose_one_action(all_ready_envidos),
+            ['ACCEPTED', 'REJECTED', 'FALTA ENVIDO'],
+        )
+
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ACCEPTED')
+    def test_p1_sing_falta_envido(self, mocky):
+        game = Game()
+        game.play("FALTA ENVIDO")
+        self.assertFalse(game.hand.envido_fase)
+        self.assertEqual(game.hand.envidos, ['FALTA ENVIDO'])
+
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='REAL ENVIDO')
     def test_cpu_canta_real_envido(self, mocksito):
         game = Game()
         game.play("ENVIDO")
@@ -20,7 +59,7 @@ class TestGame(unittest.TestCase):
         result = game.play("ENVIDO")
         self.assertEqual(result, "No en fase de envido")
 
-    @unittest.mock.patch("truco.hand.Hand.ask_envido", return_value='ACCEPTED')
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ACCEPTED')
     def test_cantar_fases_envido_and_accept(self, mock_ask_envido):
         game = Game()
         self.assertTrue(game.hand.envido_fase)
@@ -29,7 +68,7 @@ class TestGame(unittest.TestCase):
         self.assertFalse(game.hand.envido_fase)
         self.assertEqual(game.hand.envidos, ['ENVIDO'])
 
-    @unittest.mock.patch("truco.hand.Hand.ask_envido", return_value='REJECTED')
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='REJECTED')
     def test_cantar_fases_envido_and_not_accept(self, mock_ask_envido):
         game = Game()
         self.assertTrue(game.hand.envido_fase)
@@ -39,7 +78,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(game.hand.envidos, [])
         # CPU lose 1 point ... TODO
 
-    @unittest.mock.patch("truco.hand.Hand.ask_envido", return_value='ENVIDO')
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO')
     def test_cantar_fases_envido_and_envido(self, mock_ask_envido):
         game = Game()
         self.assertTrue(game.hand.envido_fase)
@@ -48,7 +87,7 @@ class TestGame(unittest.TestCase):
         self.assertTrue(game.hand.envido_fase)
         self.assertEqual(game.hand.envidos, ['ENVIDO', 'ENVIDO'])
 
-    @unittest.mock.patch("truco.hand.Hand.ask_envido", return_value='ENVIDO')
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO')
     def test_cantar_fases_envido_envido_envido_accept(self, mock_ask_envido):
         game = Game()
         self.assertTrue(game.hand.envido_fase)
@@ -57,18 +96,6 @@ class TestGame(unittest.TestCase):
         # cpu accept envido... force random
         self.assertFalse(game.hand.envido_fase)
         self.assertEqual(game.hand.envidos, ['ENVIDO', 'ENVIDO'])
-
-    def test_cantar_fases_envido_envido_envido_envido_accept(self):
-        game = Game()
-        self.assertTrue(game.hand.envido_fase)
-
-        with unittest.mock.patch("truco.hand.Hand.ask_envido", return_value='ENVIDO'):
-            game.play("ENVIDO")
-        with unittest.mock.patch("truco.hand.Hand.ask_envido", return_value='ACCEPTED'):
-            game.play("ENVIDO")
-        # cpu accept envido... force random
-        self.assertFalse(game.hand.envido_fase)
-        self.assertEqual(game.hand.envidos, ['ENVIDO', 'ENVIDO', 'ENVIDO'])
 
     @unittest.mock.patch("truco.hand.Hand.sing_envido", return_value='ENVIDO')
     def test_cpu_cantar_fases_envido_and_accept(self, mock_sing_envido):
@@ -79,7 +106,7 @@ class TestGame(unittest.TestCase):
         self.assertTrue(game.hand.envido_fase)
         self.assertEqual(game.hand.envidos, ['ENVIDO'])
 
-    @unittest.mock.patch("truco.hand.Hand.cpu_play", return_value='ENVIDO')
+    @unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='ENVIDO')
     @unittest.mock.patch("random.choice", return_value='ENVIDO')
     def test_cpu_cantar_fases_envido_and_accept(self, mock_random_choice_, mock_cpu_play):
         game = Game()

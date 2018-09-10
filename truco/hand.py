@@ -1,4 +1,3 @@
-import random
 
 from .deck import Deck
 
@@ -7,6 +6,7 @@ envido_combinations = [
     ['Real Envido', 3, 1],
     ['Falta Envido', 0, 1],
     ['Envido', 'Envido', 4, 2],
+    ['Real Envido', 'Falta Envido', 5, 2],
     ['Envido', 'Real Envido', 5, 2],
     ['Envido', 'Falta Envido', 0, 2],
     ['Envido', 'Envido', 'Real Envido', 7, 4],
@@ -129,18 +129,6 @@ class Hand(object):
                 card_two = max(white)
                 return card + card_two + 20
 
-    def cpu_auto_play(self):
-        result = self.cpu_play()
-        if result == 'ENVIDO':
-            self.envidos.append(random.choice(envido_posibilities))
-        elif result == 'JUGAR':
-            self.play_card(random.randint(0, len(self.hidden_cards[1])))
-
-    def cpu_play(self):
-        return random.choice(['ENVIDO', 'JUGAR'])
-
-    def ask_envido(self):
-        return random.choice(['ENVIDO', 'ACCEPTED', 'REJECTED', 'REAL ENVIDO', ])
 
     def show_cards(self):
         result = []
