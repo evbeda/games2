@@ -16,17 +16,24 @@ envido_combinations = [
 
 class Hand(object):
 
-    def __init__(self):
+    def __init__(self, mano=0):
         self.turn = 0
-        self.points = 0
         self.number_hand = 1
         self.played_cards = None
         self.hidden_cards = None
+        self.envido_fase = True
+        self.truco_fase = True
+        self.winner_index = None
+        self.mano = mano
         self.deal_cards()
 
-    def deal_cards(self):
+    def limpiar_mesa(self):
         self.hidden_cards = [[], [], ]
         self.played_cards = [[], [], ]
+        self.winner_index = None
+
+    def deal_cards(self):
+        self.limpiar_mesa()
         deck = Deck()
         for player in range(2):
             for card_index in range(3):
@@ -35,10 +42,14 @@ class Hand(object):
     def play_card(self, card_index):
         played_card = self.hidden_cards[self.turn].pop(card_index)
         self.played_cards[self.turn].append(played_card)
+        self.cambiar_turno()
+
+    def cambiar_turno(self):
         self.turn = 0 if (self.turn == 1) else 1
 
-    def next_hand(self):
+    def siguiente_ronda(self):
         if len(self.played_cards[0]) == len(self.played_cards[1]):
+            self.envido_fase = False
             self.number_hand += 1
 
     def who_is_next(self):
@@ -51,17 +62,22 @@ class Hand(object):
 
     @property
     def is_playing(self):
-        if len(self.played_cards[0]) == len(self.played_cards[1]):
-            for player in range(2):
-                win_hands = 0
-                for i in range(len(self.played_cards[player])):
-                    if self.played_cards[player][i].compare_with(self.played_cards[1 - player][i]) == 'GREATER':
-                        win_hands += 1
-                if win_hands >= 2:
-                    return False
-            return True
-        else:
-            return True
+        win_hands_1 = 0
+        win_hands_0 = 0
+        for i in range(len(self.played_cards[0])):
+            cartaPC = self.played_cards[1][i]
+            cartaHumano = self.played_cards[0][i]
+            if cartaHumano.compare_with(cartaPC) == 'GREATER':
+                win_hands_0 += 1
+            if cartaPC.compare_with(cartaHumano) == 'GREATER':
+                win_hands_1 += 1
+        if win_hands_0 is win_hands_1 and self.number_hand is 4:
+            self.winner_index = self.mano
+            return False
+        if win_hands_0 >= 2 or win_hands_1 >= 2:
+            self.winner_index = 0 if win_hands_0 > win_hands_1 else 1
+            return False
+        return True
 
     def get_score_envido(self, player):
         same_suit_cards = set()
@@ -95,10 +111,6 @@ class Hand(object):
                 white.remove(card)
                 card_two = max(white)
                 return card + card_two + 20
-
-    @property
-    def envido(self):
-        return True
 
     def show_cards(self):
         result = []
