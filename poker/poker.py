@@ -6,11 +6,45 @@ TURN = 2
 RIVER = 3
 SHOWDOWN = 4
 
+FIRST = 'first'
+SECOND = 'second'
+EQUAL = 'equal'
+
+NONE = 'none'
 CHECK = 'check'
 CALL = 'call'
 RAISE = 'raise'
 BET = 'bet'
 FOLD = 'fold'
+
+PLAYER = 'player'
+CPU = 'cpu'
+
+# HIERARCHY
+ROYAL_FLUSH = 'royal flush'
+STRAIGHT_FLUSH = 'straight flush'
+POKER = 'poker'
+FULL_HOUSE = 'full house'
+FLUSH = 'flush'
+STRAIGHT = 'straight'
+SET = 'set'
+DOUBLE_PAIR = 'double pair'
+PAIR = 'pair'
+HIGH_CARD = 'high card'
+
+greater_combinations = {
+    ROYAL_FLUSH: 10,
+    STRAIGHT_FLUSH: 9,
+    POKER: 8,
+    FULL_HOUSE: 7,
+    FLUSH: 6,
+    STRAIGHT: 5,
+    SET: 4,
+    DOUBLE_PAIR: 3,
+    PAIR: 2,
+    HIGH_CARD: 1,
+}
+
 
 five_cards_combinations = [
     [0, 1, 2, 3, 4],
@@ -71,6 +105,7 @@ def get_value(card):
     else:
         return int(card[0])
 
+
 def get_face(card):
     if (card == 14):
         return 'A'
@@ -85,6 +120,7 @@ def get_face(card):
     else:
         return card
 
+
 def find_royal_flush(cards):
     numbers = sort_cards_by_number(cards)
     # Escalera con AS,10,J,Q,K
@@ -93,11 +129,13 @@ def find_royal_flush(cards):
     else:
         return False
 
+
 def transform_cards_to_str(cards):
-        aux = []
-        for card in cards:
-            aux.append(card.__repr__())
-        return aux
+    aux = []
+    for card in cards:
+        aux.append(card.__repr__())
+    return aux
+
 
 def find_repeated_cards(cards):
     cardsDictionary = defaultdict(int)
@@ -112,10 +150,8 @@ def find_repeated_cards(cards):
     for cardKey in cardsDictionary:
         if(cardsDictionary[cardKey] == 4):
             result['poker'].append(cardKey)
-            break
         if(cardsDictionary[cardKey] == 3):
             result['trio'].append(cardKey)
-            break
         if(cardsDictionary[cardKey] == 2):
             result['par'].append(cardKey)
     return result
@@ -169,70 +205,74 @@ def combine_card(complete_card):
     return all_combination
 
 
+def compare_combinations(first_comb, second_comb):
+    sorted_first_comb = sort_cards_by_number(first_comb)
+    sorted_second_comb = sort_cards_by_number(second_comb)
+    for i in range(len(sorted_first_comb)):
+        if sorted_first_comb[i] > sorted_second_comb[i]:
+            return FIRST
+        elif sorted_first_comb[i] < sorted_second_comb[i]:
+            return SECOND
+    return EQUAL
+
+
 def better_hand(combinations):
-    royal_flush = False
-    straight_flush = False
-    poker = False
-    flush = False
-    straight = False
-    greater_set = 0
-    greater_pair = 0
-    greater_card = 0
+    # 5 x 21 cards
+    best_category = HIGH_CARD
+    best_hand = combinations[0]
+    for combination in combinations:
+        category = best_category_combination(combination)
+        if greater_combinations[category] >= greater_combinations[best_category]:
+            best_category = category
+            if compare_combinations(combination, best_hand) == FIRST:
+                best_hand = combination
+    return best_category, best_hand
+
+
+def best_category_combination(combination):
     card = 0
     repetead_cards = {
         'poker': set([]),
         'trio': set([]),
         'par': set([])
     }
-    for combination in combinations:
-        for key, cards in find_repeated_cards(combination).items():
-            for card in cards:
-                repetead_cards[key].add(card)
-        if find_royal_flush(combination):
-            royal_flush = True
-        elif find_straight_flush(combination):
-            straight_flush = True
-        elif len(repetead_cards['poker']) > 0:
-            poker = True
-        elif find_flush(combination): 
-            flush = True
-        elif find_straight(combination):
-            straight = True
-        if len(repetead_cards['trio']) > 0:
-            for trio in repetead_cards['trio']:
-                if (get_value(trio) > greater_set):
-                    greater_set = get_value(trio)
-        if len(repetead_cards['par']) > 0:
-            for pair in repetead_cards['par']:
-                if get_value(pair) > greater_pair:
-                    greater_pair = get_value(pair)
-        for card in combination:
-            if get_value(card) > greater_card:
-                greater_card = get_value(card)
-    if royal_flush:
-        return 'Escalera Real'
-    elif straight_flush:
-        return 'Escalera Color'
-    elif poker:
-        return 'Poker'
-    elif (len(repetead_cards['trio']) > 0 and len(repetead_cards['par']) > 1):
-        if greater_pair != greater_set:
-            return 'Full House de {} y {}'.format(get_face(greater_set), get_face(greater_pair))
-        else:
-            repetead_cards['par'].discard(str(get_face(greater_set)))
-            second_best_pair = max(repetead_cards['par'])
-            return 'Full House de {} y {}'.format(get_face(greater_set), get_face(second_best_pair))
-    elif flush:
-        return 'Color'
-    elif straight:
-        return 'Escalera'
-    elif (greater_set > 0):
-        return 'Trio de {}'.format(get_face(greater_set))
-    elif len(repetead_cards['par']) > 1:
-        repetead_cards['par'].discard(str(get_face(greater_pair)))
-        second_best_pair = max(repetead_cards['par'])
-        return 'Par Doble de {} y {}'.format(get_face(greater_pair), get_face(second_best_pair))
-    elif (greater_pair > 0):
-        return 'Par de {}'.format(get_face(greater_pair))
+    repetead_cards['poker'] = set([])
+    repetead_cards['trio'] = set([])
+    repetead_cards['par'] = set([])
+    for key, cards in find_repeated_cards(combination).items():
+        for card in cards:
+            repetead_cards[key].add(card)
+    if find_royal_flush(combination):
+        return ROYAL_FLUSH
+    elif find_straight_flush(combination):
+        return STRAIGHT_FLUSH
+    elif len(repetead_cards['poker']) > 0:
+        return POKER
+    elif len(repetead_cards['trio']) == 1 and len(repetead_cards['par']) == 1:
+        return FULL_HOUSE
+    elif find_flush(combination):
+        return FLUSH
+    elif find_straight(combination):
+        return STRAIGHT
+    elif len(repetead_cards['trio']) > 0:
+        return SET
+    elif len(repetead_cards['par']) == 2:
+        return DOUBLE_PAIR
+    elif len(repetead_cards['par']) == 1:
+        return PAIR
+    return HIGH_CARD
+
+
+def compare_hands(player_hand, cpu_hand):
+    if greater_combinations[player_hand[0]] > greater_combinations[cpu_hand[0]]:
+        return 'PLAYER WINS!'
+    elif greater_combinations[player_hand[0]] < greater_combinations[cpu_hand[0]]:
+        return 'CPU WINS!'
     else:
-        return 'Carta alta {}'.format(get_face(greater_card))
+        winner = compare_combinations(player_hand[1], cpu_hand[1])
+        if winner == FIRST:
+            return 'PLAYER WINS!'
+        elif winner == SECOND:
+            return 'CPU WINS!'
+        else:
+            return 'TIE'
