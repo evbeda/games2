@@ -1,5 +1,6 @@
-from unittest.mock import patch
 import unittest
+from unittest.mock import patch
+
 from game import Game
 
 
@@ -35,6 +36,9 @@ class TestGame(unittest.TestCase):
             self.game.game_inputs(),
             'Select Game\n'
             '0: Guess Number Game\n'
+            '1: Generala\n'
+            '2: Blackjack\n'
+            '3: Truco Game\n'
             '9: to quit\n'
         )
 
