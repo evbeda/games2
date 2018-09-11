@@ -13,11 +13,11 @@ EQUAL = 'equal'
 
 # Actions
 NONE = 'none'
-CHECK = 'check'
-CALL = 'call'
-RAISE = 'raise'
-BET = 'bet'
-FOLD = 'fold'
+CHECK = 'check'  # pasar
+CALL = 'call'  # igualar
+RAISE = 'raise'  # aumentar una apuesta
+BET = 'bet'  # apostar sin que nadie haya apostado antes
+FOLD = 'fold'  # Abandonar
 
 # Players
 PLAYER = 'player'
