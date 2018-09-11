@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+# Stages
 PREFLOP = 0
 FLOP = 1
 TURN = 2
@@ -10,6 +11,7 @@ FIRST = 'first'
 SECOND = 'second'
 EQUAL = 'equal'
 
+# Actions
 NONE = 'none'
 CHECK = 'check'
 CALL = 'call'
@@ -17,10 +19,11 @@ RAISE = 'raise'
 BET = 'bet'
 FOLD = 'fold'
 
+# Players
 PLAYER = 'player'
 CPU = 'cpu'
 
-# HIERARCHY
+# Hierarchy
 ROYAL_FLUSH = 'royal flush'
 STRAIGHT_FLUSH = 'straight flush'
 POKER = 'poker'
@@ -44,7 +47,6 @@ greater_combinations = {
     PAIR: 2,
     HIGH_CARD: 1,
 }
-
 
 five_cards_combinations = [
     [0, 1, 2, 3, 4],
