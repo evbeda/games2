@@ -33,7 +33,7 @@ class Game(object):
                 command == "FALTA ENVIDO"):
             return self.envido_logic(command)
         if command == "TRUCO" and self.hand.truco_fase:
-            return self.truco_logic()
+            return self.truco_logic(command)
         if command == 'ACCEPTED':
             self.hand.envido_fase = False
         if command.isdigit():
@@ -46,9 +46,19 @@ class Game(object):
             return self.hand_finish_logic()
         return "\nSiguiente ronda"
 
-    def truco_logic(self):
-        self.hand.truco_fase = False
-        return "\nTruco cantado, al final de la mano se suman los puntos"
+    def truco_logic(self, command):
+        try:
+            self.hand.sing_truco(command)
+            result = self.players[1].ask_trucos(self.hand.trucos)
+            if result == 'ACCEPTED':
+                self.hand.accept_truco()
+            elif result == 'REJECTED':
+                self.hand.reject_truco()
+            else:
+                self.hand.sing_truco(result)
+        except Exception:
+            return "No en fase de truco"
+        return result
 
     def hand_finish_logic(self):
         self.players[self.hand.winner_index].score += 1
@@ -73,26 +83,27 @@ class Game(object):
             self.hand.envidos.append(random.choice(envido_posibilities))
         elif result == 'JUGAR':
             self.hand.play_card(random.randint(
-                0, len(self.hand.hidden_cards[1])))
+                0, len(self.hand.hidden_cards[1]) - 1))
 
     def envido_logic(self, command):
         try:
             self.hand.sing_envido(command)
-            result = self.players[1].ask_envido(self.hand.envidos)
+            result = self.players[1].ask_envido(self.hand.envidos) #CPU
             if result == 'ACCEPTED':
                 self.hand.accept_envido()
+                self.players[self.hand.get_envido_winner()].score += self.hand.get_envido_points()
             elif result == 'REJECTED':
                 self.hand.reject_envido()
             else:
                 self.hand.sing_envido(result)
         except Exception:
             return "No en fase de envido"
-        human_points = self.hand.get_score_envido(0)
-        pc_points = self.hand.get_score_envido(1)
-        i = 0 if human_points > pc_points else 1
-        self.players[i].score += 2
+        
         mensaje = "\nLos puntos del envido fueron \nHumano : {} \nPC: {}"
-        return mensaje.format(human_points, pc_points)
+        return mensaje.format(
+            self.players[0].score, 
+            self.players[1].score,
+        )
 
     def show_scores(self):
         mensaje = "\nPuntajes:\nHumano:{} \nPC:{}"
