@@ -34,32 +34,11 @@ from .poker import (
 from .card import Card
 from .deck import Deck
 from .player import Player
-from .game import Game
+from .game import PokerGame
 from .hand import Hand
 
 
 class PokerTest(unittest.TestCase):
-    def test_player1_wins(self):
-        player01 = Player(20)
-        player02 = Player(20)
-        player02.money = 0
-        deck = Deck()
-        deck.create()
-        game = Game(player01, player02, deck)
-        game.round = 1
-        result = game.deal_players()
-        self.assertFalse(result)
-
-    def test_player2_wins(self):
-        player01 = Player(20)
-        player02 = Player(20)
-        player01.money = 0
-        deck = Deck()
-        deck.create()
-        game = Game(player01, player02, deck)
-        game.round = 1
-        result = game.deal_players()
-        self.assertFalse(result)
 
     def test_card_repr(self):
         card = Card('K', 'h')
@@ -225,32 +204,6 @@ class PokerTest(unittest.TestCase):
         with self.assertRaises(Exception):
             Player(0)
         self.assertTrue('Player money must be greater than 0')
-
-    def test_take_bets(self):
-        player1_money = 1000
-        player2_money = 2000
-        player1 = Player(player1_money)
-        player2 = Player(player2_money)
-        deck = Deck()
-        game = Game(player1, player2, deck)
-        game.start()
-        result_false_player1 = game.take_bets(5500, 500)
-        result_false_player2 = game.take_bets(500, 5500)
-        result_true = game.take_bets(500, 500)
-        self.assertFalse(result_false_player1)
-        self.assertFalse(result_false_player2)
-        self.assertTrue(result_true)
-
-    def test_pot_correct(self):
-        player1_money = 1000
-        player2_money = 2000
-        player1 = Player(player1_money)
-        player2 = Player(player2_money)
-        deck = Deck()
-        game = Game(player1, player2, deck)
-        game.start()
-        game.take_bets(500, 500)
-        self.assertEqual(game.pot, 1000)
 
     def test_check_hand(self):
         player1_money = 1000
@@ -745,6 +698,31 @@ class PokerTest(unittest.TestCase):
         hand.take_action(RAISE, 50)
         result = hand.possibles_actions()
         self.assertEqual(result, [CALL, RAISE, FOLD])
+
+class PokerGameTest(unittest.TestCase):
+    def test_player_no_money_money(self):
+        game = PokerGame()
+        game.player.money = 0
+        self.assertEqual(game.player_no_money(), 'Player loses')
+
+    def test_player_no_money(self):
+        game = PokerGame()
+        game.cpu.money = 0
+        self.assertEqual(game.player_no_money(), 'CPU loses')
+
+    def test_players_with_money(self):
+        game = PokerGame()
+        self.assertFalse(game.player_no_money())
+
+    def test_next_turn_player_no_money(self):
+        game = PokerGame()
+        game.player.money = 0
+        self.assertEqual(game.next_turn(), 'Player loses')
+
+    def test_next_turn_cpu_no_money(self):
+        game = PokerGame()
+        game.cpu.money = 0
+        self.assertEqual(game.next_turn(), 'CPU loses')
 
 if __name__ == "__main__":
     unittest.main()
