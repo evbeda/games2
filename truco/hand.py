@@ -2,17 +2,17 @@
 from .deck import Deck
 
 envido_combinations = [
-    ['Envido', 2, 1],
-    ['Real Envido', 3, 1],
-    ['Falta Envido', 0, 1],
-    ['Envido', 'Envido', 4, 2],
-    ['Real Envido', 'Falta Envido', 5, 2],
-    ['Envido', 'Real Envido', 5, 2],
-    ['Envido', 'Falta Envido', 0, 2],
-    ['Envido', 'Envido', 'Real Envido', 7, 4],
-    ['Envido', 'Envido', 'Falta Envido', 0, 4],
-    ['Envido', 'Real Envido', 'Falta Envido', 0, 5],
-    ['Envido', 'Envido', 'Real Envido', 'Falta Envido', 0, 7],
+    [['ENVIDO'], 2, 1],
+    [['REAL ENVIDO'], 3, 1],
+    [['FALTA ENVIDO'], 0, 1],
+    [['ENVIDO', 'ENVIDO'], 4, 2],
+    [['REAL ENVIDO', 'FALTA ENVIDO'], 5, 2],
+    [['ENVIDO', 'REAL ENVIDO'], 5, 2],
+    [['ENVIDO', 'FALTA ENVIDO'], 0, 2],
+    [['ENVIDO', 'ENVIDO', 'REAL ENVIDO'], 7, 4],
+    [['ENVIDO', 'ENVIDO', 'FALTA ENVIDO'], 0, 4],
+    [['ENVIDO', 'REAL ENVIDO', 'FALTA ENVIDO'], 0, 5],
+    [['ENVIDO', 'ENVIDO', 'REAL ENVIDO', 'FALTA ENVIDO'], 0, 7],
 ]
 
 envido_posibilities = ["ENVIDO", "REAL ENVIDO", "FALTA ENVIDO"]
@@ -65,6 +65,11 @@ class Hand(object):
         else:
             self.turn = 1
 
+    def get_envido_points(self, won = 0):
+        for combination in envido_combinations:
+            if combination[0] == self.envidos:
+                return combination[won + 1]
+
     def accept_envido(self):
         self.envido_fase = False
 
@@ -95,6 +100,16 @@ class Hand(object):
             self.winner_index = 0 if win_hands_0 > win_hands_1 else 1
             return False
         return True
+
+    def get_envido_winner(self):
+        score_p0 = self.get_score_envido(0)
+        score_p1 = self.get_score_envido(1)
+        if score_p0 > score_p1:
+            return 0
+        elif score_p0 < score_p1:
+            return 1
+        else:
+            return self.mano
 
     def get_score_envido(self, player):
         same_suit_cards = set()
