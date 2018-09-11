@@ -1,7 +1,7 @@
 import random
 
-from .card import Card
 from . import SWORD, COARSE, GOLD, CUP
+from .card import Card
 
 
 class Deck(object):

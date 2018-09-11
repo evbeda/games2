@@ -1,4 +1,3 @@
-
 from .deck import Deck
 
 envido_combinations = [
@@ -44,10 +43,9 @@ class Hand(object):
 
     @property
     def envido_solved(self):
-        if len(self.envidos) > 0 and self.envido_fase == True:
+        if len(self.envidos) > 0 and self.envido_fase:
             return False
-        else:
-            return True
+        return True
 
     def limpiar_mesa(self):
         self.hidden_cards = [[], [], ]
@@ -106,13 +104,12 @@ class Hand(object):
         self.envidos.append(command)
 
     def sing_truco(self, command):
-        if self.truco_pending == False:
-            self.envido_fase = False
-            self.trucos.append(command)
-            self.truco_turn = 0 if self.truco_turn == 1 else 1
-            self.truco_pending = True
-        else:
+        if self.truco_pending:
             raise Exception()
+        self.envido_fase = False
+        self.trucos.append(command)
+        self.truco_turn = 0 if self.truco_turn == 1 else 1
+        self.truco_pending = True
 
     def accept_truco(self):
         self.truco_pending = False
@@ -130,11 +127,11 @@ class Hand(object):
         for i in range(len(self.played_cards[0])):
             if i > len(self.played_cards[1]) - 1:
                 break
-            cartaPC = self.played_cards[1][i]
-            cartaHumano = self.played_cards[0][i]
-            if cartaHumano.compare_with(cartaPC) == 'GREATER':
+            carta_pc = self.played_cards[1][i]
+            carta_humano = self.played_cards[0][i]
+            if carta_humano.compare_with(carta_pc) == 'GREATER':
                 win_hands_0 += 1
-            if cartaPC.compare_with(cartaHumano) == 'GREATER':
+            if carta_pc.compare_with(carta_humano) == 'GREATER':
                 win_hands_1 += 1
         if win_hands_0 is win_hands_1 and self.number_hand is 4:
             self.winner_index = self.mano
@@ -160,18 +157,10 @@ class Hand(object):
         white = []
         for i in range(len(all_cards) - 1):
             for j in range(len(all_cards)):
-                if i == j:
-                    pass
-                else:
-                    if all_cards[i].suit == all_cards[j].suit:
-                        same_suit_cards.add(all_cards[i].number)
-                        same_suit_cards.add(all_cards[j].number)
-        if len(same_suit_cards) == 0:
-            for i in all_cards:
-                if i.number > 8:
-                    all_cards.remove(i)
-            return 0 if (len(all_cards) == 0) else max(all_cards).number
-        else:
+                if i != j and all_cards[i].suit == all_cards[j].suit:
+                    same_suit_cards.add(all_cards[i].number)
+                    same_suit_cards.add(all_cards[j].number)
+        if len(same_suit_cards) != 0:
             for card in same_suit_cards:
                 if card < 8:
                     white.append(card)
@@ -186,10 +175,13 @@ class Hand(object):
                 white.remove(card)
                 card_two = max(white)
                 return card + card_two + 20
+        for i in all_cards:
+            if i.number > 8:
+                all_cards.remove(i)
+        return 0 if (len(all_cards) == 0) else max(all_cards).number
 
     def show_cards(self):
-        result = []
-        result.append('\nMis Cartas: \n')
+        result = ['\nMis Cartas: \n']
         for card in self.hidden_cards[0]:
             result.append(str(card) + ' ')
         result.append('\nCartas jugadas: \n')

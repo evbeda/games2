@@ -1,7 +1,7 @@
 from . import SWORD, COARSE, GOLD, CUP
 
 
-class Card():
+class Card(object):
     hierarchical_deck = (
         ((SWORD, 1,),),
         ((COARSE, 1,),),

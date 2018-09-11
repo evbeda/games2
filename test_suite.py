@@ -8,9 +8,9 @@ from Blackjack.testBlackjack import (
     TestGame as TestBlackjackGame
 )
 
-from truco.test_truco import TestGame as TG
-from truco.test_truco import TestDeck as TD
-from truco.test_truco import TestCards as TCD
+from truco.test_game import TestGame as TG
+from truco.test_deck import TestDeck as TD
+from truco.test_cards import TestCards as TCD
 from truco.test_hand import TestHand as TestHandTruco
 from poker.test_poker import PokerTest, PokerGameTest
 from guess_number_game import test_guess_number_game

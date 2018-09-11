@@ -1,11 +1,7 @@
 import unittest
-from unittest.mock import patch
 
+from . import SWORD, COARSE
 from .card import Card
-from .deck import Deck
-from . import SWORD, COARSE, GOLD, CUP
-from .player import Player
-from .game import Game
 
 
 class TestCards(unittest.TestCase):
@@ -32,6 +28,7 @@ class TestCards(unittest.TestCase):
     def test_si_se_crea_carta(self):
         carta1 = Card(SWORD, 1)
         self.assertIsInstance(carta1, Card)
+
     # POSICIONES
 
     def test_obtener_posicion_cero(self):

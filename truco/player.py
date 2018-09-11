@@ -1,7 +1,7 @@
 import random
 
 
-class Player():
+class Player(object):
     def __init__(self, name):
         self.name = name
         self.score = 0
@@ -37,7 +37,6 @@ class CPUPlayer(Player):
             return random.choice(truco_possibles)
         truco_possibles.append('RE TRUCO')
         return random.choice(truco_possibles)
-
 
     def choose_one_action(self, already_envidos):
         envido_possibles = ['ACCEPTED', 'REJECTED', ]
