@@ -7,6 +7,140 @@ from .hand import Hand
 
 class TestHand(unittest.TestCase):
 
+    def test_get_vale_cuatro_points_accepted(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('RE TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('VALE CUATRO')
+        hand.accept_truco()
+        self.assertEqual(hand.get_truco_points(), 4)
+
+    def test_get_vale_cuatro_points_rejected(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('RE TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('VALE CUATRO')
+        hand.reject_truco()
+        self.assertEqual(hand.get_truco_points(1), 3)
+
+    def test_get_re_truco_points_accepted(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('RE TRUCO')
+        hand.accept_truco()
+        self.assertEqual(hand.get_truco_points(), 3)
+
+    def test_get_re_truco_points_rejected(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('RE TRUCO')
+        hand.accept_truco()
+        self.assertEqual(hand.get_truco_points(), 3)
+
+    def test_get_truco_points_accepted(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        self.assertEqual(hand.get_truco_points(), 2)
+
+    def test_get_truco_points_rejected(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        self.assertEqual(hand.get_truco_points(1), 1)
+
+    def test_sing_truco_reject(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.reject_truco()
+        self.assertEqual(False, hand.is_playing)
+
+    def test_sing_truco(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        self.assertEqual(hand.trucos, ['TRUCO'])
+
+    def test_sing_Truco_change_truco_turn(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        self.assertEqual(hand.truco_turn, 1)
+        self.assertTrue(hand.truco_pending)
+
+    def test_sing_truco_and_accept_and_change_turn(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        self.assertFalse(hand.truco_pending)
+        self.assertEqual(hand.truco_turn, 1)
+
+    def test_sing_truco_and_then_retruco_and_change_turn(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('RE TRUCO')
+        self.assertEqual(hand.truco_turn, 0)
+        self.assertTrue(hand.truco_pending)
+
+    def test_sing_truco_and_then_retruco_and_accept(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('RE TRUCO')
+        hand.accept_truco()
+        self.assertEqual(hand.truco_turn, 0)
+        self.assertFalse(hand.truco_pending)
+
+    def test_sing_truco_and_then_retruco_and_vale_cuatro(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('RE TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('VALE CUATRO')
+        self.assertEqual(hand.truco_turn, 1)
+        self.assertTrue(hand.truco_pending)
+
+    def test_sing_truco_and_then_retruco_and_vale_cuatro_and_accept(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('RE TRUCO')
+        hand.accept_truco()
+        hand.sing_truco('VALE CUATRO')
+        hand.accept_truco()
+        self.assertEqual(hand.truco_turn, 1)
+        self.assertFalse(hand.truco_pending)
+
+
+    def test_sing_truco_vs_envido(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        self.assertFalse(hand.envido_fase)
+
+
+
+
+    def test_envido_solved_True_two(self):
+        hand = Hand()
+        hand.sing_envido('ENVIDO')
+        hand.accept_envido()
+        self.assertTrue(hand.envido_solved)
+
+    def test_envido_solved_false(self):
+        hand = Hand()
+        hand.sing_envido('ENVIDO')
+        self.assertFalse(hand.envido_solved)
+
+    def test_envido_solved_true(self):
+        hand = Hand()
+        self.assertTrue(hand.envido_solved)
+
     def test_get_envido_points_ENVIDO_ENVIDO_REAL_ENVIDO_FALTA_ENVIDO(self):
         hand = Hand()
         hand.sing_envido('ENVIDO')
