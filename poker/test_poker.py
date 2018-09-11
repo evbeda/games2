@@ -699,6 +699,7 @@ class PokerTest(unittest.TestCase):
         result = hand.possibles_actions()
         self.assertEqual(result, [CALL, RAISE, FOLD])
 
+
 class PokerGameTest(unittest.TestCase):
     def test_player_no_money_money(self):
         game = PokerGame()
@@ -723,6 +724,25 @@ class PokerGameTest(unittest.TestCase):
         game = PokerGame()
         game.cpu.money = 0
         self.assertEqual(game.next_turn(), 'CPU loses')
+
+    def test_next_turn_possibles_actions(self):
+        game = PokerGame()
+        game.hand.last_action = NONE
+        result = game.next_turn()
+        self.assertEqual(result, ' check(ch)\n bet(be) your bet\n')
+
+    def test_next_turn_possibles_actions_2(self):
+        game = PokerGame()
+        game.hand.last_action = BET
+        result = game.next_turn()
+        self.assertEqual(result, ' call(ca)\n raise(ra) your bet\n fold(fo)\n')
+
+    def test_next_turn_show_down(self):
+        game = PokerGame()
+        game.hand.stage = 5
+        result = game.next_turn()
+        self.assertEqual(result, 'Show Down!')
+
 
 if __name__ == "__main__":
     unittest.main()
