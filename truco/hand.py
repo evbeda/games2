@@ -62,7 +62,8 @@ class Hand(object):
                 self.hidden_cards[player].append(deck.get_card())
 
     def play_card(self, card_index):
-        played_card = self.hidden_cards[self.turn].pop(card_index)
+        played_card = self.hidden_cards[self.turn][card_index]
+        del self.hidden_cards[self.turn][card_index]
         self.played_cards[self.turn].append(played_card)
         self.cambiar_turno()
 
@@ -127,6 +128,8 @@ class Hand(object):
         win_hands_1 = 0
         win_hands_0 = 0
         for i in range(len(self.played_cards[0])):
+            if i > len(self.played_cards[1]) - 1:
+                break
             cartaPC = self.played_cards[1][i]
             cartaHumano = self.played_cards[0][i]
             if cartaHumano.compare_with(cartaPC) == 'GREATER':
