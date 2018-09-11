@@ -1,9 +1,10 @@
+import random
+
 from truco.hand import Hand
 from truco.player import (
     HumanPlayer,
     CPUPlayer,
 )
-import random
 from .hand import envido_posibilities
 
 
@@ -29,7 +30,7 @@ class Game(object):
 
     def play(self, command):
         if (command == "ENVIDO" or
-            command == "REAL ENVIDO" or
+                command == "REAL ENVIDO" or
                 command == "FALTA ENVIDO"):
             return self.envido_logic(command)
         if command == "TRUCO" and self.hand.truco_fase:
@@ -88,7 +89,7 @@ class Game(object):
     def envido_logic(self, command):
         try:
             self.hand.sing_envido(command)
-            result = self.players[1].ask_envido(self.hand.envidos) #CPU
+            result = self.players[1].ask_envido(self.hand.envidos)  # CPU
             if result == 'ACCEPTED':
                 self.hand.accept_envido()
                 self.players[self.hand.get_envido_winner()].score += self.hand.get_envido_points()
@@ -98,10 +99,10 @@ class Game(object):
                 self.hand.sing_envido(result)
         except Exception:
             return "No en fase de envido"
-        
+
         mensaje = "\nLos puntos del envido fueron \nHumano : {} \nPC: {}"
         return mensaje.format(
-            self.players[0].score, 
+            self.players[0].score,
             self.players[1].score,
         )
 

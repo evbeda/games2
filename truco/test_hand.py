@@ -117,14 +117,10 @@ class TestHand(unittest.TestCase):
         self.assertEqual(hand.truco_turn, 1)
         self.assertFalse(hand.truco_pending)
 
-
     def test_sing_truco_vs_envido(self):
         hand = Hand()
         hand.sing_truco('TRUCO')
         self.assertFalse(hand.envido_fase)
-
-
-
 
     def test_envido_solved_True_two(self):
         hand = Hand()

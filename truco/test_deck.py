@@ -3,9 +3,6 @@ from unittest.mock import patch
 
 from .card import Card
 from .deck import Deck
-from . import SWORD, COARSE, GOLD, CUP
-from .player import Player
-from .game import Game
 
 
 class TestDeck(unittest.TestCase):
