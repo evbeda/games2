@@ -15,6 +15,12 @@ envido_combinations = [
     [['ENVIDO', 'ENVIDO', 'REAL ENVIDO', 'FALTA ENVIDO'], 0, 7],
 ]
 
+truco_combinations = [
+    [['TRUCO'], 2, 1],
+    [['TRUCO', 'RE TRUCO'], 3, 2],
+    [['TRUCO', 'RE TRUCO', 'VALE CUATRO'], 4, 3],
+]
+
 envido_posibilities = ["ENVIDO", "REAL ENVIDO", "FALTA ENVIDO"]
 
 
@@ -31,6 +37,17 @@ class Hand(object):
         self.mano = mano
         self.deal_cards()
         self.envidos = []
+        self.trucos = []
+        self.truco_turn = 0
+        self.truco_pending = False
+        self.mazo = False
+
+    @property
+    def envido_solved(self):
+        if len(self.envidos) > 0 and self.envido_fase == True:
+            return False
+        else:
+            return True
 
     def limpiar_mesa(self):
         self.hidden_cards = [[], [], ]
@@ -65,9 +82,14 @@ class Hand(object):
         else:
             self.turn = 1
 
-    def get_envido_points(self, won = 0):
+    def get_envido_points(self, won=0):
         for combination in envido_combinations:
             if combination[0] == self.envidos:
+                return combination[won + 1]
+
+    def get_truco_points(self, won=0):
+        for combination in truco_combinations:
+            if combination[0] == self.trucos:
                 return combination[won + 1]
 
     def accept_envido(self):
@@ -82,8 +104,26 @@ class Hand(object):
             raise Exception()
         self.envidos.append(command)
 
+    def sing_truco(self, command):
+        if self.truco_pending == False:
+            self.envido_fase = False
+            self.trucos.append(command)
+            self.truco_turn = 0 if self.truco_turn == 1 else 1
+            self.truco_pending = True
+        else:
+            raise Exception()
+
+    def accept_truco(self):
+        self.truco_pending = False
+
+    def reject_truco(self):
+        self.truco_pending = False
+        self.mazo = True
+
     @property
     def is_playing(self):
+        if self.mazo:
+            return False
         win_hands_1 = 0
         win_hands_0 = 0
         for i in range(len(self.played_cards[0])):
@@ -143,7 +183,6 @@ class Hand(object):
                 white.remove(card)
                 card_two = max(white)
                 return card + card_two + 20
-
 
     def show_cards(self):
         result = []
