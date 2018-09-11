@@ -8,13 +8,6 @@ from truco.player import CPUPlayer
 
 class TestGame(unittest.TestCase):
 
-    # @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='REAL ENVIDO')
-    # def test_cpu_sing_real_envido_when_p1_sing_falta_envido(self, mocksito):
-    #     game = Game()
-    #     game.play("FALTA ENVIDO")
-    #     self.assertTrue(game.hand.envido_fase)
-    #     self.assertEqual(game.hand.envidos, ['FALTA ENVIDO', 'REAL ENVIDO'])
-
     def test_player_ask_falta_envido(self):
         player = CPUPlayer('CPY')
         all_ready_envidos = ['REAL ENVIDO', 'ENVIDO', 'ENVIDO']

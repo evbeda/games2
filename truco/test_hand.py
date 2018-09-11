@@ -7,6 +7,113 @@ from .hand import Hand
 
 class TestHand(unittest.TestCase):
 
+    def test_get_envido_points_ENVIDO_ENVIDO_REAL_ENVIDO_FALTA_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('ENVIDO')
+        hand.sing_envido('ENVIDO')
+        hand.sing_envido('REAL ENVIDO')
+        hand.sing_envido('FALTA ENVIDO')
+        self.assertEqual(0, hand.get_envido_points(0))
+        self.assertEqual(7, hand.get_envido_points(1))
+
+    def test_get_envido_points_ENVIDO_REAL_ENVIDO_FALTA_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('ENVIDO')
+        hand.sing_envido('REAL ENVIDO')
+        hand.sing_envido('FALTA ENVIDO')
+        self.assertEqual(0, hand.get_envido_points(0))
+        self.assertEqual(5, hand.get_envido_points(1))
+
+    def test_get_envido_points_ENVIDO_ENVIDO_FALTA_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('ENVIDO')
+        hand.sing_envido('ENVIDO')
+        hand.sing_envido('FALTA ENVIDO')
+        self.assertEqual(0, hand.get_envido_points(0))
+        self.assertEqual(4, hand.get_envido_points(1))
+
+    def test_get_envido_points_ENVIDO_ENVIDO_REAL_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('ENVIDO')
+        hand.sing_envido('ENVIDO')
+        hand.sing_envido('REAL ENVIDO')
+        self.assertEqual(7, hand.get_envido_points(0))
+        self.assertEqual(4, hand.get_envido_points(1))
+
+    def test_get_envido_points_ENVIDO_FALTA_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('ENVIDO')
+        hand.sing_envido('FALTA ENVIDO')
+        self.assertEqual(0, hand.get_envido_points(0))
+        self.assertEqual(2, hand.get_envido_points(1))
+
+    def test_get_envido_points_ENVIDO_REAL_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('ENVIDO')
+        hand.sing_envido('REAL ENVIDO')
+        self.assertEqual(5, hand.get_envido_points(0))
+        self.assertEqual(2, hand.get_envido_points(1))
+
+    def test_get_envido_points_REAL_ENVIDO_FALTA_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('REAL ENVIDO')
+        hand.sing_envido('FALTA ENVIDO')
+        self.assertEqual(5, hand.get_envido_points(0))
+        self.assertEqual(2, hand.get_envido_points(1))
+
+    def test_get_envido_points_FALTA_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('FALTA ENVIDO')
+        self.assertEqual(0, hand.get_envido_points(0))
+        self.assertEqual(1, hand.get_envido_points(1))
+
+    def test_get_envido_points_REAL_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('REAL ENVIDO')
+        self.assertEqual(3, hand.get_envido_points(0))
+        self.assertEqual(1, hand.get_envido_points(1))
+
+    def test_get_envido_points_ENVIDO_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('ENVIDO')
+        hand.sing_envido('ENVIDO')
+        self.assertEqual(4, hand.get_envido_points(0))
+        self.assertEqual(2, hand.get_envido_points(1))
+
+    def test_get_envido_points_ENVIDO(self):
+        hand = Hand()
+        hand.sing_envido('ENVIDO')
+        self.assertEqual(2, hand.get_envido_points(0))
+        self.assertEqual(1, hand.get_envido_points(1))
+
+    def test_get_envido_winner_p0(self):
+        hand = Hand()
+        hand.hidden_cards = [[
+            Card(COARSE, 1), Card(COARSE, 5), Card(COARSE, 6)], [
+            Card(COARSE, 2), Card(COARSE, 3), Card(COARSE, 4)]]
+        self.assertEqual(0, hand.get_envido_winner())
+
+    def test_get_envido_winner_p1(self):
+        hand = Hand()
+        hand.hidden_cards = [[
+            Card(COARSE, 2), Card(COARSE, 3), Card(COARSE, 4)],
+            [Card(COARSE, 1), Card(COARSE, 5), Card(COARSE, 6)]]
+        self.assertEqual(1, hand.get_envido_winner())
+
+    def test_get_envido_winner_p0_for_mano(self):
+        hand = Hand()
+        hand.hidden_cards = [[
+            Card(COARSE, 4), Card(COARSE, 3), Card(COARSE, 5)],
+            [Card(SWORD, 1), Card(SWORD, 5), Card(SWORD, 4)]]
+        self.assertEqual(0, hand.get_envido_winner())
+
+    def test_get_envido_winner_p1_for_mano(self):
+        hand = Hand(mano=1)
+        hand.hidden_cards = [[
+            Card(COARSE, 4), Card(COARSE, 3), Card(COARSE, 5)],
+            [Card(SWORD, 1), Card(SWORD, 5), Card(SWORD, 4)]]
+        self.assertEqual(1, hand.get_envido_winner())
+
     def test_hand_1(self):
         hand = Hand()
         self.assertEqual(3, len(hand.hidden_cards[0]))
