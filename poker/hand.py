@@ -18,7 +18,7 @@ from .poker import (
 
 
 class Hand():
-    def __init__(self, first = PLAYER):
+    def __init__(self, players, first = PLAYER):
         self.pot = 0
         self.deck = Deck()
         self.stage = 0
@@ -29,6 +29,7 @@ class Hand():
         self.turn = first
         self.last_action = NONE
         self.last_bet = 0
+        self.players = players
 
 
     def deal_cards(self):
@@ -58,28 +59,55 @@ class Hand():
                 self.last_action = action
         if action == BET:
             if self.last_action == RAISE:
-                return "You can't bet now"  # o FALSE will see
+                return "You can't bet now"
+            elif self.turn == PLAYER and self.players[0].money < bet:
+                return "You don't have enough money"
             else:
                 self.last_action = action
                 self.pot += bet
                 self.last_bet = bet
+                if self.turn == PLAYER:
+                    self.players[0].money -= bet
+                else:
+                    self.players[1].money -= bet
         if action == CALL:
             if self.last_action == BET or self.last_action == RAISE:
+                if self.turn == PLAYER:
+                    self.players[0].money -= self.last_bet
+                elif self.turn == CPU:
+                    self.players[1].money -= self.last_bet
                 self.pot += self.last_bet
                 self.next_stage()
             else:
-                return "You can't CALL now"  # o FALSE will see
+                return "You can't CALL now"
         if action == FOLD:
             if self.last_action == BET or self.last_action == RAISE:
+                if self.turn == CPU:
+                    self.players[0].money += self.pot
+                elif self.turn == PLAYER:
+                    self.players[1].money += self.pot
                 return "the {} win".format(PLAYER if (self.turn == CPU) else CPU)
             else:
-                return "You can't FOLD now"  # o FALSE will see
+                return "You can't FOLD now"
         if action == RAISE:
             if self.last_action == BET or self.last_action == RAISE:
-                if bet >= 2 * self.last_bet:
+                if self.turn == PLAYER and self.players[0].money < bet:
+                    return "You don't have enough money"
+                elif bet >= 2 * self.last_bet:
                     self.last_action = action
                     self.pot += bet
                     self.last_bet = bet - self.last_bet
+                    if self.turn == PLAYER:
+                        self.players[0].money -= bet
+                    else:
+                        self.players[1].money -= bet
                 else:
                     return "You must raise at least twice last bet"
         self.turn = PLAYER if (self.turn == CPU) else CPU
+
+    def possibles_actions(self):
+        if self.last_action == NONE or self.last_action == CHECK:
+            return [CHECK, BET]
+        if self.last_action == BET or self.last_action == RAISE:
+            return [CALL, RAISE, FOLD]
+        

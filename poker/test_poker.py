@@ -356,7 +356,10 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_hand_deal_initial_cards(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         self.assertEqual(
             hand.stage,
             PREFLOP,
@@ -378,7 +381,10 @@ class PokerTest(unittest.TestCase):
         # ----
 
     def test_hand_deal_flop(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.next_stage()
         self.assertEqual(
             hand.stage,
@@ -401,7 +407,10 @@ class PokerTest(unittest.TestCase):
         # ----
 
     def test_hand_deal_turn(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.next_stage()
         hand.next_stage()
         self.assertEqual(
@@ -425,7 +434,10 @@ class PokerTest(unittest.TestCase):
         # ----
 
     def test_hand_deal_river(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.next_stage()
         hand.next_stage()
         hand.next_stage()
@@ -450,7 +462,10 @@ class PokerTest(unittest.TestCase):
         # ----
 
     def test_hand_showdown(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.next_stage()
         hand.next_stage()
         hand.next_stage()
@@ -473,7 +488,10 @@ class PokerTest(unittest.TestCase):
         )
 
     def test_hand_showdown_better_hand(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.next_stage()
         hand.next_stage()
         hand.next_stage()
@@ -493,13 +511,19 @@ class PokerTest(unittest.TestCase):
         )
 
     def test_player_check(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.take_action(CHECK)
         self.assertEqual(hand.turn, CPU)
         self.assertEqual(hand.last_action, CHECK)
 
     def test_player_check_cpu_check(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.take_action(CHECK)
         hand.take_action(CHECK)
         self.assertEqual(hand.turn, PLAYER)
@@ -510,7 +534,10 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(hand.last_action, NONE)
 
     def test_player_bet(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.take_action(BET, 50)
         self.assertEqual(hand.turn, CPU)
         self.assertEqual(
@@ -522,7 +549,10 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(hand.last_bet, 50)
 
     def test_player_bet_cpu_call(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.take_action(BET, 50)
         hand.take_action(CALL)
         self.assertEqual(hand.turn, PLAYER)
@@ -535,7 +565,10 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(hand.last_bet, 0)
 
     def test_player_bet_cpu_raise(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.take_action(BET, 50)
         hand.take_action(RAISE, 100)
         self.assertEqual(hand.turn, PLAYER)
@@ -548,7 +581,10 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(hand.last_bet, 50)
 
     def test_player_bet_cpu_raise_not_enough(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.take_action(BET, 50)
         result = hand.take_action(RAISE, 70)
         self.assertEqual(hand.turn, CPU)
@@ -562,7 +598,10 @@ class PokerTest(unittest.TestCase):
         self.assertEqual(result, "You must raise at least twice last bet")
 
     def test_player_bet_cpu_fold(self):
-        hand = Hand()
+        players = []
+        players.append(Player(100))
+        players.append(Player(100))
+        hand = Hand(players)
         hand.take_action(BET, 50)
         result = hand.take_action(FOLD)
         self.assertEqual(hand.last_action, BET)
@@ -585,6 +624,127 @@ class PokerTest(unittest.TestCase):
         first_combination = ['2h', '7d', 'Kd', 'Tc', 'Ks']
         result = compare_combinations(first_combination, first_combination)
         self.assertEqual(result, EQUAL)
+
+    def test_reduce_bank_on_bet(self):
+        players = []
+        player = Player(100)
+        players.append(player)
+        players.append(Player(100))
+        hand = Hand(players)
+        hand.take_action(BET, 10)
+        self.assertEqual(player.money, 90)
+
+    def test_reduce_bank_on_raise(self):
+        players = []
+        player = Player(100)
+        cpu = Player(100)
+        players.append(player)
+        players.append(cpu)
+        hand = Hand(players)
+        hand.take_action(BET, 10)
+        hand.take_action(RAISE, 30)
+        self.assertEqual(cpu.money, 70)
+
+    def test_bet_greater_than_money(self):
+        players = []
+        player = Player(100)
+        players.append(player)
+        players.append(Player(100))
+        hand = Hand(players)
+        result = hand.take_action(BET, 200)
+        self.assertEqual(result, "You don't have enough money")
+
+    def test_raise_greater_than_money(self):
+        players = []
+        player = Player(100)
+        players.append(player)
+        players.append(Player(100))
+        hand = Hand(players)
+        hand.take_action(CHECK)
+        hand.take_action(BET, 50)
+        result = hand.take_action(RAISE, 200)
+        self.assertEqual(result, "You don't have enough money")
+
+    def test_reduce_bank_on_call(self):
+        players = []
+        player = Player(100)
+        players.append(player)
+        players.append(Player(100))
+        hand = Hand(players)
+        hand.take_action(CHECK)
+        hand.take_action(BET, 10)
+        hand.take_action(CALL)
+        self.assertEqual(player.money, 90)
+
+    def test_reduce_cpu_bank_on_call(self):
+        players = []
+        player = Player(100)
+        cpu = Player(100)
+        players.append(player)
+        players.append(cpu)
+        hand = Hand(players)
+        hand.take_action(BET, 10)
+        hand.take_action(CALL)
+        self.assertEqual(cpu.money, 90)
+
+    def test_player_fold(self):
+        players = []
+        player = Player(100)
+        cpu = Player(100)
+        players.append(player)
+        players.append(cpu)
+        hand = Hand(players)
+        hand.take_action(BET, 10)
+        hand.take_action(RAISE, 30)
+        hand.take_action(FOLD)
+        self.assertEqual(cpu.money, 110)
+
+    def test_cpu_fold(self):
+        players = []
+        player = Player(100)
+        cpu = Player(100)
+        players.append(player)
+        players.append(cpu)
+        hand = Hand(players)
+        hand.take_action(BET, 10)
+        hand.take_action(RAISE, 30)
+        hand.take_action(RAISE, 80)
+        hand.take_action(FOLD)
+        self.assertEqual(player.money, 130)
+
+    def test_possible_action_after_check(self):
+        players = []
+        player = Player(100)
+        cpu = Player(100)
+        players.append(player)
+        players.append(cpu)
+        hand = Hand(players)
+        hand.take_action(CHECK)
+        result = hand.possibles_actions()
+        self.assertEqual(result, [CHECK, BET])
+
+    def test_possible_action_after_bet(self):
+        players = []
+        player = Player(100)
+        cpu = Player(100)
+        players.append(player)
+        players.append(cpu)
+        hand = Hand(players)
+        hand.take_action(BET, 50)
+        result = hand.possibles_actions()
+        self.assertEqual(result, [CALL, RAISE, FOLD])
+
+    def test_possible_action_after_raise(self):
+        players = []
+        player = Player(100)
+        cpu = Player(100)
+        players.append(player)
+        players.append(cpu)
+        hand = Hand(players)
+        hand.take_action(BET, 20)
+        hand.take_action(RAISE, 50)
+        result = hand.possibles_actions()
+        self.assertEqual(result, [CALL, RAISE, FOLD])
 
 if __name__ == "__main__":
     unittest.main()
