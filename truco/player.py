@@ -18,9 +18,7 @@ class CPUPlayer(Player):
                          'FALTA ENVIDO', ]
         aux = None
         for i in already_envidos:
-            if aux is None:
-                aux = envido_sorted.find(i)
-            elif (aux < envido_sorted.find(i)):
+            if aux is None or aux < envido_sorted.find(i):
                 aux = envido_sorted.find(i)
 
     def ask_envido(self, already_envidos):

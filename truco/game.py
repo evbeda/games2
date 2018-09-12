@@ -24,7 +24,17 @@ class Game(object):
 
     def next_turn(self):
         if self.is_playing is True:
-            return '\nENVIDO: Para cantar envido \nTRUCO: Para cantar Truco \n0: Para jugar la primer carta \n1: Para jugar la segunda carta\n2: Para jugar la tercer carta'
+            mensaje = (
+                '0: Para jugar la primer carta \n'
+                '1: Para jugar la segunda carta \n'
+                '2: Para jugar la tercer carta \n'
+                'MAZO: Ir al mazo \n'
+            )
+            if len(self.hand.envidos) == 0 and len(self.hand.trucos) == 0:
+                mensaje += 'ENVIDO, REAL ENVIDO, FALTA ENVIDO: Para cantar envido \n'
+            if len(self.hand.trucos) == 0:
+                mensaje += 'TRUCO: Para cantar Truco \n'
+            return mensaje
         else:
             return '\nGame Over!'
 
