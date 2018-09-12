@@ -1,6 +1,4 @@
 import unittest
-from unittest.mock import patch
-
 from .card import Card
 from .deck import Deck
 

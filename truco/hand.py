@@ -107,7 +107,7 @@ class Hand(object):
 
     def sing_truco(self, command):
         if self.truco_pending:
-            raise Exception()
+            raise Exception('You can not sing truco now')
         self.envido_fase = False
         self.trucos.append(command)
         self.truco_turn = 0 if self.truco_turn == 1 else 1

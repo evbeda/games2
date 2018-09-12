@@ -36,6 +36,8 @@ class Game(object):
         if command == "TRUCO" and self.hand.truco_fase:
             return self.truco_logic(command)
         if command == 'ACCEPTED':
+            if self.hand.truco_pending is True:
+                self.hand.truco_pending = False
             self.hand.envido_fase = False
         if command.isdigit():
             self.hand.play_card(int(command))
@@ -57,6 +59,7 @@ class Game(object):
             elif result == 'REJECTED':
                 self.hand.reject_truco()
             else:
+                self.hand.accept_truco()
                 self.hand.sing_truco(result)
         except Exception:
             return "No en fase de truco"
@@ -87,8 +90,10 @@ class Game(object):
             result = self.players[1].ask_envido(self.hand.envidos)  # CPU
             if result == 'ACCEPTED':
                 self.hand.accept_envido()
-                #Problems with who_is_next. Look the "play" method in command.isdigit
-                self.players[self.hand.get_envido_winner()].score += self.hand.get_envido_points()
+                # Problems with who_is_next.
+                # Look the "play" method in command.isdigit
+                self.players[self.hand.get_envido_winner(
+                )].score += self.hand.get_envido_points()
             elif result == 'REJECTED':
                 self.hand.reject_envido()
             else:

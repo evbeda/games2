@@ -9,7 +9,8 @@ class Deck(object):
     def __init__(self):
         self.ordered_deck = [
             Card(SWORD, 1), Card(COARSE, 1), Card(SWORD, 7),
-            Card(GOLD, 7), Card(SWORD, 3), Card(COARSE, 3), Card(GOLD, 3), Card(CUP, 3),
+            Card(GOLD, 7), Card(SWORD, 3), Card(
+                COARSE, 3), Card(GOLD, 3), Card(CUP, 3),
             Card(SWORD, 2), Card(COARSE, 2), Card(GOLD, 2), Card(CUP, 2),
             Card(GOLD, 1), Card(CUP, 1),
             Card(SWORD, 12), Card(COARSE, 12), Card(GOLD, 12), Card(CUP, 12),
