@@ -115,6 +115,7 @@ class Hand(object):
 
     def accept_truco(self):
         self.truco_pending = False
+        self.envido_fase = False
 
     def reject_truco(self):
         self.truco_pending = False
@@ -124,7 +125,7 @@ class Hand(object):
     def is_playing(self):
         if self.mazo:
             return False
-        if (len(self.played_cards[0])) == (len(self.played_cards[1])):
+        if len(self.played_cards[0]) == len(self.played_cards[1]):
             win_hands_1 = 0
             win_hands_0 = 0
             for i in range(len(self.played_cards[0])):

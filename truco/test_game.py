@@ -291,13 +291,45 @@ class TestGame(unittest.TestCase):
 
     def test_tirar_fruta_al_play(self):
         game = Game()
-        game.board
         result = game.play("D")
         self.assertEqual(result, "\nComando Erroneo")
 
-    def test_mensaje_next_turn(self):
+    def test_mensaje_next_turn_init(self):
         game = Game()
-        game.board
         result = game.next_turn()
-        self.assertEqual(result,
-                         "\nENVIDO: Para cantar envido \nTRUCO: Para cantar Truco \n0: Para jugar la primer carta \n1: Para jugar la segunda carta\n2: Para jugar la tercer carta")
+        expected = (
+            '0: Para jugar la primer carta \n'
+            '1: Para jugar la segunda carta \n'
+            '2: Para jugar la tercer carta \n'
+            'MAZO: Ir al mazo \n'
+            'ENVIDO, REAL ENVIDO, FALTA ENVIDO: Para cantar envido \n'
+            'TRUCO: Para cantar Truco \n'
+        )
+        self.assertEqual(result, expected)
+
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ACCEPTED')
+    def test_mensaje_next_turn_envido_accepted(self, mock_ask_envido):
+        game = Game()
+        game.play('ENVIDO')
+        expected = (
+            '0: Para jugar la primer carta \n'
+            '1: Para jugar la segunda carta \n'
+            '2: Para jugar la tercer carta \n'
+            'MAZO: Ir al mazo \n'
+            'TRUCO: Para cantar Truco \n'
+        )
+        result = game.next_turn()
+        self.assertEqual(expected, result)
+
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='ACCEPTED')
+    def test_mensaje_next_turn_truco_accepted(self, mock_ask_envido):
+        game = Game()
+        game.play('TRUCO')
+        expected = (
+            '0: Para jugar la primer carta \n'
+            '1: Para jugar la segunda carta \n'
+            '2: Para jugar la tercer carta \n'
+            'MAZO: Ir al mazo \n'
+        )
+        result = game.next_turn()
+        self.assertEqual(expected, result)
