@@ -155,7 +155,6 @@ class TestGame(unittest.TestCase):
         self.assertEqual(game.players[0].score, 2)
         self.assertEqual(game.players[1].score, 0)
 
-    @unittest.skip("todo")
     def test_cantar_truco_gana_pc(self):
         game = Game()
         game.board
@@ -163,65 +162,77 @@ class TestGame(unittest.TestCase):
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
             [Card(SWORD, 1), Card(CUP, 3), Card(CUP, 2)],
         ]
-        game.play("T")
-        game.board
-        game.play("0")
-        game.board
-        game.play("0")
-        game.board
-        game.play("0")
-        game.board
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='ACCEPTED'):
+            game.play("TRUCO")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
         self.assertEqual(game.players[0].score, 0)
         self.assertEqual(game.players[1].score, 2)
 
-    @unittest.skip("todo")
     def test_terminar_partida_gana_humano_por_envido(self):
         game = Game()
-        for i in range(10):
+        for i in range(5):
             game.hand.hidden_cards = [
-                [Card(CUP, 4), Card(CUP, 7), Card(CUP, 6)],
-                [Card(SWORD, 1), Card(SWORD, 7), Card(SWORD, 5)],
+                [Card(CUP, 1), Card(CUP, 7), Card(CUP, 6)],
+                [Card(SWORD, 4), Card(SWORD, 4), Card(SWORD, 4)],
             ]
-            game.play("E")
-            game.play("0")
-            game.play("0")
-        self.assertEqual(game.players[0].score, 16)
-        self.assertEqual(game.players[1].score, 12)
+            with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ACCEPTED'):
+                game.play("ENVIDO")
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+                game.play("0")
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+                game.play("0")
+
+        self.assertEqual(game.players[1].score, 0)
+        self.assertEqual(game.players[0].score, 15)
         self.assertEqual(game.is_playing, False)
         result = game.next_turn()
         self.assertEqual(result, "\nGame Over!")
 
-    @unittest.skip("todo")
     def test_terminar_partida_gana_pc_por_envido(self):
         game = Game()
-        for i in range(10):
+        for i in range(5):
             game.hand.hidden_cards = [
-                [Card(SWORD, 1), Card(SWORD, 1), Card(COARSE, 4)],
-                [Card(SWORD, 4), Card(CUP, 7), Card(CUP, 6)],
+                [Card(SWORD, 4), Card(SWORD, 4), Card(SWORD, 4)],
+                [Card(CUP, 1), Card(CUP, 7), Card(CUP, 6)],
             ]
-            game.play("E")
-            game.play("0")
-            game.play("0")
-        self.assertEqual(game.players[1].score, 16)
-        self.assertEqual(game.players[0].score, 12)
-        self.assertEqual(game.is_playing, False)
+            with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ACCEPTED'):
+                game.play("ENVIDO")
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+                game.play("0")
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+                game.play("0")
 
-    @unittest.skip("todo")
+        self.assertEqual(game.players[1].score, 15)
+        self.assertEqual(game.players[0].score, 0)
+        self.assertEqual(game.is_playing, False)
+        result = game.next_turn()
+        self.assertEqual(result, "\nGame Over!")
+
     def test_terminar_partida_gana_humano_por_truco(self):
         game = Game()
-        for i in range(10):
+        for i in range(8):
             game.hand.hidden_cards = [
                 [Card(SWORD, 1), Card(CUP, 3), Card(CUP, 2)],
                 [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
             ]
-            game.play("T")
-            game.play("0")
-            game.play("0")
-        self.assertEqual(game.players[0].score, 24)
+            with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='ACCEPTED'):
+                game.play("TRUCO")
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+                game.play("0")
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+                game.play("0")
+
+        self.assertEqual(game.players[0].score, 16)
         self.assertEqual(game.players[1].score, 0)
         self.assertEqual(game.is_playing, False)
+        result = game.next_turn()
+        self.assertEqual(result, "\nGame Over!")
 
-    @unittest.skip("todo")
     def test_ganar_por_ser_mano_humano(self):
         game = Game()
         game.board
@@ -229,31 +240,37 @@ class TestGame(unittest.TestCase):
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
         ]
-        game.play("0")
-        game.play("0")
-        game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+                game.play("0")
         self.assertEqual(game.players[0].score, 1)
         self.assertEqual(game.players[1].score, 0)
 
-    @unittest.skip("Skip")
     def test_ganar_por_ser_mano_pc(self):
         game = Game()
-        game.board
         game.hand.hidden_cards = [
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
         ]
-        game.play("0")
-        game.play("0")
-        game.play("0")
-        game.board
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+                game.play("0")
         game.hand.hidden_cards = [
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
         ]
-        game.play("0")
-        game.play("0")
-        game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+                game.play("0")
         self.assertEqual(game.players[0].score, 1)
         self.assertEqual(game.players[1].score, 1)
 

@@ -87,6 +87,8 @@ class Hand(object):
                 return combination[won + 1]
 
     def get_truco_points(self, won=0):
+        if len(self.trucos) == 0:
+            return 1
         for combination in truco_combinations:
             if combination[0] == self.trucos:
                 return combination[won + 1]
