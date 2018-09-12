@@ -122,24 +122,25 @@ class Hand(object):
     def is_playing(self):
         if self.mazo:
             return False
-        win_hands_1 = 0
-        win_hands_0 = 0
-        for i in range(len(self.played_cards[0])):
-            if i > len(self.played_cards[1]) - 1:
-                break
-            carta_pc = self.played_cards[1][i]
-            carta_humano = self.played_cards[0][i]
-            if carta_humano.compare_with(carta_pc) == 'GREATER':
-                win_hands_0 += 1
-            if carta_pc.compare_with(carta_humano) == 'GREATER':
-                win_hands_1 += 1
-        if win_hands_0 is win_hands_1 and self.number_hand is 4:
-            self.winner_index = self.mano
-            return False
-        if win_hands_0 >= 2 or win_hands_1 >= 2:
-            self.winner_index = 0 if win_hands_0 > win_hands_1 else 1
-            return False
-        return True
+        if (len(self.played_cards[0])) == (len(self.played_cards[1])):
+            win_hands_1 = 0
+            win_hands_0 = 0
+            for i in range(len(self.played_cards[0])):
+                carta_pc = self.played_cards[1][i]
+                carta_humano = self.played_cards[0][i]
+                if carta_humano.compare_with(carta_pc) == 'GREATER':
+                    win_hands_0 += 1
+                if carta_pc.compare_with(carta_humano) == 'GREATER':
+                    win_hands_1 += 1
+            if win_hands_0 == win_hands_1 and self.number_hand is 4:
+                self.winner_index = self.mano
+                return False
+            if win_hands_0 >= 2 or win_hands_1 >= 2:
+                self.winner_index = 0 if win_hands_0 > win_hands_1 else 1
+                return False
+            return True
+        else:
+            return True
 
     def get_envido_winner(self):
         score_p0 = self.get_score_envido(0)
