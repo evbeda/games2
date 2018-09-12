@@ -24,7 +24,7 @@ class Game(object):
 
     def next_turn(self):
         if self.is_playing is True:
-            return '\nE: Para cantar envido \nT: Para cantar Truco \n0: Para jugar la primer carta \n1: Para jugar la segunda carta\n2: Para jugar la tercer carta'
+            return '\nENVIDO: Para cantar envido \nTRUCO: Para cantar Truco \n0: Para jugar la primer carta \n1: Para jugar la segunda carta\n2: Para jugar la tercer carta'
         else:
             return '\nGame Over!'
 
@@ -38,9 +38,10 @@ class Game(object):
         if command == 'ACCEPTED':
             self.hand.envido_fase = False
         if command.isdigit():
-            self.normal_round_logic(command)
+            self.hand.play_card(int(command))
             self.cpu_auto_play()
-
+            self.hand.siguiente_ronda()
+            self.hand.who_is_next()
         else:
             return "\nComando Erroneo"
         if not self.hand.is_playing:
@@ -62,9 +63,7 @@ class Game(object):
         return result
 
     def hand_finish_logic(self):
-        self.players[self.hand.winner_index].score += 1
-        if not self.hand.truco_fase:
-            self.players[self.hand.winner_index].score += 1
+        self.players[self.hand.winner_index].score += self.hand.get_truco_points()
         if self.players[0].score > 14 or self.players[1].score > 14:
             self.is_playing = False
             return "\nFin del juego"
@@ -72,16 +71,12 @@ class Game(object):
         self.hand.mano = 1 if self.hand.mano is 0 else 0
         return "\nLa mano termino\n{}{}".format(self.hand.show_cards(), "-----------")
 
-    def normal_round_logic(self, command):
-        self.hand.play_card(int(command))
-        self.hand.play_card(int(command))  # PC
-        self.hand.siguiente_ronda()
-        self.hand.who_is_next()
-
     def cpu_auto_play(self):
         result = self.players[1].cpu_play()
         if result == 'ENVIDO':
             self.hand.envidos.append(random.choice(envido_posibilities))
+            self.hand.play_card(random.randint(
+                0, len(self.hand.hidden_cards[1]) - 1))
         elif result == 'JUGAR':
             self.hand.play_card(random.randint(
                 0, len(self.hand.hidden_cards[1]) - 1))
@@ -92,6 +87,7 @@ class Game(object):
             result = self.players[1].ask_envido(self.hand.envidos)  # CPU
             if result == 'ACCEPTED':
                 self.hand.accept_envido()
+                #Problems with who_is_next. Look the "play" method in command.isdigit
                 self.players[self.hand.get_envido_winner()].score += self.hand.get_envido_points()
             elif result == 'REJECTED':
                 self.hand.reject_envido()

@@ -4,7 +4,7 @@ from truco import *
 from truco.card import Card
 from truco.game import Game
 from truco.player import CPUPlayer
-
+ 
 
 class TestGame(unittest.TestCase):
 
@@ -139,20 +139,21 @@ class TestGame(unittest.TestCase):
         self.assertEqual(game.players[0].score, 0)
         self.assertEqual(game.players[1].score, 2)
 
-    # def test_cantar_truco_gana_humano(self):
-    #     game = Game()
-    #     game.board
-    #     game.hand.hidden_cards = [
-    #         [Card(SWORD, 1), Card(CUP, 3), Card(CUP, 2)],
-    #         [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
-    #     ]
-    #     with mock.patch("truco.player.CPUPlayer.cpu_play", return_value='ACCEPTED'):
-    #         game.play("TRUCO")
-    #     game.play("0")
-    #     with mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
-    #         game.play("0")
-    #     self.assertEqual(game.players[0].score, 2)
-    #     self.assertEqual(game.players[1].score, 0)
+    def test_cantar_truco_gana_humano(self):
+        game = Game()
+        game.board
+        game.hand.hidden_cards = [
+            [Card(SWORD, 1), Card(CUP, 3), Card(CUP, 2)],
+            [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
+        ]
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='ACCEPTED'):
+            game.play("TRUCO")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play("0")
+        self.assertEqual(game.players[0].score, 2)
+        self.assertEqual(game.players[1].score, 0)
 
     @unittest.skip("todo")
     def test_cantar_truco_gana_pc(self):
