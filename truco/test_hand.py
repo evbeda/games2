@@ -7,6 +7,18 @@ from .hand import Hand
 
 class TestHand(unittest.TestCase):
 
+    def test_raise_exception(self):
+        hand = Hand()
+        hand.truco_pending = True
+        with self.assertRaises(Exception):
+            hand.sing_truco('TRUCO')
+
+    def test_truco_rejected_pending_is_false(self):
+        hand = Hand()
+        hand.sing_truco('TRUCO')
+        hand.reject_truco()
+        self.assertFalse(hand.truco_pending)
+
     def test_get_vale_cuatro_points_accepted(self):
         hand = Hand()
         hand.sing_truco('TRUCO')

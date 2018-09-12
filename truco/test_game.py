@@ -4,9 +4,24 @@ from truco import *
 from truco.card import Card
 from truco.game import Game
 from truco.player import CPUPlayer
- 
+
 
 class TestGame(unittest.TestCase):
+
+    def test_arraise_exception_truco_logic(self):
+        game = Game()
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='REJECTED'):
+            game.play("TRUCO")
+        with self.assertRaises(Exception):
+            game.sing_truco('TRUCO')
+
+    def test_truco_relive_re_truco(self):
+        game = Game()
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='RE TRUCO'):
+            game.play("TRUCO")
+        game.play("ACCEPTED")
+        self.assertEqual(game.hand.trucos, ['TRUCO', 'RE TRUCO'])
+        self.assertFalse(game.hand.truco_pending)
 
     def test_player_ask_falta_envido(self):
         player = CPUPlayer('CPY')
@@ -245,7 +260,7 @@ class TestGame(unittest.TestCase):
         with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
             game.play("0")
         with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
-                game.play("0")
+            game.play("0")
         self.assertEqual(game.players[0].score, 1)
         self.assertEqual(game.players[1].score, 0)
 
@@ -260,7 +275,7 @@ class TestGame(unittest.TestCase):
         with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
             game.play("0")
         with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
-                game.play("0")
+            game.play("0")
         game.hand.hidden_cards = [
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
@@ -270,7 +285,7 @@ class TestGame(unittest.TestCase):
         with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
             game.play("0")
         with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
-                game.play("0")
+            game.play("0")
         self.assertEqual(game.players[0].score, 1)
         self.assertEqual(game.players[1].score, 1)
 
