@@ -185,10 +185,7 @@ class Hand(object):
         return 0 if (len(all_cards) == 0) else max(all_cards).number
 
     def show_cards(self):
-        result = ['\nMis Cartas: \n']
-        for card in self.hidden_cards[0]:
-            result.append(str(card) + ' ')
-        result.append('\nCartas jugadas: \n')
+        result = ['\nCartas jugadas: \n']
         contador = 0
         for group in self.played_cards:
             if contador == 0:
