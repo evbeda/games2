@@ -105,6 +105,20 @@ class TestGame(unittest.TestCase):
         self.assertFalse(game.hand.envido_fase)
         self.assertEqual(game.hand.envidos, ['ENVIDO', 'ENVIDO'])
 
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='FALTA ENVIDO')
+    def test_falta_de_envido_points(self, mock_ask_envido):
+        game = Game()
+        game.players[0].score = 22
+        game.players[1].score = 27
+        game.hand.hidden_cards[0] = [Card(SWORD, 3), Card(SWORD, 7), Card(CUP, 2)]
+        game.hand.hidden_cards[1] = [Card(CUP, 5), Card(SWORD, 3), Card(CUP, 3)]
+        self.assertTrue(game.hand.envido_fase)
+        game.play("ENVIDO")
+        game.play("ACCEPTED")
+        #import ipdb; ipdb.set_trace()
+        result = game.envido_points()
+        self.assertEqual(game.envido_points(), 3)
+
     @unittest.mock.patch("truco.hand.Hand.sing_envido", return_value='ENVIDO')
     def test_cpu_cantar_fases_envido_and_accept(self, mock_sing_envido):
         game = Game()

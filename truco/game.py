@@ -56,7 +56,7 @@ class Game(object):
                 else:
                     self.hand.accept_envido()
                     self.players[self.hand.get_envido_winner(
-                    )].score += self.hand.get_envido_points()
+                    )].score += self.envido_points()
                     return "Gano el jugador: {}".format(self.hand.get_envido_winner())
             if command.isdigit():
                 self.hand.play_card(int(command))
@@ -106,6 +106,18 @@ class Game(object):
             self.hand.play_card(random.randint(
                 0, len(self.hand.hidden_cards[1]) - 1))
 
+    def envido_points(self, won=0):
+        points = self.hand.get_envido_points(won=won)
+        if points == 99:
+            winner = self.hand.get_envido_winner()
+            if winner == 1:
+                looser = 0
+            else:
+                looser = 1
+            return 30 - self.players[looser].score
+        else:
+            return points
+
     def envido_logic(self, command):
         try:
             self.hand.sing_envido(command)
@@ -114,8 +126,9 @@ class Game(object):
                 self.hand.accept_envido()
                 # Problems with who_is_next.
                 # Look the "play" method in command.isdigit
+
                 self.players[self.hand.get_envido_winner(
-                )].score += self.hand.get_envido_points()
+                )].score += self.envido_points()
                 return ("Envido Accepted:"
                     "Gano el jugador: {}".format(self.hand.get_envido_winner()))
             elif result == 'REJECTED':

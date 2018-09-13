@@ -84,7 +84,10 @@ class Hand(object):
     def get_envido_points(self, won=0):
         for combination in envido_combinations:
             if combination[0] == self.envidos:
-                return combination[won + 1]
+                if self.envidos[-1] == 'FALTA ENVIDO' and won == 0:
+                    return 99
+                else:
+                    return combination[won + 1]
 
     def get_truco_points(self, won=0):
         if len(self.trucos) == 0:
@@ -183,6 +186,7 @@ class Hand(object):
             if i.number > 8:
                 all_cards.remove(i)
         return 0 if (len(all_cards) == 0) else max(all_cards).number
+
 
     def show_cards(self):
         result = ['\nCartas jugadas: \n']

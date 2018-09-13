@@ -155,7 +155,7 @@ class TestHand(unittest.TestCase):
         hand.sing_envido('ENVIDO')
         hand.sing_envido('REAL ENVIDO')
         hand.sing_envido('FALTA ENVIDO')
-        self.assertEqual(0, hand.get_envido_points(0))
+        self.assertEqual(99, hand.get_envido_points(0))
         self.assertEqual(7, hand.get_envido_points(1))
 
     def test_get_envido_points_ENVIDO_REAL_ENVIDO_FALTA_ENVIDO(self):
@@ -163,7 +163,7 @@ class TestHand(unittest.TestCase):
         hand.sing_envido('ENVIDO')
         hand.sing_envido('REAL ENVIDO')
         hand.sing_envido('FALTA ENVIDO')
-        self.assertEqual(0, hand.get_envido_points(0))
+        self.assertEqual(99, hand.get_envido_points(0))
         self.assertEqual(5, hand.get_envido_points(1))
 
     def test_get_envido_points_ENVIDO_ENVIDO_FALTA_ENVIDO(self):
@@ -171,7 +171,7 @@ class TestHand(unittest.TestCase):
         hand.sing_envido('ENVIDO')
         hand.sing_envido('ENVIDO')
         hand.sing_envido('FALTA ENVIDO')
-        self.assertEqual(0, hand.get_envido_points(0))
+        self.assertEqual(99, hand.get_envido_points(0))
         self.assertEqual(4, hand.get_envido_points(1))
 
     def test_get_envido_points_ENVIDO_ENVIDO_REAL_ENVIDO(self):
@@ -186,7 +186,7 @@ class TestHand(unittest.TestCase):
         hand = Hand()
         hand.sing_envido('ENVIDO')
         hand.sing_envido('FALTA ENVIDO')
-        self.assertEqual(0, hand.get_envido_points(0))
+        self.assertEqual(99, hand.get_envido_points(0))
         self.assertEqual(2, hand.get_envido_points(1))
 
     def test_get_envido_points_ENVIDO_REAL_ENVIDO(self):
@@ -200,13 +200,14 @@ class TestHand(unittest.TestCase):
         hand = Hand()
         hand.sing_envido('REAL ENVIDO')
         hand.sing_envido('FALTA ENVIDO')
-        self.assertEqual(5, hand.get_envido_points(0))
+        #import ipdb; ipdb.set_trace()
+        self.assertEqual(99, hand.get_envido_points(0))
         self.assertEqual(2, hand.get_envido_points(1))
 
     def test_get_envido_points_FALTA_ENVIDO(self):
         hand = Hand()
         hand.sing_envido('FALTA ENVIDO')
-        self.assertEqual(0, hand.get_envido_points(0))
+        self.assertEqual(99, hand.get_envido_points(0))
         self.assertEqual(1, hand.get_envido_points(1))
 
     def test_get_envido_points_REAL_ENVIDO(self):
