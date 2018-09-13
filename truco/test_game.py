@@ -372,3 +372,25 @@ class TestGame(unittest.TestCase):
         result = game.play('ENVIDO')
         expected = 'Comando Erroneo'
         self.assertEqual(expected, result)
+
+    @unittest.skip("demonstrating skipping")
+    def test_cpu_sing_envido_and_accept(self):
+        game = Game()
+        game.hand.hidden_cards = [
+            [Card(SWORD, 1), Card(CUP, 3), Card(CUP, 2)],
+            [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
+        ]
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO'):
+            game.play('0')
+        result = game.play('ACCEPTED')
+        expected = 'Gano el jugador: 0'
+        self.assertEqual(expected, result)  # OJO A
+
+    @unittest.skip("demonstrating skipping")
+    def test_cpu_sing_envido_and_human_reject(self):
+        game = Game()
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO'):
+            game.play('0')
+        result = game.play('REJECTED')
+        expected = "\nSiguiente ronda"
+        self.assertEqual(expected, result)
