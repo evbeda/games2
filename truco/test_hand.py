@@ -548,7 +548,6 @@ class TestHand(unittest.TestCase):
 
         self.assertFalse(hand.is_playing)
 
-    @unittest.skip("demonstrating skipping")
     def test_get_response_envido_sing_envido(self):
         hand = Hand()
         hand.sing_envido('ENVIDO')
@@ -556,7 +555,6 @@ class TestHand(unittest.TestCase):
         result = hand.get_response_envido()
         self.assertEqual(expect, result)
 
-    @unittest.skip("demonstrating skipping")
     def test_get_response_envido_sing_envido_envido(self):
         hand = Hand()
         hand.sing_envido('ENVIDO')
@@ -565,7 +563,6 @@ class TestHand(unittest.TestCase):
         result = hand.get_response_envido()
         self.assertEqual(expect, result)
 
-    @unittest.skip("demonstrating skipping")
     def test_get_response_envido_sing_real_envido(self):
         hand = Hand()
         hand.sing_envido('REAL ENVIDO')
@@ -573,7 +570,6 @@ class TestHand(unittest.TestCase):
         result = hand.get_response_envido()
         self.assertEqual(expect, result)
 
-    @unittest.skip("demonstrating skipping")
     def test_get_response_envido_sing_falta_envido(self):
         hand = Hand()
         hand.sing_envido('FALTA ENVIDO')

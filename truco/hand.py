@@ -201,3 +201,16 @@ class Hand(object):
                 result.append(str(card2) + ' ')
             result.append('\n')
         return ''.join(result)
+
+    def get_response_envido(self,):
+        envido_possibles = ['ACCEPTED', 'REJECTED', ]
+        if 'FALTA ENVIDO' in self.envidos:
+            return envido_possibles
+        envido_possibles.append('FALTA ENVIDO')
+        if 'REAL ENVIDO' in self.envidos:
+            return envido_possibles
+        envido_possibles.append('REAL ENVIDO')
+        envidos = len([e for e in self.envidos if e == 'ENVIDO'])
+        if envidos < 2:
+            envido_possibles.append('ENVIDO')
+        return envido_possibles
