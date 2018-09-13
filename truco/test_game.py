@@ -296,13 +296,17 @@ class TestGame(unittest.TestCase):
 
     def test_mensaje_next_turn_init(self):
         game = Game()
+        game.hand.hidden_cards = [
+            [Card(CUP, 1), Card(COARSE, 7), Card(CUP, 12)],
+            [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
+        ]
         result = game.next_turn()
         expected = (
-            '0: Para jugar la primer carta \n'
-            '1: Para jugar la segunda carta \n'
-            '2: Para jugar la tercer carta \n'
-            'MAZO: Ir al mazo \n'
+            '0 para jugar 1 copa\n'
+            '1 para jugar 7 basto\n'
+            '2 para jugar 12 copa\n'
             'ENVIDO, REAL ENVIDO, FALTA ENVIDO: Para cantar envido \n'
+            'MAZO: Ir al mazo \n'
             'TRUCO: Para cantar Truco \n'
         )
         self.assertEqual(result, expected)
@@ -311,10 +315,14 @@ class TestGame(unittest.TestCase):
     def test_mensaje_next_turn_envido_accepted(self, mock_ask_envido):
         game = Game()
         game.play('ENVIDO')
+        game.hand.hidden_cards = [
+            [Card(COARSE, 4), Card(COARSE, 5), Card(COARSE, 6)],
+            [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
+        ]
         expected = (
-            '0: Para jugar la primer carta \n'
-            '1: Para jugar la segunda carta \n'
-            '2: Para jugar la tercer carta \n'
+            '0 para jugar 4 basto\n'
+            '1 para jugar 5 basto\n'
+            '2 para jugar 6 basto\n'
             'MAZO: Ir al mazo \n'
             'TRUCO: Para cantar Truco \n'
         )
@@ -325,10 +333,14 @@ class TestGame(unittest.TestCase):
     def test_mensaje_next_turn_truco_accepted(self, mock_ask_envido):
         game = Game()
         game.play('TRUCO')
+        game.hand.hidden_cards = [
+            [Card(SWORD, 3), Card(SWORD, 12), Card(GOLD, 10)],
+            [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
+        ]
         expected = (
-            '0: Para jugar la primer carta \n'
-            '1: Para jugar la segunda carta \n'
-            '2: Para jugar la tercer carta \n'
+            '0 para jugar 3 espada\n'
+            '1 para jugar 12 espada\n'
+            '2 para jugar 10 oro\n'
             'MAZO: Ir al mazo \n'
         )
         result = game.next_turn()

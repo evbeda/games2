@@ -520,7 +520,7 @@ class TestHand(unittest.TestCase):
                               Card(COARSE, 7)]]
         hand.play_card(0)
         hand.play_card(0)
-        expected = '\nMis Cartas: \n10 espada 6 basto \nCartas jugadas: \nH: 5 basto \nC: 1 basto \n'
+        expected = '\nCartas jugadas: \nH: 5 basto \nC: 1 basto \n'
         result = hand.show_cards()
         self.assertEqual(result, expected)
 

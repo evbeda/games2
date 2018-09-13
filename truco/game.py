@@ -23,15 +23,16 @@ class Game(object):
         return self.hand.show_cards() + self.show_scores()
 
     def next_turn(self):
+        mensaje = ""
+        if self.hand.envido_solved == False:
+            return ('ACCEPTED: To accept\n'
+                'REJECTED: To reject\n')
         if self.is_playing is True:
-            mensaje = (
-                '0: Para jugar la primer carta \n'
-                '1: Para jugar la segunda carta \n'
-                '2: Para jugar la tercer carta \n'
-                'MAZO: Ir al mazo \n'
-            )
+            for index in range(len(self.hand.hidden_cards[0])):
+                mensaje += '{} para jugar {}\n'.format(index,self.hand.hidden_cards[0][index])
             if len(self.hand.envidos) == 0 and len(self.hand.trucos) == 0:
                 mensaje += 'ENVIDO, REAL ENVIDO, FALTA ENVIDO: Para cantar envido \n'
+            mensaje += 'MAZO: Ir al mazo \n'
             if len(self.hand.trucos) == 0:
                 mensaje += 'TRUCO: Para cantar Truco \n'
             return mensaje
@@ -39,23 +40,36 @@ class Game(object):
             return '\nGame Over!'
 
     def play(self, command):
-        if (command == "ENVIDO" or
-                command == "REAL ENVIDO" or
-                command == "FALTA ENVIDO"):
-            return self.envido_logic(command)
-        if command == "TRUCO" and self.hand.truco_fase:
-            return self.truco_logic(command)
-        if command == 'ACCEPTED':
-            if self.hand.truco_pending is True:
-                self.hand.truco_pending = False
-            self.hand.envido_fase = False
-        if command.isdigit():
-            self.hand.play_card(int(command))
-            self.cpu_auto_play()
-            self.hand.siguiente_ronda()
-            self.hand.who_is_next()
+        if (self.hand.envido_solved == False and command not in envido_posibilities or self.hand.envido_solved == True):
+            if (command == "ENVIDO" or
+                    command == "REAL ENVIDO" or
+                    command == "FALTA ENVIDO"):
+                return self.envido_logic(command)
+
+            if command == "TRUCO" and self.hand.truco_fase:
+                return self.truco_logic(command)
+
+            if command == "ACCEPTED":
+                if self.hand.truco_pending is True:
+                    self.hand.truco_pending = False
+                    #jugar truco
+                else:
+                    self.hand.accept_envido()
+                    self.players[self.hand.get_envido_winner(
+                    )].score += self.hand.get_envido_points()
+                    return "Gano el jugador: {}".format(self.hand.get_envido_winner())
+            if command.isdigit():
+                self.hand.play_card(int(command))
+                self.cpu_auto_play()
+                if self.hand.truco_pending == True or self.hand.envido_solved == False:
+                    return "Envido!" if self.hand.truco_pending == False else "Truco"
+                else:
+                    self.hand.siguiente_ronda()
+                    self.hand.who_is_next()
+            else:
+                return "\nComando Erroneo"
         else:
-            return "\nComando Erroneo"
+            return "\nYou must "
         if not self.hand.is_playing:
             return self.hand_finish_logic()
         return "\nSiguiente ronda"
@@ -88,8 +102,6 @@ class Game(object):
         result = self.players[1].cpu_play()
         if result == 'ENVIDO':
             self.hand.envidos.append(random.choice(envido_posibilities))
-            self.hand.play_card(random.randint(
-                0, len(self.hand.hidden_cards[1]) - 1))
         elif result == 'JUGAR':
             self.hand.play_card(random.randint(
                 0, len(self.hand.hidden_cards[1]) - 1))
@@ -104,10 +116,14 @@ class Game(object):
                 # Look the "play" method in command.isdigit
                 self.players[self.hand.get_envido_winner(
                 )].score += self.hand.get_envido_points()
+                return ("Envido Accepted:"
+                    "Gano el jugador: {}".format(self.hand.get_envido_winner()))
             elif result == 'REJECTED':
                 self.hand.reject_envido()
+                return "ENVIDO REJECTED"
             else:
                 self.hand.sing_envido(result)
+                return "The machine said {}".format(result)
         except Exception:
             return "No en fase de envido"
 
