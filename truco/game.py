@@ -40,7 +40,7 @@ class Game(object):
             return '\nGame Over!'
 
     def play(self, command):
-        if (self.hand.envido_solved == False and command not in envido_posibilities or self.hand.envido_solved == True):
+        if (self.hand.envido_solved == False and command not in self.hand.get_response_envido() or self.hand.envido_solved == True):
             if (command == "ENVIDO" or
                     command == "REAL ENVIDO" or
                     command == "FALTA ENVIDO"):
