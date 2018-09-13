@@ -345,3 +345,30 @@ class TestGame(unittest.TestCase):
         )
         result = game.next_turn()
         self.assertEqual(expected, result)
+
+    @unittest.skip("demonstrating skipping")
+    def test_cpu_sing_envido_and_the_game_only_allow_reject_or_accept(self):
+        game = Game()
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO'):
+            game.play('0')
+        result = game.play('0')
+        expected = 'Comando Erroneo'
+        self.assertEqual(expected, result)
+
+    @unittest.skip("demonstrating skipping")
+    def test_cpu_sing_envido_and_the_game_only_allow_reject_or_accept_2(self):
+        game = Game()
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO'):
+            game.play('0')
+        result = game.play('TRUCO')
+        expected = 'Comando Erroneo'
+        self.assertEqual(expected, result)
+
+    @unittest.skip("demonstrating skipping")
+    def test_cpu_sing_falta_envido_and_the_game_only_allow_reject_or_accept(self):
+        game = Game()
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='FALTA ENVIDO'):
+            game.play('0')
+        result = game.play('ENVIDO')
+        expected = 'Comando Erroneo'
+        self.assertEqual(expected, result)
