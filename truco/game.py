@@ -155,8 +155,7 @@ class Game(object):
             self.hand.envidos.append(random.choice(envido_posibilities))
             especific = self.hand.envidos[-1]
         elif move == 'JUGAR':
-            self.hand.play_card(random.randint(
-                0, len(self.hand.hidden_cards[1]) - 1))
+            self.hand.play_card(random.randrange(len(self.hand.hidden_cards[1])))
             especific = self.hand.played_cards[1][-1]
         elif move == 'TRUCO':
             self.hand.sing_truco('TRUCO')
