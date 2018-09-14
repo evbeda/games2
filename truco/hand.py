@@ -189,14 +189,14 @@ class Hand(object):
         return 0 if (len(all_cards) == 0) else max(all_cards).number
 
     def show_cards(self):
-        result = ['\nCartas jugadas: \n']
+        result = ['\nPlayed Cards: \n']
         contador = 0
         for group in self.played_cards:
             if contador == 0:
-                result.append("H: ")
+                result.append("Human: ")
                 contador += 1
             else:
-                result.append("C: ")
+                result.append("Computer: ")
             for card2 in group:
                 result.append(str(card2) + ' ')
             result.append('\n')

@@ -31,13 +31,13 @@ class Game(object):
                     'REJECTED: To reject\n')
         if self.is_playing is True:
             for index in range(len(self.hand.hidden_cards[0])):
-                mensaje += '{} para jugar {}\n'.format(
+                mensaje += '{} to play {}\n'.format(
                     index, self.hand.hidden_cards[0][index])
             if self.hand.envido_fase:
-                mensaje += 'ENVIDO, REAL_ENVIDO, FALTA_ENVIDO: Para cantar envido \n'
-            mensaje += 'MAZO: Ir al mazo \n'
+                mensaje += 'ENVIDO, REAL_ENVIDO, FALTA_ENVIDO: Sing envido \n'
+            mensaje += 'DECK: Go to the Deck \n'
             if len(self.hand.trucos) == 0:
-                mensaje += 'TRUCO: Para cantar Truco \n'
+                mensaje += 'TRUCO: Sing truco \n'
             return mensaje
         else:
             return '\nGame Over!'
@@ -59,11 +59,16 @@ class Game(object):
                     return self.reject()
                 if command.isdigit():
                     return self.digit_logic(command)
-                if command == "MAZO":
+                if command == "DECK":
                     self.hand.mazo = True
-                    return "Te fuiste al mazo"
+                    if self.hand.number_hand == 1:
+                        points = 2
+                    else:
+                        points = 1
+                    self.players[1].score += points
+                    return "You go to the deck. You lose {} points.".format(points)
                 else:
-                    return "\nComando Erroneo"
+                    return "\nWrong input"
             else:
                 return "\nYou must accept or reject the truco"
         else:
@@ -91,25 +96,25 @@ class Game(object):
             self.hand.reject_truco()
             self.players[1].score += self.hand.get_truco_points(1)
             self.cheque_if_cpu_must_play()
-            return "Rechazaste truco. Perdiste {} puntos".format(self.hand.get_truco_points(1))
+            return "You reject truco. You lose {} points".format(self.hand.get_truco_points(1))
         else:
             puntos = self.envido_points(1)
             self.players[1].score += puntos
             self.hand.reject_envido()
             self.cheque_if_cpu_must_play()
-            return "Rechazaste envido. Perdiste {} puntos".format(puntos)
+            return "You reject envido. You lose {} points".format(puntos)
 
     def accept(self):
         if self.hand.truco_pending is True:
             self.hand.accept_truco()
             self.cheque_if_cpu_must_play()
-            return "Se evaluara el truco al final de la partida"
+            return "The truco will be evaluated at the end of the game"
         else:
             self.hand.accept_envido()
             self.players[self.hand.get_envido_winner(
             )].score += self.envido_points()
             self.cheque_if_cpu_must_play()
-            return "Gano el jugador: {}".format(self.hand.get_envido_winner())
+            return "Won the player: {}".format(self.hand.get_envido_winner())
 
     def truco_logic(self, command):
         try:
@@ -121,26 +126,26 @@ class Game(object):
             elif result == 'REJECTED':
                 self.hand.reject_truco()
                 self.players[0].score += self.hand.get_truco_points(1)
-                return "La maquina rechazo el TRUCO. Ganaste {} puntos".format(self.hand.get_truco_points(1))
+                return "The machine reject the Truco. You won {} points".format(self.hand.get_truco_points(1))
             else:
                 self.hand.accept_truco()
                 self.hand.sing_truco(result)
                 return "The machine said {}".format(result)
         except Exception:
-            return "No en fase de truco"
+            return "Not in fase truco"
 
     def hand_finish_logic(self):
         self.players[self.hand.winner_index].score += self.hand.get_truco_points()
         if self.players[0].score > 14 or self.players[1].score > 14:
             self.is_playing = False
-            return "\nFin del juego"
-        messaje = "\nLa mano termino\n{}{}".format(self.hand.show_cards(), "-----------")
+            return "\nGame Over."
+        messaje = "\nThe hand is over\n{}{}".format(self.hand.show_cards(), "-----------")
         self.hand = Hand()
         self.hand.mano = 1 if self.hand.mano is 0 else 0
         return messaje
 
     def get_what_machine_can_do(self):
-        possibles = ['JUGAR']
+        possibles = ['PLAY']
         if self.hand.envido_fase is True:
             possibles.append('ENVIDO')
         if len(self.hand.trucos) == 0:
@@ -153,7 +158,7 @@ class Game(object):
         if move == 'ENVIDO':
             self.hand.envidos.append(random.choice(envido_posibilities))
             especific = self.hand.envidos[-1]
-        elif move == 'JUGAR':
+        elif move == 'PLAY':
             self.hand.play_card(random.randrange(len(self.hand.hidden_cards[1])))
             especific = self.hand.played_cards[1][-1]
         elif move == 'TRUCO':
@@ -183,19 +188,19 @@ class Game(object):
                 )].score += self.envido_points()
                 self.cheque_if_cpu_must_play()
                 return ("Envido Accepted:"
-                        "Gano el jugador: {}".format(self.hand.get_envido_winner()))
+                        "Won the player: {}".format(self.hand.get_envido_winner()))
             elif result == 'REJECTED':
                 puntos = self.envido_points(1)
                 self.players[0].score += puntos
                 self.hand.reject_envido()
                 self.cheque_if_cpu_must_play()
-                return "La maquina rechazo el envido. Ganaste {} puntos".format(puntos)
+                return "The machine reject the Envido. You won {} points".format(puntos)
             else:
                 self.hand.sing_envido(result)
                 return "The machine said {}".format(result)
         except Exception:
-            return "No en fase de envido"
+            return "Not in fase envido"
 
     def show_scores(self):
-        mensaje = "\nPuntajes:\nHumano:{} \nPC:{}"
+        mensaje = "\nPoints:\nHuman:{} \nComputer:{}"
         return mensaje.format(self.players[0].score, self.players[1].score)
