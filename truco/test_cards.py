@@ -32,16 +32,16 @@ class TestCards(unittest.TestCase):
     # POSICIONES
 
     def test_obtener_posicion_cero(self):
-        cartaMacho = Card(SWORD, 1)
-        self.assertEqual(cartaMacho.get_position(), 0)
+        carta_macho = Card(SWORD, 1)
+        self.assertEqual(carta_macho.get_position(), 0)
 
     def test_obtener_posicion_uno(self):
-        cartaMacho = Card(COARSE, 1)
-        self.assertEqual(cartaMacho.get_position(), 1)
+        carta_macho = Card(COARSE, 1)
+        self.assertEqual(carta_macho.get_position(), 1)
 
     def test_obtener_posicion_trece(self):
-        cartaMacho = Card(SWORD, 4)
-        self.assertEqual(cartaMacho.get_position(), 13)
+        carta_macho = Card(SWORD, 4)
+        self.assertEqual(carta_macho.get_position(), 13)
 
     # COMPARACIONES
     def test_comparar_as_espadas_con_as_bastos(self):

@@ -1,8 +1,5 @@
 import unittest
 
-from truco import *
-from truco.card import Card
-from truco.game import Game
 from truco.player import CPUPlayer
 
 

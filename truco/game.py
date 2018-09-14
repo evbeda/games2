@@ -5,9 +5,7 @@ from truco.player import (
     HumanPlayer,
     CPUPlayer,
 )
-
 from .hand import envido_posibilities
-from .hand import truco_posibilities
 
 
 class Game(object):
@@ -22,13 +20,13 @@ class Game(object):
 
     @property
     def board(self):
-        if self.hand.mazo == True:
+        if self.hand.mazo is True:
             self.hand = Hand()
         return self.hand.show_cards() + self.show_scores()
 
     def next_turn(self):
         mensaje = ""
-        if self.hand.envido_solved == False or self.hand.truco_pending:
+        if self.hand.envido_solved is False or self.hand.truco_pending:
             return ('ACCEPTED: To accept\n'
                     'REJECTED: To reject\n')
         if self.is_playing is True:
@@ -45,9 +43,12 @@ class Game(object):
             return '\nGame Over!'
 
     def play(self, command):
-        if (self.hand.envido_solved == False and command in self.hand.get_response_envido() or self.hand.envido_solved):
+        if self.hand.envido_solved is False and command in self.hand.get_response_envido() or self.hand.envido_solved:
             if (
-                    self.hand.truco_pending and command in self.hand.get_response_truco() or self.hand.truco_pending == False):
+                    self.hand.truco_pending and
+                    command in self.hand.get_response_truco() or
+                    self.hand.truco_pending is False
+            ):
                 if command in envido_posibilities:
                     return self.envido_logic(command)
                 if command == "TRUCO" and self.hand.truco_fase:
@@ -67,7 +68,6 @@ class Game(object):
                 return "\nYou must accept or reject the truco"
         else:
             return "\nYou must accept or reject the envido"
-        return "\nSiguiente ronda"
 
     def cheque_if_cpu_must_play(self):
         if len(self.hand.played_cards[0]) > len(self.hand.played_cards[1]):
@@ -77,9 +77,7 @@ class Game(object):
     def digit_logic(self, command):
         self.hand.play_card(int(command))
         move, especific = self.cpu_auto_play()
-        if move == "ENVIDO":
-            return "The machine said {}".format(especific)
-        elif move == "TRUCO":
+        if move == "ENVIDO" or move == "TRUCO":
             return "The machine said {}".format(especific)
         else:
             self.hand.siguiente_ronda()
@@ -119,6 +117,7 @@ class Game(object):
             result = self.players[1].ask_trucos(self.hand.trucos)
             if result == 'ACCEPTED':
                 self.hand.accept_truco()
+                return result
             elif result == 'REJECTED':
                 self.hand.reject_truco()
                 self.players[0].score += self.hand.get_truco_points(1)
@@ -129,7 +128,6 @@ class Game(object):
                 return "The machine said {}".format(result)
         except Exception:
             return "No en fase de truco"
-        return result
 
     def hand_finish_logic(self):
         self.players[self.hand.winner_index].score += self.hand.get_truco_points()
@@ -143,13 +141,14 @@ class Game(object):
 
     def get_what_machine_can_do(self):
         possibles = ['JUGAR']
-        if self.hand.envido_fase == True:
+        if self.hand.envido_fase is True:
             possibles.append('ENVIDO')
         if len(self.hand.trucos) == 0:
             possibles.append('TRUCO')
         return possibles
 
     def cpu_auto_play(self):
+        especific = ""
         move = self.players[1].cpu_play(self.get_what_machine_can_do())
         if move == 'ENVIDO':
             self.hand.envidos.append(random.choice(envido_posibilities))
@@ -196,12 +195,6 @@ class Game(object):
                 return "The machine said {}".format(result)
         except Exception:
             return "No en fase de envido"
-
-        mensaje = "\nLos puntos del envido fueron \nHumano : {} \nPC: {}"
-        return mensaje.format(
-            self.players[0].score,
-            self.players[1].score,
-        )
 
     def show_scores(self):
         mensaje = "\nPuntajes:\nHumano:{} \nPC:{}"
