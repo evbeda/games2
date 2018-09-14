@@ -84,7 +84,6 @@ class TestGame(unittest.TestCase):
         # cpu accept envido... force random
         self.assertFalse(game.hand.envido_fase)
         self.assertEqual(game.hand.envidos, [])
-        # CPU lose 1 point ... TODO
 
     @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO')
     def test_cantar_fases_envido_and_envido(self, mock_ask_envido):
@@ -116,8 +115,6 @@ class TestGame(unittest.TestCase):
         self.assertTrue(game.hand.envido_fase)
         game.play("ENVIDO")
         game.play("ACCEPTED")
-        # import ipdb; ipdb.set_trace()
-        result = game.envido_points()
         self.assertEqual(game.envido_points(), 3)
 
     @unittest.mock.patch("truco.hand.Hand.sing_envido", return_value='ENVIDO')
@@ -364,8 +361,6 @@ class TestGame(unittest.TestCase):
 
     @unittest.skip("demonstrating skipping")
     def test_cpu_sing_envido_and_the_game_only_allow_reject_or_accept(self):
-        import pdb;
-        pdb.set_trace()
         game = Game()
         with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO'):
             game.play('0')
@@ -403,7 +398,7 @@ class TestGame(unittest.TestCase):
             game.play('0')
         result = game.play('ACCEPTED')
         expected = 'Gano el jugador: 0'
-        self.assertEqual(expected, result)  # OJO A
+        self.assertEqual(expected, result)
 
     @unittest.skip("demonstrating skipping")
     def test_cpu_sing_envido_and_human_reject(self):
