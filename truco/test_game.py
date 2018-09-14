@@ -65,7 +65,7 @@ class TestGame(unittest.TestCase):
         game = Game()
         game.hand.envido_fase = False
         result = game.play("ENVIDO")
-        self.assertEqual(result, "No en fase de envido")
+        self.assertEqual(result, "Not in fase envido")
 
     @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ACCEPTED')
     def test_cantar_fases_envido_and_accept(self, mock_ask_envido):
@@ -94,9 +94,8 @@ class TestGame(unittest.TestCase):
         self.assertTrue(game.hand.envido_fase)
         self.assertEqual(game.hand.envidos, ['ENVIDO', 'ENVIDO'])
 
-    @unittest.skip("demonstrating skipping")
     @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO')
-    def test_cantar_fases_envido_envido_envido_accept(self, mock_ask_envido):
+    def test_cantar_fases_envido_envido_envido_accept_two(self, mock_ask_envido):
         game = Game()
         self.assertTrue(game.hand.envido_fase)
         game.play("ENVIDO")
@@ -118,24 +117,13 @@ class TestGame(unittest.TestCase):
         self.assertEqual(game.envido_points(), 3)
 
     @unittest.mock.patch("truco.hand.Hand.sing_envido", return_value='ENVIDO')
-    def test_cpu_cantar_fases_envido_and_accept(self, mock_sing_envido):
+    @unittest.mock.patch("random.choice" , return_value='ENVIDO')
+    def test_cpu_cantar_fases_envido_and_accept(self, mock_sing_envido, mocky):
         game = Game()
         self.assertTrue(game.hand.envido_fase)
         game.play("0")
         # cpu accept envido... force random
         self.assertTrue(game.hand.envido_fase)
-        self.assertEqual(game.hand.envidos, ['ENVIDO'])
-
-    @unittest.skip("demonstrating skipping")
-    @unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='ENVIDO')
-    @unittest.mock.patch("random.choice", return_value='ENVIDO')
-    def test_cpu_cantar_fases_envido_and_accept(self, mock_random_choice_, mock_cpu_play):
-        game = Game()
-        self.assertTrue(game.hand.envido_fase)
-        game.play("0")
-        game.play("ACCEPTED")
-        # cpu accept envido... force random
-        self.assertFalse(game.hand.envido_fase)
         self.assertEqual(game.hand.envidos, ['ENVIDO'])
 
     def test_init(self):
@@ -176,9 +164,9 @@ class TestGame(unittest.TestCase):
         ]
         with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='ACCEPTED'):
             game.play("TRUCO")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
         self.assertEqual(game.players[0].score, 2)
         self.assertEqual(game.players[1].score, 0)
@@ -192,11 +180,11 @@ class TestGame(unittest.TestCase):
         ]
         with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='ACCEPTED'):
             game.play("TRUCO")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
         self.assertEqual(game.players[0].score, 0)
         self.assertEqual(game.players[1].score, 2)
@@ -210,9 +198,9 @@ class TestGame(unittest.TestCase):
             ]
             with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ACCEPTED'):
                 game.play("ENVIDO")
-            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
                 game.play("0")
-            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
                 game.play("0")
 
         self.assertEqual(game.players[1].score, 0)
@@ -230,9 +218,9 @@ class TestGame(unittest.TestCase):
             ]
             with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ACCEPTED'):
                 game.play("ENVIDO")
-            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
                 game.play("0")
-            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
                 game.play("0")
 
         self.assertEqual(game.players[1].score, 15)
@@ -250,9 +238,9 @@ class TestGame(unittest.TestCase):
             ]
             with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='ACCEPTED'):
                 game.play("TRUCO")
-            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
                 game.play("0")
-            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
                 game.play("0")
 
         self.assertEqual(game.players[0].score, 16)
@@ -268,11 +256,11 @@ class TestGame(unittest.TestCase):
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
         ]
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
         self.assertEqual(game.players[0].score, 1)
         self.assertEqual(game.players[1].score, 0)
@@ -283,21 +271,21 @@ class TestGame(unittest.TestCase):
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
         ]
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
         game.hand.hidden_cards = [
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
         ]
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play("0")
         self.assertEqual(game.players[0].score, 1)
         self.assertEqual(game.players[1].score, 1)
@@ -305,7 +293,7 @@ class TestGame(unittest.TestCase):
     def test_tirar_fruta_al_play(self):
         game = Game()
         result = game.play("D")
-        self.assertEqual(result, "\nComando Erroneo")
+        self.assertEqual(result, "\nWrong input")
 
     def test_mensaje_next_turn_init(self):
         game = Game()
@@ -315,12 +303,12 @@ class TestGame(unittest.TestCase):
         ]
         result = game.next_turn()
         expected = (
-            '0 para jugar 1 copa\n'
-            '1 para jugar 7 basto\n'
-            '2 para jugar 12 copa\n'
-            'ENVIDO, REAL_ENVIDO, FALTA_ENVIDO: Para cantar envido \n'
-            'MAZO: Ir al mazo \n'
-            'TRUCO: Para cantar Truco \n'
+            '0 to play 1 copa\n'
+            '1 to play 7 basto\n'
+            '2 to play 12 copa\n'
+            'ENVIDO, REAL_ENVIDO, FALTA_ENVIDO: Sing envido \n'
+            'DECK: Go to the Deck \n'
+            'TRUCO: Sing truco \n'
         )
         self.assertEqual(result, expected)
 
@@ -333,11 +321,11 @@ class TestGame(unittest.TestCase):
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
         ]
         expected = (
-            '0 para jugar 4 basto\n'
-            '1 para jugar 5 basto\n'
-            '2 para jugar 6 basto\n'
-            'MAZO: Ir al mazo \n'
-            'TRUCO: Para cantar Truco \n'
+            '0 to play 4 basto\n'
+            '1 to play 5 basto\n'
+            '2 to play 6 basto\n'
+            'DECK: Go to the Deck \n'
+            'TRUCO: Sing truco \n'
         )
         result = game.next_turn()
         self.assertEqual(expected, result)
@@ -351,67 +339,53 @@ class TestGame(unittest.TestCase):
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
         ]
         expected = (
-            '0 para jugar 3 espada\n'
-            '1 para jugar 12 espada\n'
-            '2 para jugar 10 oro\n'
-            'MAZO: Ir al mazo \n'
+            '0 to play 3 espada\n'
+            '1 to play 12 espada\n'
+            '2 to play 10 oro\n'
+            'DECK: Go to the Deck \n'
         )
         result = game.next_turn()
         self.assertEqual(expected, result)
 
-    @unittest.skip("demonstrating skipping")
     def test_cpu_sing_envido_and_the_game_only_allow_reject_or_accept(self):
         game = Game()
-        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='ENVIDO'):
             game.play('0')
-
         result = game.play('0')
-        expected = 'Comando Erroneo'
+        expected = '\nYou must accept or reject the envido'
         self.assertEqual(expected, result)
 
-    @unittest.skip("demonstrating skipping")
     def test_cpu_sing_envido_and_the_game_only_allow_reject_or_accept_2(self):
         game = Game()
-        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='ENVIDO'):
             game.play('0')
         result = game.play('TRUCO')
-        expected = 'Comando Erroneo'
+        expected = '\nYou must accept or reject the envido'
         self.assertEqual(expected, result)
 
-    @unittest.skip("demonstrating skipping")
-    def test_cpu_sing_falta_envido_and_the_game_only_allow_reject_or_accept(self):
-        game = Game()
-        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='FALTA_ENVIDO'):
-            game.play('0')
-        result = game.play('ENVIDO')
-        expected = 'Comando Erroneo'
-        self.assertEqual(expected, result)
-
-    @unittest.skip("demonstrating skipping")
     def test_cpu_sing_envido_and_accept(self):
         game = Game()
         game.hand.hidden_cards = [
             [Card(SWORD, 1), Card(CUP, 3), Card(CUP, 2)],
             [Card(COARSE, 4), Card(COARSE, 4), Card(COARSE, 4)],
         ]
-        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='ENVIDO'):
             game.play('0')
         result = game.play('ACCEPTED')
-        expected = 'Gano el jugador: 0'
+        expected = 'Won the player: 0'
         self.assertEqual(expected, result)
 
-    @unittest.skip("demonstrating skipping")
     def test_cpu_sing_envido_and_human_reject(self):
         game = Game()
-        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='ENVIDO'):
             game.play('0')
         result = game.play('REJECTED')
-        expected = "\nSiguiente ronda"
+        expected = "You reject envido. You lose 1 points"
         self.assertEqual(expected, result)
 
     def test_play_situation_one(self):
         game = Game()
-        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='PLAY'):
             game.play('0')
         with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='RE_TRUCO'):
             game.play('TRUCO')
