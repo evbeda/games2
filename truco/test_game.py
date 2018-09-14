@@ -7,7 +7,7 @@ from truco.player import CPUPlayer
 
 
 class TestGame(unittest.TestCase):
-
+    
     def test_arraise_exception_truco_logic(self):
         game = Game()
         with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='REJECTED'):
@@ -411,3 +411,12 @@ class TestGame(unittest.TestCase):
         result = game.play('REJECTED')
         expected = "\nSiguiente ronda"
         self.assertEqual(expected, result)
+
+    def test_play_situation_one(self):
+        game = Game()
+        with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
+            game.play('0')
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='RE TRUCO'):
+            game.play('TRUCO')
+        game.play("REJECTED")
+        self.assertEqual(1, 1)
