@@ -13,14 +13,6 @@ class HumanPlayer(Player):
 
 class CPUPlayer(Player):
 
-    def sort_already_envidos(self, already_envidos):
-        envido_sorted = ['ENVIDO', 'ENVIDO', 'REAL ENVIDO',
-                         'FALTA ENVIDO', ]
-        aux = None
-        for i in already_envidos:
-            if aux is None or aux < envido_sorted.find(i):
-                aux = envido_sorted.find(i)
-
     def ask_envido(self, already_envidos):
         possible_actions = self.choose_one_action(already_envidos)
         result = random.choice(possible_actions)
@@ -49,5 +41,5 @@ class CPUPlayer(Player):
             envido_possibles.append('ENVIDO')
         return envido_possibles
 
-    def cpu_play(self):
-        return random.choice(['ENVIDO', 'JUGAR', 'TRUCO'])
+    def cpu_play(self, possibles):
+        return random.choice(possibles)

@@ -21,7 +21,7 @@ truco_combinations = [
 ]
 
 envido_posibilities = ["ENVIDO", "REAL ENVIDO", "FALTA ENVIDO"]
-
+truco_posibilities = ["TRUCO", "RE TRUCO", "VALE CUATRO"]
 
 class Hand(object):
 
@@ -214,3 +214,13 @@ class Hand(object):
         if envidos < 2:
             envido_possibles.append('ENVIDO')
         return envido_possibles
+
+    def get_response_truco(self,):
+        truco_possibles = ['ACCEPTED', 'REJECTED', ]
+        if 'VALE CUATRO' in self.trucos:
+            return truco_possibles
+        truco_possibles.append('VALE CUATRO')
+        if 'RE TRUCO' in self.trucos:
+            return truco_possibles
+        truco_possibles.append('RE TRUCO')
+        return truco_possibles

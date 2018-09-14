@@ -12,6 +12,7 @@ from truco.test_game import TestGame as TG
 from truco.test_deck import TestDeck as TD
 from truco.test_cards import TestCards as TCD
 from truco.test_hand import TestHand as TestHandTruco
+from truco.test_player import TestPlayer as TrucoTestPlayer
 from poker.test_poker import PokerTest, PokerGameTest
 from guess_number_game import test_guess_number_game
 import test_game
@@ -51,6 +52,7 @@ def suite():
     test_suite.addTest(TD)
     test_suite.addTest(TCD)
     test_suite.addTest(TestHandTruco)
+    test_suite.addTest(TrucoTestPlayer)
     return test_suite
 
 
