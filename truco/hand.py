@@ -2,26 +2,27 @@ from .deck import Deck
 
 envido_combinations = [
     [['ENVIDO'], 2, 1],
-    [['REAL ENVIDO'], 3, 1],
-    [['FALTA ENVIDO'], 0, 1],
+    [['REAL_ENVIDO'], 3, 1],
+    [['FALTA_ENVIDO'], 0, 1],
     [['ENVIDO', 'ENVIDO'], 4, 2],
-    [['REAL ENVIDO', 'FALTA ENVIDO'], 5, 2],
-    [['ENVIDO', 'REAL ENVIDO'], 5, 2],
-    [['ENVIDO', 'FALTA ENVIDO'], 0, 2],
-    [['ENVIDO', 'ENVIDO', 'REAL ENVIDO'], 7, 4],
-    [['ENVIDO', 'ENVIDO', 'FALTA ENVIDO'], 0, 4],
-    [['ENVIDO', 'REAL ENVIDO', 'FALTA ENVIDO'], 0, 5],
-    [['ENVIDO', 'ENVIDO', 'REAL ENVIDO', 'FALTA ENVIDO'], 0, 7],
+    [['REAL_ENVIDO', 'FALTA_ENVIDO'], 5, 2],
+    [['ENVIDO', 'REAL_ENVIDO'], 5, 2],
+    [['ENVIDO', 'FALTA_ENVIDO'], 0, 2],
+    [['ENVIDO', 'ENVIDO', 'REAL_ENVIDO'], 7, 4],
+    [['ENVIDO', 'ENVIDO', 'FALTA_ENVIDO'], 0, 4],
+    [['ENVIDO', 'REAL_ENVIDO', 'FALTA_ENVIDO'], 0, 5],
+    [['ENVIDO', 'ENVIDO', 'REAL_ENVIDO', 'FALTA_ENVIDO'], 0, 7],
 ]
 
 truco_combinations = [
     [['TRUCO'], 2, 1],
-    [['TRUCO', 'RE TRUCO'], 3, 2],
-    [['TRUCO', 'RE TRUCO', 'VALE CUATRO'], 4, 3],
+    [['TRUCO', 'RE_TRUCO'], 3, 2],
+    [['TRUCO', 'RE_TRUCO', 'VALE_CUATRO'], 4, 3],
 ]
 
-envido_posibilities = ["ENVIDO", "REAL ENVIDO", "FALTA ENVIDO"]
-truco_posibilities = ["TRUCO", "RE TRUCO", "VALE CUATRO"]
+envido_posibilities = ["ENVIDO", "REAL_ENVIDO", "FALTA_ENVIDO"]
+truco_posibilities = ["TRUCO", "RE_TRUCO", "VALE_CUATRO"]
+
 
 class Hand(object):
 
@@ -84,7 +85,7 @@ class Hand(object):
     def get_envido_points(self, won=0):
         for combination in envido_combinations:
             if combination[0] == self.envidos:
-                if self.envidos[-1] == 'FALTA ENVIDO' and won == 0:
+                if self.envidos[-1] == 'FALTA_ENVIDO' and won == 0:
                     return 99
                 else:
                     return combination[won + 1]
@@ -187,7 +188,6 @@ class Hand(object):
                 all_cards.remove(i)
         return 0 if (len(all_cards) == 0) else max(all_cards).number
 
-
     def show_cards(self):
         result = ['\nCartas jugadas: \n']
         contador = 0
@@ -202,25 +202,25 @@ class Hand(object):
             result.append('\n')
         return ''.join(result)
 
-    def get_response_envido(self,):
+    def get_response_envido(self, ):
         envido_possibles = ['ACCEPTED', 'REJECTED', ]
-        if 'FALTA ENVIDO' in self.envidos:
+        if 'FALTA_ENVIDO' in self.envidos:
             return envido_possibles
-        envido_possibles.append('FALTA ENVIDO')
-        if 'REAL ENVIDO' in self.envidos:
+        envido_possibles.append('FALTA_ENVIDO')
+        if 'REAL_ENVIDO' in self.envidos:
             return envido_possibles
-        envido_possibles.append('REAL ENVIDO')
+        envido_possibles.append('REAL_ENVIDO')
         envidos = len([e for e in self.envidos if e == 'ENVIDO'])
         if envidos < 2:
             envido_possibles.append('ENVIDO')
         return envido_possibles
 
-    def get_response_truco(self,):
+    def get_response_truco(self, ):
         truco_possibles = ['ACCEPTED', 'REJECTED', ]
-        if 'VALE CUATRO' in self.trucos:
+        if 'VALE_CUATRO' in self.trucos:
             return truco_possibles
-        truco_possibles.append('VALE CUATRO')
-        if 'RE TRUCO' in self.trucos:
+        truco_possibles.append('VALE_CUATRO')
+        if 'RE_TRUCO' in self.trucos:
             return truco_possibles
-        truco_possibles.append('RE TRUCO')
+        truco_possibles.append('RE_TRUCO')
         return truco_possibles

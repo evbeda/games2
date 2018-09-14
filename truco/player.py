@@ -20,22 +20,22 @@ class CPUPlayer(Player):
 
     def ask_trucos(self, already_trucos):
         truco_possibles = ['ACCEPTED', 'REJECTED', ]
-        if 'VALE CUATRO' in already_trucos:
+        if 'VALE_CUATRO' in already_trucos:
             return random.choice(truco_possibles)
-        truco_possibles.append('VALE CUATRO')
-        if 'RE TRUCO' in already_trucos:
+        truco_possibles.append('VALE_CUATRO')
+        if 'RE_TRUCO' in already_trucos:
             return random.choice(truco_possibles)
-        truco_possibles.append('RE TRUCO')
+        truco_possibles.append('RE_TRUCO')
         return random.choice(truco_possibles)
 
     def choose_one_action(self, already_envidos):
         envido_possibles = ['ACCEPTED', 'REJECTED', ]
-        if 'FALTA ENVIDO' in already_envidos:
+        if 'FALTA_ENVIDO' in already_envidos:
             return envido_possibles
-        envido_possibles.append('FALTA ENVIDO')
-        if 'REAL ENVIDO' in already_envidos:
+        envido_possibles.append('FALTA_ENVIDO')
+        if 'REAL_ENVIDO' in already_envidos:
             return envido_possibles
-        envido_possibles.append('REAL ENVIDO')
+        envido_possibles.append('REAL_ENVIDO')
         envidos = len([e for e in already_envidos if e == 'ENVIDO'])
         if envidos < 2:
             envido_possibles.append('ENVIDO')

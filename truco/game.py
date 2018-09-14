@@ -36,7 +36,7 @@ class Game(object):
                 mensaje += '{} para jugar {}\n'.format(
                     index, self.hand.hidden_cards[0][index])
             if self.hand.envido_fase:
-                mensaje += 'ENVIDO, REAL ENVIDO, FALTA ENVIDO: Para cantar envido \n'
+                mensaje += 'ENVIDO, REAL_ENVIDO, FALTA_ENVIDO: Para cantar envido \n'
             mensaje += 'MAZO: Ir al mazo \n'
             if len(self.hand.trucos) == 0:
                 mensaje += 'TRUCO: Para cantar Truco \n'
@@ -46,7 +46,8 @@ class Game(object):
 
     def play(self, command):
         if (self.hand.envido_solved == False and command in self.hand.get_response_envido() or self.hand.envido_solved):
-            if (self.hand.truco_pending and command in self.hand.get_response_truco() or self.hand.truco_pending == False):
+            if (
+                    self.hand.truco_pending and command in self.hand.get_response_truco() or self.hand.truco_pending == False):
                 if command in envido_posibilities:
                     return self.envido_logic(command)
                 if command == "TRUCO" and self.hand.truco_fase:
