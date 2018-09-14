@@ -7,7 +7,7 @@ from truco.player import CPUPlayer
 
 
 class TestGame(unittest.TestCase):
-    
+
     def test_arraise_exception_truco_logic(self):
         game = Game()
         with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='REJECTED'):
@@ -17,23 +17,23 @@ class TestGame(unittest.TestCase):
 
     def test_truco_relive_re_truco(self):
         game = Game()
-        with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='RE TRUCO'):
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='RE_TRUCO'):
             game.play("TRUCO")
         game.play("ACCEPTED")
-        self.assertEqual(game.hand.trucos, ['TRUCO', 'RE TRUCO'])
+        self.assertEqual(game.hand.trucos, ['TRUCO', 'RE_TRUCO'])
         self.assertFalse(game.hand.truco_pending)
 
     def test_player_ask_falta_envido(self):
         player = CPUPlayer('CPY')
-        all_ready_envidos = ['REAL ENVIDO', 'ENVIDO', 'ENVIDO']
+        all_ready_envidos = ['REAL_ENVIDO', 'ENVIDO', 'ENVIDO']
         self.assertEqual(
             player.choose_one_action(all_ready_envidos),
-            ['ACCEPTED', 'REJECTED', 'FALTA ENVIDO'],
+            ['ACCEPTED', 'REJECTED', 'FALTA_ENVIDO'],
         )
 
     def test_player_ask_envido_when_there_are_not_more_sings(self):
         player = CPUPlayer('CPY')
-        all_ready_envidos = ['FALTA ENVIDO']
+        all_ready_envidos = ['FALTA_ENVIDO']
         self.assertEqual(
             player.choose_one_action(all_ready_envidos),
             ['ACCEPTED', 'REJECTED'],
@@ -41,25 +41,25 @@ class TestGame(unittest.TestCase):
 
     def test_sing_real_envido_and_only_can_sing_falta_envido(self):
         player = CPUPlayer('mocky')
-        all_ready_envidos = ['REAL ENVIDO']
+        all_ready_envidos = ['REAL_ENVIDO']
         self.assertEqual(
             player.choose_one_action(all_ready_envidos),
-            ['ACCEPTED', 'REJECTED', 'FALTA ENVIDO'],
+            ['ACCEPTED', 'REJECTED', 'FALTA_ENVIDO'],
         )
 
     @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ACCEPTED')
     def test_p1_sing_falta_envido(self, mocky):
         game = Game()
-        game.play("FALTA ENVIDO")
+        game.play("FALTA_ENVIDO")
         self.assertFalse(game.hand.envido_fase)
-        self.assertEqual(game.hand.envidos, ['FALTA ENVIDO'])
+        self.assertEqual(game.hand.envidos, ['FALTA_ENVIDO'])
 
-    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='REAL ENVIDO')
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='REAL_ENVIDO')
     def test_cpu_canta_real_envido(self, mocksito):
         game = Game()
         game.play("ENVIDO")
         self.assertTrue(game.hand.envido_fase)
-        self.assertEqual(game.hand.envidos, ['ENVIDO', 'REAL ENVIDO'])
+        self.assertEqual(game.hand.envidos, ['ENVIDO', 'REAL_ENVIDO'])
 
     def test_cantar_envido_no_fase_envido(self):
         game = Game()
@@ -94,7 +94,7 @@ class TestGame(unittest.TestCase):
         # cpu accept envido... force random
         self.assertTrue(game.hand.envido_fase)
         self.assertEqual(game.hand.envidos, ['ENVIDO', 'ENVIDO'])
-        
+
     @unittest.skip("demonstrating skipping")
     @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO')
     def test_cantar_fases_envido_envido_envido_accept(self, mock_ask_envido):
@@ -106,7 +106,7 @@ class TestGame(unittest.TestCase):
         self.assertFalse(game.hand.envido_fase)
         self.assertEqual(game.hand.envidos, ['ENVIDO', 'ENVIDO'])
 
-    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='FALTA ENVIDO')
+    @unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='FALTA_ENVIDO')
     def test_falta_de_envido_points(self, mock_ask_envido):
         game = Game()
         game.players[0].score = 22
@@ -116,7 +116,7 @@ class TestGame(unittest.TestCase):
         self.assertTrue(game.hand.envido_fase)
         game.play("ENVIDO")
         game.play("ACCEPTED")
-        #import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
         result = game.envido_points()
         self.assertEqual(game.envido_points(), 3)
 
@@ -321,7 +321,7 @@ class TestGame(unittest.TestCase):
             '0 para jugar 1 copa\n'
             '1 para jugar 7 basto\n'
             '2 para jugar 12 copa\n'
-            'ENVIDO, REAL ENVIDO, FALTA ENVIDO: Para cantar envido \n'
+            'ENVIDO, REAL_ENVIDO, FALTA_ENVIDO: Para cantar envido \n'
             'MAZO: Ir al mazo \n'
             'TRUCO: Para cantar Truco \n'
         )
@@ -361,13 +361,15 @@ class TestGame(unittest.TestCase):
         )
         result = game.next_turn()
         self.assertEqual(expected, result)
+
     @unittest.skip("demonstrating skipping")
     def test_cpu_sing_envido_and_the_game_only_allow_reject_or_accept(self):
-        import pdb; pdb.set_trace()
+        import pdb;
+        pdb.set_trace()
         game = Game()
         with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='ENVIDO'):
             game.play('0')
-        
+
         result = game.play('0')
         expected = 'Comando Erroneo'
         self.assertEqual(expected, result)
@@ -384,7 +386,7 @@ class TestGame(unittest.TestCase):
     @unittest.skip("demonstrating skipping")
     def test_cpu_sing_falta_envido_and_the_game_only_allow_reject_or_accept(self):
         game = Game()
-        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='FALTA ENVIDO'):
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_envido", return_value='FALTA_ENVIDO'):
             game.play('0')
         result = game.play('ENVIDO')
         expected = 'Comando Erroneo'
@@ -416,7 +418,7 @@ class TestGame(unittest.TestCase):
         game = Game()
         with unittest.mock.patch("truco.player.CPUPlayer.cpu_play", return_value='JUGAR'):
             game.play('0')
-        with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='RE TRUCO'):
+        with unittest.mock.patch("truco.player.CPUPlayer.ask_trucos", return_value='RE_TRUCO'):
             game.play('TRUCO')
         game.play("REJECTED")
         self.assertEqual(1, 1)
